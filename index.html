@@ -16,6 +16,7 @@
             background: linear-gradient(45deg, #ff9a9e, #fad0c4, #ffecd2);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
+            overflow: hidden;
         }
         @keyframes gradientBG {
             0% {background-position: 0% 50%;}
@@ -30,61 +31,115 @@
             border: 2px solid #e91e63;
             border-radius: 50px;
             transition: all 0.3s ease;
+            z-index: 10;
         }
         #loveLink:hover {
             background-color: #e91e63;
             color: white;
         }
-        #message, #wish {
+        #message, #wish, #funnyWish {
             font-size: 36px;
             color: #d81b60;
             text-align: center;
             opacity: 0;
             transform: scale(0.5);
             transition: all 0.5s ease;
+            z-index: 10;
         }
         .show {
             opacity: 1 !important;
             transform: scale(1) !important;
         }
-        #heart {
-            font-size: 100px;
-            color: #e91e63;
-            animation: heartbeat 1.5s ease-in-out infinite both;
+        #heart3D {
+            width: 150px;
+            height: 150px;
+            transform-style: preserve-3d;
+            animation: rotate 5s linear infinite;
+            position: relative;
+            margin: 20px 0;
         }
-        @keyframes heartbeat {
-            0% {transform: scale(1);}
-            14% {transform: scale(1.3);}
-            28% {transform: scale(1);}
-            42% {transform: scale(1.3);}
-            70% {transform: scale(1);}
+        @keyframes rotate {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+        #heart3D::before, #heart3D::after {
+            content: '❤️';
+            font-size: 100px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #heart3D::before {
+            transform: translateZ(50px);
+        }
+        #heart3D::after {
+            transform: translateZ(-50px) rotateY(180deg);
+        }
+        .flying-heart {
+            position: absolute;
+            font-size: 20px;
+            animation: flyHeart 5s linear infinite;
+            z-index: 5;
+        }
+        @keyframes flyHeart {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
     <a href="#" id="loveLink">Nhấp vào đây</a>
     <div id="message"></div>
-    <div id="heart" style="display: none;">❤️</div>
+    <div id="heart3D" style="display: none;"></div>
     <div id="wish"></div>
+    <div id="funnyWish"></div>
 
     <script>
+        function createFlyingHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.classList.add('flying-heart');
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+
         document.getElementById('loveLink').addEventListener('click', function(e) {
             e.preventDefault();
             this.style.display = 'none';
             
+            setInterval(createFlyingHeart, 300);
+
             setTimeout(() => {
                 document.getElementById('message').textContent = "I LOVE U";
                 document.getElementById('message').classList.add('show');
             }, 500);
 
             setTimeout(() => {
-                document.getElementById('heart').style.display = 'block';
+                document.getElementById('heart3D').style.display = 'block';
             }, 1500);
 
             setTimeout(() => {
                 document.getElementById('wish').textContent = "Chúc mừng ngày 20/10!";
                 document.getElementById('wish').classList.add('show');
             }, 2500);
+
+            setTimeout(() => {
+                document.getElementById('funnyWish').textContent = "Chúc bạn luôn xinh đẹp như hoa, thơm như quả, ngọt như kẹo và... đắt như vàng! 😉";
+                document.getElementById('funnyWish').classList.add('show');
+            }, 3500);
         });
     </script>
 </body>
