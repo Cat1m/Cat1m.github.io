@@ -41,6 +41,9 @@ class PortfolioLayout extends StatelessWidget {
                     ),
                     for (int i = 0; i < sections.length; i++)
                       ListTile(
+                        leading: Icon(
+                          AppConstants.sectionIcons[i],
+                        ), // Thêm icon vào drawer
                         title: Text(sections[i]),
                         selected: currentIndex == i,
                         onTap: () {
@@ -59,10 +62,12 @@ class PortfolioLayout extends StatelessWidget {
               onDestinationSelected: onDestinationSelected,
               labelType: NavigationRailLabelType.all,
               destinations: [
-                for (final section in sections)
+                for (int i = 0; i < sections.length; i++)
                   NavigationRailDestination(
-                    icon: const Icon(Icons.circle),
-                    label: Text(section),
+                    icon: Icon(
+                      AppConstants.sectionIcons[i],
+                    ), // Sử dụng icon từ danh sách
+                    label: Text(sections[i]),
                   ),
               ],
             ),

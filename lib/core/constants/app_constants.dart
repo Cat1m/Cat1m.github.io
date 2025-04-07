@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class AppConstants {
   // Splash Screen
   static const int splashDuration = 2500; // milliseconds
@@ -6,17 +8,17 @@ class AppConstants {
   // Personal Information
   static const String name = 'CAT1M';
   static const String title = 'Flutter Developer | Mobile Expert';
-  static const String profileImagePath = 'assets/profile.jpg';
+  static const String profileImagePath = 'assets/images/profile.jpg';
 
   // Contact Information
-  static const String email = 'your.email@example.com';
+  static const String email = 'chien120697@gmail.com';
   static const String github = 'github.com/Cat1m';
-  static const String linkedin = 'linkedin.com/in/yourusername';
+  static const String linkedin = 'https://www.linkedin.com/in/cat1m/';
 
   // URLs
   static const String githubUrl = 'https://github.com/Cat1m';
-  static const String linkedinUrl = 'https://linkedin.com/in/yourusername';
-  static const String emailUrl = 'mailto:your.email@example.com';
+  static const String linkedinUrl = 'https://www.linkedin.com/in/cat1m/';
+  static const String emailUrl = 'mailto:chien120697@gmail.com';
 
   // Navigation Sections
   static const List<String> sections = [
@@ -25,6 +27,15 @@ class AppConstants {
     'Projects',
     'Skills',
     'Contact',
+  ];
+
+  // Icons cho các sections
+  static const List<IconData> sectionIcons = [
+    Icons.home, // Home icon
+    Icons.person, // About icon
+    Icons.work, // Projects icon
+    Icons.code, // Skills icon
+    Icons.email, // Contact icon
   ];
 
   // About Me Content
