@@ -2,7 +2,7 @@ name: Deploy Flutter web to GitHub Pages
 
 on:
   push:
-    branches: [ "master" ]  # Hoặc "main" tùy thuộc vào branch mặc định của bạn
+    branches: [ "master" ]
 
 permissions:
   contents: read

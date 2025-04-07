@@ -181,7 +181,7 @@ class HomeSection extends StatelessWidget {
 }
 
 class AboutSection extends StatelessWidget {
-  const AboutSection({Key? key}) : super(key: key);
+  const AboutSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -219,7 +219,7 @@ class AboutSection extends StatelessWidget {
 }
 
 class ProjectsSection extends StatelessWidget {
-  const ProjectsSection({Key? key}) : super(key: key);
+  const ProjectsSection({super.key});
 
   @override
   Widget build(BuildContext context) {
