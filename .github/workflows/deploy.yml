@@ -32,7 +32,7 @@ jobs:
       # Build Web với CanvasKit (Tối ưu cho Portfolio đồ họa đẹp)
       # --base-href / : Quan trọng vì đây là repo root (Cat1m.github.io)
       - name: Build Web Application
-        run: flutter build web --release --web-renderer canvaskit --base-href /
+        run: flutter build web --release --base-href /
 
       # Tạo file .nojekyll để GitHub không bỏ qua các file bắt đầu bằng dấu _
       - name: Create .nojekyll
