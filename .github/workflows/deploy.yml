@@ -1,0 +1,47 @@
+# .github/workflows/deploy.yml
+name: Deploy Flutter Web Portfolio
+
+on:
+  # Chạy khi có code push vào nhánh main
+  push:
+    branches: ["main"]
+  # Cho phép chạy thủ công từ tab Actions
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Cài đặt Flutter (Sử dụng version stable mới nhất tương thích 3.38.x)
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.22.x' # Hoặc version anh đang dùng
+          cache: true
+
+      - name: Get Dependencies
+        run: flutter pub get
+
+      # Build Web với CanvasKit (Tối ưu cho Portfolio đồ họa đẹp)
+      # --base-href / : Quan trọng vì đây là repo root (Cat1m.github.io)
+      - name: Build Web Application
+        run: flutter build web --release --web-renderer canvaskit --base-href /
+
+      # Tạo file .nojekyll để GitHub không bỏ qua các file bắt đầu bằng dấu _
+      - name: Create .nojekyll
+        run: touch build/web/.nojekyll
+
+      # Deploy thư mục build/web lên nhánh gh-pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web
+          force_orphan: true # Ghi đè lịch sử cũ của nhánh deploy cho nhẹ
