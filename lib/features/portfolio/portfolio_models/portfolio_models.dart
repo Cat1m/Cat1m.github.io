@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:my_portfolio/features/about/models/profile_info.dart';
 
 part 'portfolio_models.freezed.dart';
 
@@ -25,17 +26,6 @@ abstract class PortfolioData with _$PortfolioData {
     required List<ExperienceItem> experiences,
     required List<SkillItem> skills,
   }) = _PortfolioData;
-}
-
-@freezed
-abstract class ProfileInfo with _$ProfileInfo {
-  const factory ProfileInfo({
-    required String name,
-    required String title,
-    required String summary,
-    required String avatarUrl,
-    required String cvLink,
-  }) = _ProfileInfo;
 }
 
 @freezed

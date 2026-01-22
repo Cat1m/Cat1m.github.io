@@ -1,41 +1,40 @@
 import 'package:injectable/injectable.dart';
 import 'package:my_portfolio/features/portfolio/portfolio_models/portfolio_models.dart';
 
-// Abstract class để dễ mock test sau này
 abstract class IPortfolioRepository {
-  Future<PortfolioData> getPortfolioData();
+  // Hàm này trả về phần còn lại của PortfolioData (trừ Profile)
+  // Hoặc trả về từng list riêng lẻ, ở đây mình trả về các list data
+  Future<Map<String, dynamic>> getOtherData();
 }
 
 @LazySingleton(as: IPortfolioRepository)
 class PortfolioRepository implements IPortfolioRepository {
   @override
-  Future<PortfolioData> getPortfolioData() async {
-    // Giả lập delay mạng
+  Future<Map<String, dynamic>> getOtherData() async {
     await Future.delayed(const Duration(milliseconds: 500));
 
-    // Mock Data (Sau này bạn sửa data thật ở đây)
-    return const PortfolioData(
-      profile: ProfileInfo(
-        name: "Your Name",
-        title: "Senior Flutter Developer",
-        summary: "Passionate about creating beautiful mobile & web apps.",
-        avatarUrl: "assets/avatar.png",
-        cvLink: "https://your-cv-link.com",
-      ),
-      projects: [
-        ProjectItem(
+    return {
+      'projects': [
+        const ProjectItem(
           title: "E-Commerce App",
           description: "A full-featured shopping app.",
           techStack: ["Flutter", "Bloc", "Firebase"],
         ),
-        ProjectItem(
-          title: "Portfolio Web",
-          description: "This website!",
-          techStack: ["Flutter Web", "Clean Arch"],
+        // ... thêm project mẫu
+      ],
+      'experiences': [
+        // ... thêm experience mẫu
+        const ExperienceItem(
+          role: "Senior Flutter Dev",
+          company: "Tech Corp",
+          duration: "2023 - Present",
         ),
       ],
-      experiences: [],
-      skills: [],
-    );
+      'skills': [
+        const SkillItem(name: "Dart"),
+        const SkillItem(name: "Flutter"),
+        const SkillItem(name: "Clean Arch"),
+      ],
+    };
   }
 }

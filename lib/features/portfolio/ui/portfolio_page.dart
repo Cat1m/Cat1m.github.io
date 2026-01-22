@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_portfolio/features/about/about_section.dart';
+import 'package:my_portfolio/features/blogs/blogs_section.dart';
+import 'package:my_portfolio/features/certificates/certificates_section.dart';
+import 'package:my_portfolio/features/contact/contact_section.dart';
+import 'package:my_portfolio/features/experience/experience_section.dart';
 import 'package:my_portfolio/features/portfolio/portfolio_models/portfolio_models.dart';
+import 'package:my_portfolio/features/projects/projects_section.dart';
+import 'package:my_portfolio/features/skills/skills_section.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../../../core/di/injection.dart';
 import '../bloc/portfolio_cubit.dart';
@@ -48,10 +55,48 @@ class _PortfolioViewState extends State<PortfolioView> {
 
   void _onScrollPositionChanged() {
     final positions = _itemPositionsListener.itemPositions.value;
-    if (positions.isNotEmpty) {
-      // Logic đơn giản: Lấy item đầu tiên đang hiển thị
-      final firstIndex = positions.first.index;
-      final section = PortfolioSection.values[firstIndex];
+    if (positions.isEmpty) return;
+
+    // Biến để lưu section chiếm diện tích lớn nhất
+    int maxVisibleIndex = -1;
+    double maxVisibleFraction = 0.0;
+
+    for (var item in positions) {
+      // 1. Tính toán phần hiển thị trong viewport (từ 0.0 đến 1.0)
+      // itemLeadingEdge: cạnh trên của item
+      // itemTrailingEdge: cạnh dưới của item
+
+      // Cắt phần nằm ngoài màn hình (nhỏ hơn 0 hoặc lớn hơn 1)
+      final top = item.itemLeadingEdge < 0 ? 0.0 : item.itemLeadingEdge;
+      final bottom = item.itemTrailingEdge > 1 ? 1.0 : item.itemTrailingEdge;
+
+      // Tính độ cao thực tế đang hiển thị
+      final visibleFraction = bottom - top;
+
+      // 2. Tìm item có độ hiển thị lớn nhất
+      if (visibleFraction > maxVisibleFraction) {
+        maxVisibleFraction = visibleFraction;
+        maxVisibleIndex = item.index;
+      }
+    }
+
+    // 3. Xử lý trường hợp đặc biệt: Cuộn xuống tận cùng (Contact)
+    // Đôi khi Contact quá ngắn, hiển thị full nhưng vẫn thua thằng ở trên về diện tích
+    // Nên ta check thêm: Nếu item cuối cùng đã hiện trọn vẹn (trailingEdge <= 1) -> Chọn nó luôn
+    final lastItem = positions.lastWhere(
+      (item) => item.index == PortfolioSection.values.length - 1,
+      orElse: () => positions.first, // Dummy fallback
+    );
+
+    // Nếu tìm thấy item cuối cùng và nó đã nằm trọn trong màn hình
+    if (lastItem.index == PortfolioSection.values.length - 1 &&
+        lastItem.itemTrailingEdge <= 1.05) {
+      maxVisibleIndex = lastItem.index;
+    }
+
+    // 4. Update state nếu tìm thấy index hợp lệ
+    if (maxVisibleIndex != -1) {
+      final section = PortfolioSection.values[maxVisibleIndex];
       context.read<PortfolioCubit>().updateActiveSection(section);
     }
   }
@@ -62,6 +107,25 @@ class _PortfolioViewState extends State<PortfolioView> {
       duration: const Duration(milliseconds: 600),
       curve: Curves.easeInOutCubic,
     );
+  }
+
+  Widget _buildSection(PortfolioSection section, PortfolioData data) {
+    switch (section) {
+      case PortfolioSection.about:
+        return AboutSection(profile: data.profile);
+      case PortfolioSection.projects:
+        return ProjectsSection(projects: data.projects);
+      case PortfolioSection.experience:
+        return ExperienceSection(experiences: data.experiences);
+      case PortfolioSection.skills:
+        return SkillsSection(skills: data.skills);
+      case PortfolioSection.certificates:
+        return const CertificatesSection(); // Chưa có data model, tạm thời để trống
+      case PortfolioSection.blogs:
+        return const BlogsSection(); // Chưa có data model, tạm thời để trống
+      case PortfolioSection.contact:
+        return ContactSection(profile: data.profile);
+    }
   }
 
   @override
@@ -79,13 +143,10 @@ class _PortfolioViewState extends State<PortfolioView> {
             PortfolioLoaded(data: var data, activeSection: var activeSection) =>
               Column(
                 children: [
-                  // 1. Sticky Header
                   PortfolioHeader(
                     activeSection: activeSection,
                     onMenuClick: (section) => _scrollToSection(section.index),
                   ),
-
-                  // 2. Scrollable Body
                   Expanded(
                     child: ScrollablePositionedList.builder(
                       itemCount: PortfolioSection.values.length,
@@ -93,17 +154,8 @@ class _PortfolioViewState extends State<PortfolioView> {
                       itemPositionsListener: _itemPositionsListener,
                       itemBuilder: (context, index) {
                         final section = PortfolioSection.values[index];
-                        // Placeholder cho các Section Widget
-                        return Container(
-                          height: 600, // Chiều cao giả lập
-                          alignment: Alignment.center,
-                          color: index.isEven ? Colors.grey[200] : Colors.white,
-                          child: Text(
-                            "${section.title} Section\n(Data: ${data.profile.name})",
-                            style: Theme.of(context).textTheme.headlineLarge,
-                            textAlign: TextAlign.center,
-                          ),
-                        );
+                        // VN: Gọi hàm builder đã tách
+                        return _buildSection(section, data);
                       },
                     ),
                   ),

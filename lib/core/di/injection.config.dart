@@ -12,6 +12,7 @@
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
+import '../../features/about/profile_repository.dart' as _i874;
 import '../../features/app_core/bloc/app_core_cubit.dart' as _i283;
 import '../../features/portfolio/bloc/portfolio_cubit.dart' as _i920;
 import '../../features/portfolio/repositories/portfolio_repository.dart'
@@ -31,15 +32,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i244.IPortfolioRepository>(
       () => _i244.PortfolioRepository(),
     );
-    gh.factory<_i920.PortfolioCubit>(
-      () => _i920.PortfolioCubit(
-        gh<_i244.IPortfolioRepository>(),
-        gh<_i550.ExceptionHandlerService>(),
-      ),
-    );
+    gh.lazySingleton<_i874.IProfileRepository>(() => _i874.ProfileRepository());
     gh.factory<_i283.AppCoreCubit>(
       () => _i283.AppCoreCubit(
         exceptionHandlerService: gh<_i550.ExceptionHandlerService>(),
+      ),
+    );
+    gh.factory<_i920.PortfolioCubit>(
+      () => _i920.PortfolioCubit(
+        gh<_i244.IPortfolioRepository>(),
+        gh<_i874.IProfileRepository>(),
+        gh<_i550.ExceptionHandlerService>(),
       ),
     );
     return this;
