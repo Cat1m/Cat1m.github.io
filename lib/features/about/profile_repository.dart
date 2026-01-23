@@ -18,13 +18,14 @@ class ProfileRepository implements IProfileRepository {
       tagline:
           "Crafting scalable mobile solutions with Flutter & Clean Architecture",
       summary: "Over 5 years of experience in mobile development...",
-      avatarUrl: "assets/images/avatar.png", // Nhớ tạo folder assets/images
+      avatarUrl: "images/avatar.jpg", // Nhớ tạo folder assets/images
       location: "Ho Chi Minh City, Vietnam",
-      email: "contact@yourname.com",
+      email: "chien120697@gmail.com",
       isOpenToWork: true,
-      githubUrl: "https://github.com/yourusername",
-      linkedinUrl: "https://linkedin.com/in/yourusername",
-      cvLink: "https://your-cv-link.com",
+      githubUrl: "https://github.com/Cat1m",
+      linkedinUrl: "https://www.linkedin.com/in/cat1m/",
+      cvLink:
+          "https://drive.google.com/file/d/1bi40CXM_NlQjB8IbkHJ5lx4oG6317zb3/view?usp=sharing",
     );
   }
 }

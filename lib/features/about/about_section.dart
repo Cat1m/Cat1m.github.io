@@ -1,7 +1,11 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:my_portfolio/features/about/models/profile_info.dart';
 import 'package:url_launcher/url_launcher.dart';
+// VN: Import Core UI
+import '../../../../core/ui/ui.dart';
 
 class AboutSection extends StatelessWidget {
   final ProfileInfo profile;
@@ -10,20 +14,77 @@ class AboutSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // VN: Sử dụng LayoutBuilder để chia layout Desktop/Mobile
+    final size = MediaQuery.sizeOf(context);
+
     return Container(
-      // Padding lớn tạo cảm giác thoáng (Hero Style)
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 24),
-      // Background nhẹ để phân biệt với section khác nếu cần
-      color: Theme.of(context).scaffoldBackgroundColor,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          if (constraints.maxWidth > 900) {
-            return _DesktopLayout(profile: profile);
-          } else {
-            return _MobileLayout(profile: profile);
-          }
-        },
+      // VN: Dùng màu nền từ Theme
+      color: context.colors.background,
+      child: Stack(
+        children: [
+          // ================== LAYER 1: DECORATIONS ==================
+          Positioned(
+            top: -100,
+            left: -100,
+            // VN: Blob dùng màu Primary mờ
+            child: _BlurryBlob(
+              color: context.colors.primary.withOpacity(0.15),
+              size: 400,
+            ),
+          ),
+
+          Positioned(
+            bottom: 50,
+            right: -50,
+            // VN: Blob thứ 2 dùng màu Secondary mờ
+            child: _BlurryBlob(
+              color: context.colors.secondary.withOpacity(0.1),
+              size: 300,
+            ),
+          ),
+
+          if (size.width > 1000) ...[
+            const Positioned(
+              top: 100,
+              right: 100,
+              child: _FloatingIcon(icon: Icons.code, angle: 0.2),
+            ),
+            const Positioned(
+              bottom: 100,
+              left: 50,
+              child: _FloatingIcon(icon: Icons.data_object, angle: -0.2),
+            ),
+            const Positioned(
+              top: 200,
+              left: 150,
+              child: _FloatingIcon(
+                icon: Icons.flutter_dash,
+                angle: 0.1,
+                size: 40,
+              ),
+            ),
+          ],
+
+          // ================== LAYER 2: MAIN CONTENT ==================
+          Align(
+            alignment: Alignment.center,
+            child: Padding(
+              // VN: Dùng AppDimens cho padding lớn (s64 + s16 = 80)
+              padding: const EdgeInsets.symmetric(
+                vertical: AppDimens.s64 + AppDimens.s16,
+                horizontal: AppDimens.s24,
+              ),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  if (constraints.maxWidth > 900) {
+                    return _DesktopLayout(profile: profile);
+                  } else {
+                    return _MobileLayout(profile: profile);
+                  }
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -39,25 +100,21 @@ class _DesktopLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(
-          maxWidth: 1300,
-        ), // Tăng nhẹ max width cho thoáng
+        constraints: const BoxConstraints(maxWidth: 1300),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // 1. Avatar (Left) - Flex nhỏ (2) và size nhỏ hơn
+            // 1. Avatar (Left)
             Expanded(
               flex: 1,
-              // Căn lề phải để nó gần phần text hơn
               child: Align(
                 alignment: Alignment.centerRight,
-                // Giảm size từ 300 xuống 220
                 child: _ProfileAvatar(imgUrl: profile.avatarUrl, size: 220),
               ),
             ),
 
-            const SizedBox(width: 40), // Khoảng cách
-            // 2. Text Content (Center) - Flex lớn nhất (4)
+            const SizedBox(width: AppDimens.s48), // ~40px
+            // 2. Text Content (Center)
             Expanded(
               flex: 3,
               child: _AboutTextContent(
@@ -66,13 +123,10 @@ class _DesktopLayout extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(width: 40), // Khoảng cách
-            // 3. Welcome Animation (Right) - Flex vừa (3)
-            const Expanded(
-              flex: 4,
-              // Dùng placeholder trong khi chờ bạn tìm file animation
-              child: _WelcomeAnimationPlaceholder(),
-            ),
+            const SizedBox(width: AppDimens.s48),
+
+            // 3. Welcome Animation (Right)
+            const Expanded(flex: 3, child: _WelcomeAnimationPlaceholder()),
           ],
         ),
       ),
@@ -85,9 +139,8 @@ class _WelcomeAnimationPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Sau khi có file json, bạn chỉ cần dùng widget này:
     return Lottie.asset(
-      'animations/hello_world.json', // Đường dẫn file của bạn
+      'animations/cat_peek.json', // Check lại path assets của bạn nhé
       height: 300,
       fit: BoxFit.contain,
     );
@@ -104,12 +157,8 @@ class _MobileLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // 1. Avatar (Top)
         _ProfileAvatar(imgUrl: profile.avatarUrl, size: 200),
-
-        const SizedBox(height: 32),
-
-        // 2. Text Content (Below) - Căn giữa cho đẹp trên mobile
+        const SizedBox(height: AppDimens.s32),
         _AboutTextContent(profile: profile, align: CrossAxisAlignment.center),
       ],
     );
@@ -131,19 +180,20 @@ class _ProfileAvatar extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        // Hiệu ứng đổ bóng nhẹ tạo chiều sâu
         boxShadow: [
           BoxShadow(
-            color: Colors.blue.withOpacity(0.2),
+            // VN: Shadow màu Primary mờ
+            color: context.colors.primary.withOpacity(0.2),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
         ],
-        border: Border.all(color: Colors.blue.shade100, width: 4),
-        image: DecorationImage(
-          image: NetworkImage(imgUrl), // Hoặc AssetImage nếu dùng ảnh local
-          fit: BoxFit.cover,
+        // VN: Viền màu Primary nhạt
+        border: Border.all(
+          color: context.colors.primary.withOpacity(0.3),
+          width: 4,
         ),
+        image: DecorationImage(image: AssetImage(imgUrl), fit: BoxFit.contain),
       ),
     );
   }
@@ -157,7 +207,6 @@ class _AboutTextContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     final isCenter = align == CrossAxisAlignment.center;
 
     return Column(
@@ -166,19 +215,22 @@ class _AboutTextContent extends StatelessWidget {
         // Badge Open to Work
         if (profile.isOpenToWork)
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            margin: const EdgeInsets.only(bottom: 16),
-            decoration: BoxDecoration(
-              color: Colors.green.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.green),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppDimens.s12,
+              vertical: AppDimens.s4 + 2,
             ),
-            child: const Text(
+            margin: const EdgeInsets.only(bottom: AppDimens.s16),
+            decoration: BoxDecoration(
+              // VN: Dùng màu Success từ Theme
+              color: context.colors.success.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(AppDimens.r16), // ~20
+              border: Border.all(color: context.colors.success),
+            ),
+            child: Text(
               "🟢 Open to Work",
-              style: TextStyle(
-                color: Colors.green,
+              style: context.text.caption.copyWith(
+                color: context.colors.success,
                 fontWeight: FontWeight.bold,
-                fontSize: 12,
               ),
             ),
           ),
@@ -186,50 +238,61 @@ class _AboutTextContent extends StatelessWidget {
         // Greeting
         Text(
           "Hi there, I'm",
-          style: textTheme.titleLarge?.copyWith(color: Colors.grey),
+          // VN: Dùng TextSecondary (màu xám)
+          style: context.text.h3.copyWith(color: context.colors.textSecondary),
         ),
+
+        const SizedBox(height: AppDimens.s8),
 
         // Name
-        const SizedBox(height: 8),
         Text(
           profile.name,
-          style: textTheme.displayMedium?.copyWith(
+          // VN: Dùng H1 + Màu Primary
+          style: context.text.h1.copyWith(
+            color: context.colors.primary,
+            fontSize: 40, // Override size to hơn chuẩn H1 chút cho tên
             fontWeight: FontWeight.w900,
-            color: Colors.blue, // Màu điểm nhấn
           ),
           textAlign: isCenter ? TextAlign.center : TextAlign.start,
         ),
 
-        // Title & Tagline
-        const SizedBox(height: 8),
+        const SizedBox(height: AppDimens.s8),
+
+        // Title
         Text(
           profile.title,
-          style: textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+          style: context.text.h2.copyWith(color: context.colors.textPrimary),
           textAlign: isCenter ? TextAlign.center : TextAlign.start,
         ),
-        const SizedBox(height: 8),
+
+        const SizedBox(height: AppDimens.s8),
+
+        // Tagline
         Text(
           profile.tagline,
-          style: textTheme.bodyLarge?.copyWith(
+          // VN: Dùng Body1 + Italic
+          style: context.text.body1.copyWith(
             fontStyle: FontStyle.italic,
-            color: Colors.grey[600],
+            color: context.colors.textSecondary,
           ),
           textAlign: isCenter ? TextAlign.center : TextAlign.start,
         ),
 
+        const SizedBox(height: AppDimens.s24),
+
         // Summary
-        const SizedBox(height: 24),
         Text(
           profile.summary,
-          style: textTheme.bodyLarge?.copyWith(height: 1.6),
+          style: context.text.body1.copyWith(height: 1.6),
           textAlign: isCenter ? TextAlign.center : TextAlign.start,
         ),
 
+        const SizedBox(height: AppDimens.s32),
+
         // Location & Socials
-        const SizedBox(height: 32),
         Wrap(
-          spacing: 16,
-          runSpacing: 16,
+          spacing: AppDimens.s16,
+          runSpacing: AppDimens.s16,
           alignment: isCenter ? WrapAlignment.center : WrapAlignment.start,
           children: [
             _SocialButton(
@@ -239,14 +302,14 @@ class _AboutTextContent extends StatelessWidget {
             ),
             if (profile.githubUrl != null)
               _SocialButton(
-                icon: Icons.code, // Hoặc dùng FontAwesomeIcons.github
+                icon: Icons.code,
                 label: "GitHub",
                 isOutlined: true,
                 onTap: () => _launchUrl(profile.githubUrl!),
               ),
             if (profile.linkedinUrl != null)
               _SocialButton(
-                icon: Icons.work, // Hoặc dùng FontAwesomeIcons.linkedin
+                icon: Icons.work,
                 label: "LinkedIn",
                 isOutlined: true,
                 onTap: () => _launchUrl(profile.linkedinUrl!),
@@ -283,19 +346,82 @@ class _SocialButton extends StatelessWidget {
     if (isOutlined) {
       return OutlinedButton.icon(
         onPressed: onTap,
-        icon: Icon(icon, size: 18),
-        label: Text(label),
+        icon: Icon(icon, size: AppDimens.icS),
+        label: Text(
+          label,
+          style: context.text.button.copyWith(color: context.colors.primary),
+        ),
         style: OutlinedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppDimens.s20,
+            vertical: AppDimens.s16,
+          ),
+          // VN: Border màu text phụ
+          side: BorderSide(color: context.colors.textSecondary),
+          foregroundColor: context.colors.primary,
         ),
       );
     }
     return ElevatedButton.icon(
       onPressed: onTap,
-      icon: Icon(icon, size: 18),
-      label: Text(label),
+      icon: Icon(icon, size: AppDimens.icS, color: context.colors.background),
+      label: Text(
+        label,
+        style: context.text.button.copyWith(color: context.colors.background),
+      ),
       style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppDimens.s24,
+          vertical: AppDimens.s16,
+        ),
+        // VN: Màu nút theo Primary
+        backgroundColor: context.colors.primary,
+        foregroundColor: context.colors.surface,
+      ),
+    );
+  }
+}
+
+class _BlurryBlob extends StatelessWidget {
+  final Color color;
+  final double size;
+
+  const _BlurryBlob({required this.color, required this.size});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: color,
+        boxShadow: [BoxShadow(color: color, blurRadius: 100, spreadRadius: 50)],
+      ),
+    );
+  }
+}
+
+class _FloatingIcon extends StatelessWidget {
+  final IconData icon;
+  final double angle;
+  final double size;
+
+  const _FloatingIcon({
+    required this.icon,
+    required this.angle,
+    this.size = 60,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.rotate(
+      angle: angle * math.pi,
+      child: Icon(
+        icon,
+        size: size,
+        // VN: Dùng TextPrimary mờ làm icon nền
+        color: context.colors.textPrimary.withOpacity(0.05),
       ),
     );
   }

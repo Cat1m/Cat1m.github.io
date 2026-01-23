@@ -32,12 +32,25 @@ class AppCoreCubit extends Cubit<AppCoreState> {
     });
   }
 
-  void toggleTheme() {
+  void toggleTheme(Brightness currentBrightness) {
     final currentState = state;
     if (currentState is AppCoreSettings) {
-      final newMode = currentState.themeMode == ThemeMode.light
-          ? ThemeMode.dark
-          : ThemeMode.light;
+      ThemeMode newMode;
+
+      if (currentState.themeMode == ThemeMode.system) {
+        // Nếu đang là System:
+        // - Máy đang Tối -> Chuyển sang Sáng
+        // - Máy đang Sáng -> Chuyển sang Tối
+        newMode = currentBrightness == Brightness.dark
+            ? ThemeMode.light
+            : ThemeMode.dark;
+      } else {
+        // Logic cũ: Đảo ngược trực tiếp
+        newMode = currentState.themeMode == ThemeMode.dark
+            ? ThemeMode.light
+            : ThemeMode.dark;
+      }
+
       emit(currentState.copyWith(themeMode: newMode));
     }
   }

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_portfolio/core/ui/ui.dart'; // VN: Import duy nhất file này là đủ
 import 'package:my_portfolio/features/portfolio/ui/portfolio_page.dart';
-import 'core/di/injection.dart'; // Import file config DI
+import 'core/di/injection.dart';
 import 'features/app_core/bloc/app_core_cubit.dart';
 import 'features/app_core/bloc/app_core_state.dart';
 
 void main() {
-  // VN: Khởi tạo Dependency Injection trước khi chạy app
   configureDependencies();
-
   runApp(const MyApp());
 }
 
@@ -18,34 +17,41 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      // VN: Lấy AppCoreCubit từ GetIt container thay vì khởi tạo thủ công
       create: (_) => getIt<AppCoreCubit>(),
       child: BlocBuilder<AppCoreCubit, AppCoreState>(
         builder: (context, state) {
-          // VN: Sử dụng Pattern Matching của Dart 3 để xử lý state
           return switch (state) {
             AppCoreSettings settings => MaterialApp(
               title: 'My Portfolio',
-              theme: ThemeData.light(useMaterial3: true),
-              darkTheme: ThemeData.dark(useMaterial3: true),
+              debugShowCheckedModeBanner: false, // Tắt banner debug cho đẹp
+              // VN: --- TÍCH HỢP THEME MỚI TẠI ĐÂY ---
+              theme: AppTheme.light(),
+              darkTheme: AppTheme.dark(),
+
+              // -------------------------------------
               themeMode: settings.themeMode,
               locale: settings.locale,
               builder: (context, child) {
                 return BlocListener<AppCoreCubit, AppCoreState>(
                   listener: (context, state) {
-                    // VN: Check lỗi bằng 'is' check để đảm bảo type safe
                     if (state is AppCoreSettings &&
                         state.lastErrorMessage != null) {
+                      // VN: Refactor Snackbar dùng màu từ context
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text(state.lastErrorMessage!),
-                          backgroundColor: Colors.red,
+                          content: Text(
+                            state.lastErrorMessage!,
+                            style: context.text.body1.copyWith(
+                              color: context.colors.surface,
+                            ),
+                          ),
+                          backgroundColor:
+                              context.colors.error, // Dùng màu Error chuẩn
                           behavior: SnackBarBehavior.floating,
                         ),
                       );
                     }
                   },
-                  // VN: Trigger listener khi timestamp thay đổi (đảm bảo hiển thị lỗi mới nhất)
                   listenWhen: (prev, curr) {
                     return (prev is AppCoreSettings &&
                             curr is AppCoreSettings) &&
@@ -56,7 +62,6 @@ class MyApp extends StatelessWidget {
               },
               home: const PortfolioPage(),
             ),
-            // VN: Fallback cho các trạng thái chưa định nghĩa (Loading/Error startup)
             // ignore: unreachable_switch_case
             _ => const MaterialApp(
               home: Scaffold(body: Center(child: CircularProgressIndicator())),
