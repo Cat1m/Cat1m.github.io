@@ -18,7 +18,7 @@ class ProfileRepository implements IProfileRepository {
       tagline:
           "Crafting scalable mobile solutions with Flutter & Clean Architecture",
       summary: "Over 5 years of experience in mobile development...",
-      avatarUrl: "images/avatar.jpg", // Nhớ tạo folder assets/images
+      avatarUrl: "assets/images/avatar.jpg", // Nhớ tạo folder assets/images
       location: "Ho Chi Minh City, Vietnam",
       email: "chien120697@gmail.com",
       isOpenToWork: true,

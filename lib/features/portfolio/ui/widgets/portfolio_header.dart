@@ -278,7 +278,7 @@ class _ThemeLottieButtonState extends State<_ThemeLottieButton>
         height: 50,
         alignment: Alignment.center,
         child: Lottie.asset(
-          'animations/day_night_cycle.json',
+          'assets/animations/day_night_cycle.json',
           controller: _controller,
           fit: BoxFit.cover,
           repeat: false,

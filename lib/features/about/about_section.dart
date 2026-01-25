@@ -140,7 +140,7 @@ class _WelcomeAnimationPlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Lottie.asset(
-      'animations/cat_peek.json', // Check lại path assets của bạn nhé
+      'assets/animations/cat_peek.json', // Check lại path assets của bạn nhé
       height: 300,
       fit: BoxFit.contain,
     );
