@@ -11,20 +11,35 @@ part of 'project_item.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
+ProjectItem _$ProjectItemFromJson(
+  Map<String, dynamic> json
+) {
+        switch (json['runtimeType']) {
+                  case 'personal':
+          return PersonalProject.fromJson(
+            json
+          );
+                case 'work':
+          return WorkProject.fromJson(
+            json
+          );
+        
+          default:
+            throw CheckedFromJsonException(
+  json,
+  'runtimeType',
+  'ProjectItem',
+  'Invalid union type "${json['runtimeType']}"!'
+);
+        }
+      
+}
 
 /// @nodoc
 mixin _$ProjectItem {
 
- String get id; String get title; String get tagline;// Câu mô tả ngắn gọn (Slogan)
- String get description;// Mô tả chi tiết (Challenges, Solutions)
- String get bannerUrl;// Ảnh cover của dự án
- bool get isPersonalProject;// True: Cá nhân, False: Công ty
- String? get companyName;// Tên công ty (nếu là project công ty)
- String get role;// Vai trò: Lead, Senior Dev, hay Solo
- List<String> get techStack;// Flutter, Firebase, Bloc...
- List<String> get platforms;// iOS, Android, Web
- String? get appStoreLink; String? get googlePlayLink; String? get webLink; String? get githubLink;// Chỉ hiện nếu là Personal hoặc Open Source
- DateTime? get startDate; DateTime? get endDate;
+ String get id; String get title; String get tagline; String get description; String get bannerUrl; List<String> get techStack; List<String> get platforms;// e.g., Senior Mobile Dev
+ String? get appStoreLink; String? get googlePlayLink;
 /// Create a copy of ProjectItem
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -37,16 +52,16 @@ $ProjectItemCopyWith<ProjectItem> get copyWith => _$ProjectItemCopyWithImpl<Proj
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProjectItem&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.tagline, tagline) || other.tagline == tagline)&&(identical(other.description, description) || other.description == description)&&(identical(other.bannerUrl, bannerUrl) || other.bannerUrl == bannerUrl)&&(identical(other.isPersonalProject, isPersonalProject) || other.isPersonalProject == isPersonalProject)&&(identical(other.companyName, companyName) || other.companyName == companyName)&&(identical(other.role, role) || other.role == role)&&const DeepCollectionEquality().equals(other.techStack, techStack)&&const DeepCollectionEquality().equals(other.platforms, platforms)&&(identical(other.appStoreLink, appStoreLink) || other.appStoreLink == appStoreLink)&&(identical(other.googlePlayLink, googlePlayLink) || other.googlePlayLink == googlePlayLink)&&(identical(other.webLink, webLink) || other.webLink == webLink)&&(identical(other.githubLink, githubLink) || other.githubLink == githubLink)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProjectItem&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.tagline, tagline) || other.tagline == tagline)&&(identical(other.description, description) || other.description == description)&&(identical(other.bannerUrl, bannerUrl) || other.bannerUrl == bannerUrl)&&const DeepCollectionEquality().equals(other.techStack, techStack)&&const DeepCollectionEquality().equals(other.platforms, platforms)&&(identical(other.appStoreLink, appStoreLink) || other.appStoreLink == appStoreLink)&&(identical(other.googlePlayLink, googlePlayLink) || other.googlePlayLink == googlePlayLink));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,tagline,description,bannerUrl,isPersonalProject,companyName,role,const DeepCollectionEquality().hash(techStack),const DeepCollectionEquality().hash(platforms),appStoreLink,googlePlayLink,webLink,githubLink,startDate,endDate);
+int get hashCode => Object.hash(runtimeType,id,title,tagline,description,bannerUrl,const DeepCollectionEquality().hash(techStack),const DeepCollectionEquality().hash(platforms),appStoreLink,googlePlayLink);
 
 @override
 String toString() {
-  return 'ProjectItem(id: $id, title: $title, tagline: $tagline, description: $description, bannerUrl: $bannerUrl, isPersonalProject: $isPersonalProject, companyName: $companyName, role: $role, techStack: $techStack, platforms: $platforms, appStoreLink: $appStoreLink, googlePlayLink: $googlePlayLink, webLink: $webLink, githubLink: $githubLink, startDate: $startDate, endDate: $endDate)';
+  return 'ProjectItem(id: $id, title: $title, tagline: $tagline, description: $description, bannerUrl: $bannerUrl, techStack: $techStack, platforms: $platforms, appStoreLink: $appStoreLink, googlePlayLink: $googlePlayLink)';
 }
 
 
@@ -57,7 +72,7 @@ abstract mixin class $ProjectItemCopyWith<$Res>  {
   factory $ProjectItemCopyWith(ProjectItem value, $Res Function(ProjectItem) _then) = _$ProjectItemCopyWithImpl;
 @useResult
 $Res call({
- String id, String title, String tagline, String description, String bannerUrl, bool isPersonalProject, String? companyName, String role, List<String> techStack, List<String> platforms, String? appStoreLink, String? googlePlayLink, String? webLink, String? githubLink, DateTime? startDate, DateTime? endDate
+ String id, String title, String tagline, String description, String bannerUrl, List<String> techStack, List<String> platforms, String? appStoreLink, String? googlePlayLink
 });
 
 
@@ -74,25 +89,18 @@ class _$ProjectItemCopyWithImpl<$Res>
 
 /// Create a copy of ProjectItem
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? tagline = null,Object? description = null,Object? bannerUrl = null,Object? isPersonalProject = null,Object? companyName = freezed,Object? role = null,Object? techStack = null,Object? platforms = null,Object? appStoreLink = freezed,Object? googlePlayLink = freezed,Object? webLink = freezed,Object? githubLink = freezed,Object? startDate = freezed,Object? endDate = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? tagline = null,Object? description = null,Object? bannerUrl = null,Object? techStack = null,Object? platforms = null,Object? appStoreLink = freezed,Object? googlePlayLink = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,tagline: null == tagline ? _self.tagline : tagline // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,bannerUrl: null == bannerUrl ? _self.bannerUrl : bannerUrl // ignore: cast_nullable_to_non_nullable
-as String,isPersonalProject: null == isPersonalProject ? _self.isPersonalProject : isPersonalProject // ignore: cast_nullable_to_non_nullable
-as bool,companyName: freezed == companyName ? _self.companyName : companyName // ignore: cast_nullable_to_non_nullable
-as String?,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
 as String,techStack: null == techStack ? _self.techStack : techStack // ignore: cast_nullable_to_non_nullable
 as List<String>,platforms: null == platforms ? _self.platforms : platforms // ignore: cast_nullable_to_non_nullable
 as List<String>,appStoreLink: freezed == appStoreLink ? _self.appStoreLink : appStoreLink // ignore: cast_nullable_to_non_nullable
 as String?,googlePlayLink: freezed == googlePlayLink ? _self.googlePlayLink : googlePlayLink // ignore: cast_nullable_to_non_nullable
-as String?,webLink: freezed == webLink ? _self.webLink : webLink // ignore: cast_nullable_to_non_nullable
-as String?,githubLink: freezed == githubLink ? _self.githubLink : githubLink // ignore: cast_nullable_to_non_nullable
-as String?,startDate: freezed == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
-as DateTime?,endDate: freezed == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as String?,
   ));
 }
 
@@ -113,11 +121,12 @@ extension ProjectItemPatterns on ProjectItem {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ProjectItem value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( PersonalProject value)?  personal,TResult Function( WorkProject value)?  work,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _ProjectItem() when $default != null:
-return $default(_that);case _:
+case PersonalProject() when personal != null:
+return personal(_that);case WorkProject() when work != null:
+return work(_that);case _:
   return orElse();
 
 }
@@ -135,14 +144,12 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ProjectItem value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( PersonalProject value)  personal,required TResult Function( WorkProject value)  work,}){
 final _that = this;
 switch (_that) {
-case _ProjectItem():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+case PersonalProject():
+return personal(_that);case WorkProject():
+return work(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -156,11 +163,12 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ProjectItem value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( PersonalProject value)?  personal,TResult? Function( WorkProject value)?  work,}){
 final _that = this;
 switch (_that) {
-case _ProjectItem() when $default != null:
-return $default(_that);case _:
+case PersonalProject() when personal != null:
+return personal(_that);case WorkProject() when work != null:
+return work(_that);case _:
   return null;
 
 }
@@ -177,10 +185,11 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String tagline,  String description,  String bannerUrl,  bool isPersonalProject,  String? companyName,  String role,  List<String> techStack,  List<String> platforms,  String? appStoreLink,  String? googlePlayLink,  String? webLink,  String? githubLink,  DateTime? startDate,  DateTime? endDate)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String id,  String title,  String tagline,  String description,  String bannerUrl,  List<String> techStack,  List<String> platforms,  String? githubLink,  String? webLink,  String? appStoreLink,  String? googlePlayLink)?  personal,TResult Function( String id,  String title,  String tagline,  String description,  String bannerUrl,  List<String> techStack,  List<String> platforms,  String companyName,  String role,  String? appStoreLink,  String? googlePlayLink)?  work,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _ProjectItem() when $default != null:
-return $default(_that.id,_that.title,_that.tagline,_that.description,_that.bannerUrl,_that.isPersonalProject,_that.companyName,_that.role,_that.techStack,_that.platforms,_that.appStoreLink,_that.googlePlayLink,_that.webLink,_that.githubLink,_that.startDate,_that.endDate);case _:
+case PersonalProject() when personal != null:
+return personal(_that.id,_that.title,_that.tagline,_that.description,_that.bannerUrl,_that.techStack,_that.platforms,_that.githubLink,_that.webLink,_that.appStoreLink,_that.googlePlayLink);case WorkProject() when work != null:
+return work(_that.id,_that.title,_that.tagline,_that.description,_that.bannerUrl,_that.techStack,_that.platforms,_that.companyName,_that.role,_that.appStoreLink,_that.googlePlayLink);case _:
   return orElse();
 
 }
@@ -198,13 +207,11 @@ return $default(_that.id,_that.title,_that.tagline,_that.description,_that.banne
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String tagline,  String description,  String bannerUrl,  bool isPersonalProject,  String? companyName,  String role,  List<String> techStack,  List<String> platforms,  String? appStoreLink,  String? googlePlayLink,  String? webLink,  String? githubLink,  DateTime? startDate,  DateTime? endDate)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String id,  String title,  String tagline,  String description,  String bannerUrl,  List<String> techStack,  List<String> platforms,  String? githubLink,  String? webLink,  String? appStoreLink,  String? googlePlayLink)  personal,required TResult Function( String id,  String title,  String tagline,  String description,  String bannerUrl,  List<String> techStack,  List<String> platforms,  String companyName,  String role,  String? appStoreLink,  String? googlePlayLink)  work,}) {final _that = this;
 switch (_that) {
-case _ProjectItem():
-return $default(_that.id,_that.title,_that.tagline,_that.description,_that.bannerUrl,_that.isPersonalProject,_that.companyName,_that.role,_that.techStack,_that.platforms,_that.appStoreLink,_that.googlePlayLink,_that.webLink,_that.githubLink,_that.startDate,_that.endDate);case _:
-  throw StateError('Unexpected subclass');
-
-}
+case PersonalProject():
+return personal(_that.id,_that.title,_that.tagline,_that.description,_that.bannerUrl,_that.techStack,_that.platforms,_that.githubLink,_that.webLink,_that.appStoreLink,_that.googlePlayLink);case WorkProject():
+return work(_that.id,_that.title,_that.tagline,_that.description,_that.bannerUrl,_that.techStack,_that.platforms,_that.companyName,_that.role,_that.appStoreLink,_that.googlePlayLink);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -218,10 +225,11 @@ return $default(_that.id,_that.title,_that.tagline,_that.description,_that.banne
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String tagline,  String description,  String bannerUrl,  bool isPersonalProject,  String? companyName,  String role,  List<String> techStack,  List<String> platforms,  String? appStoreLink,  String? googlePlayLink,  String? webLink,  String? githubLink,  DateTime? startDate,  DateTime? endDate)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String id,  String title,  String tagline,  String description,  String bannerUrl,  List<String> techStack,  List<String> platforms,  String? githubLink,  String? webLink,  String? appStoreLink,  String? googlePlayLink)?  personal,TResult? Function( String id,  String title,  String tagline,  String description,  String bannerUrl,  List<String> techStack,  List<String> platforms,  String companyName,  String role,  String? appStoreLink,  String? googlePlayLink)?  work,}) {final _that = this;
 switch (_that) {
-case _ProjectItem() when $default != null:
-return $default(_that.id,_that.title,_that.tagline,_that.description,_that.bannerUrl,_that.isPersonalProject,_that.companyName,_that.role,_that.techStack,_that.platforms,_that.appStoreLink,_that.googlePlayLink,_that.webLink,_that.githubLink,_that.startDate,_that.endDate);case _:
+case PersonalProject() when personal != null:
+return personal(_that.id,_that.title,_that.tagline,_that.description,_that.bannerUrl,_that.techStack,_that.platforms,_that.githubLink,_that.webLink,_that.appStoreLink,_that.googlePlayLink);case WorkProject() when work != null:
+return work(_that.id,_that.title,_that.tagline,_that.description,_that.bannerUrl,_that.techStack,_that.platforms,_that.companyName,_that.role,_that.appStoreLink,_that.googlePlayLink);case _:
   return null;
 
 }
@@ -232,84 +240,73 @@ return $default(_that.id,_that.title,_that.tagline,_that.description,_that.banne
 /// @nodoc
 @JsonSerializable()
 
-class _ProjectItem implements ProjectItem {
-  const _ProjectItem({required this.id, required this.title, required this.tagline, required this.description, required this.bannerUrl, this.isPersonalProject = false, this.companyName, required this.role, required final  List<String> techStack, final  List<String> platforms = const [], this.appStoreLink, this.googlePlayLink, this.webLink, this.githubLink, this.startDate, this.endDate}): _techStack = techStack,_platforms = platforms;
-  factory _ProjectItem.fromJson(Map<String, dynamic> json) => _$ProjectItemFromJson(json);
+class PersonalProject extends ProjectItem {
+  const PersonalProject({required this.id, required this.title, required this.tagline, required this.description, required this.bannerUrl, required final  List<String> techStack, final  List<String> platforms = const [], this.githubLink, this.webLink, this.appStoreLink, this.googlePlayLink, final  String? $type}): _techStack = techStack,_platforms = platforms,$type = $type ?? 'personal',super._();
+  factory PersonalProject.fromJson(Map<String, dynamic> json) => _$PersonalProjectFromJson(json);
 
 @override final  String id;
 @override final  String title;
 @override final  String tagline;
-// Câu mô tả ngắn gọn (Slogan)
 @override final  String description;
-// Mô tả chi tiết (Challenges, Solutions)
 @override final  String bannerUrl;
-// Ảnh cover của dự án
-@override@JsonKey() final  bool isPersonalProject;
-// True: Cá nhân, False: Công ty
-@override final  String? companyName;
-// Tên công ty (nếu là project công ty)
-@override final  String role;
-// Vai trò: Lead, Senior Dev, hay Solo
  final  List<String> _techStack;
-// Vai trò: Lead, Senior Dev, hay Solo
 @override List<String> get techStack {
   if (_techStack is EqualUnmodifiableListView) return _techStack;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_techStack);
 }
 
-// Flutter, Firebase, Bloc...
  final  List<String> _platforms;
-// Flutter, Firebase, Bloc...
 @override@JsonKey() List<String> get platforms {
   if (_platforms is EqualUnmodifiableListView) return _platforms;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_platforms);
 }
 
-// iOS, Android, Web
+// Đặc thù Personal
+ final  String? githubLink;
+ final  String? webLink;
 @override final  String? appStoreLink;
 @override final  String? googlePlayLink;
-@override final  String? webLink;
-@override final  String? githubLink;
-// Chỉ hiện nếu là Personal hoặc Open Source
-@override final  DateTime? startDate;
-@override final  DateTime? endDate;
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
 
 /// Create a copy of ProjectItem
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$ProjectItemCopyWith<_ProjectItem> get copyWith => __$ProjectItemCopyWithImpl<_ProjectItem>(this, _$identity);
+$PersonalProjectCopyWith<PersonalProject> get copyWith => _$PersonalProjectCopyWithImpl<PersonalProject>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
-  return _$ProjectItemToJson(this, );
+  return _$PersonalProjectToJson(this, );
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProjectItem&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.tagline, tagline) || other.tagline == tagline)&&(identical(other.description, description) || other.description == description)&&(identical(other.bannerUrl, bannerUrl) || other.bannerUrl == bannerUrl)&&(identical(other.isPersonalProject, isPersonalProject) || other.isPersonalProject == isPersonalProject)&&(identical(other.companyName, companyName) || other.companyName == companyName)&&(identical(other.role, role) || other.role == role)&&const DeepCollectionEquality().equals(other._techStack, _techStack)&&const DeepCollectionEquality().equals(other._platforms, _platforms)&&(identical(other.appStoreLink, appStoreLink) || other.appStoreLink == appStoreLink)&&(identical(other.googlePlayLink, googlePlayLink) || other.googlePlayLink == googlePlayLink)&&(identical(other.webLink, webLink) || other.webLink == webLink)&&(identical(other.githubLink, githubLink) || other.githubLink == githubLink)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PersonalProject&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.tagline, tagline) || other.tagline == tagline)&&(identical(other.description, description) || other.description == description)&&(identical(other.bannerUrl, bannerUrl) || other.bannerUrl == bannerUrl)&&const DeepCollectionEquality().equals(other._techStack, _techStack)&&const DeepCollectionEquality().equals(other._platforms, _platforms)&&(identical(other.githubLink, githubLink) || other.githubLink == githubLink)&&(identical(other.webLink, webLink) || other.webLink == webLink)&&(identical(other.appStoreLink, appStoreLink) || other.appStoreLink == appStoreLink)&&(identical(other.googlePlayLink, googlePlayLink) || other.googlePlayLink == googlePlayLink));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,tagline,description,bannerUrl,isPersonalProject,companyName,role,const DeepCollectionEquality().hash(_techStack),const DeepCollectionEquality().hash(_platforms),appStoreLink,googlePlayLink,webLink,githubLink,startDate,endDate);
+int get hashCode => Object.hash(runtimeType,id,title,tagline,description,bannerUrl,const DeepCollectionEquality().hash(_techStack),const DeepCollectionEquality().hash(_platforms),githubLink,webLink,appStoreLink,googlePlayLink);
 
 @override
 String toString() {
-  return 'ProjectItem(id: $id, title: $title, tagline: $tagline, description: $description, bannerUrl: $bannerUrl, isPersonalProject: $isPersonalProject, companyName: $companyName, role: $role, techStack: $techStack, platforms: $platforms, appStoreLink: $appStoreLink, googlePlayLink: $googlePlayLink, webLink: $webLink, githubLink: $githubLink, startDate: $startDate, endDate: $endDate)';
+  return 'ProjectItem.personal(id: $id, title: $title, tagline: $tagline, description: $description, bannerUrl: $bannerUrl, techStack: $techStack, platforms: $platforms, githubLink: $githubLink, webLink: $webLink, appStoreLink: $appStoreLink, googlePlayLink: $googlePlayLink)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$ProjectItemCopyWith<$Res> implements $ProjectItemCopyWith<$Res> {
-  factory _$ProjectItemCopyWith(_ProjectItem value, $Res Function(_ProjectItem) _then) = __$ProjectItemCopyWithImpl;
+abstract mixin class $PersonalProjectCopyWith<$Res> implements $ProjectItemCopyWith<$Res> {
+  factory $PersonalProjectCopyWith(PersonalProject value, $Res Function(PersonalProject) _then) = _$PersonalProjectCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String title, String tagline, String description, String bannerUrl, bool isPersonalProject, String? companyName, String role, List<String> techStack, List<String> platforms, String? appStoreLink, String? googlePlayLink, String? webLink, String? githubLink, DateTime? startDate, DateTime? endDate
+ String id, String title, String tagline, String description, String bannerUrl, List<String> techStack, List<String> platforms, String? githubLink, String? webLink, String? appStoreLink, String? googlePlayLink
 });
 
 
@@ -317,34 +314,136 @@ $Res call({
 
 }
 /// @nodoc
-class __$ProjectItemCopyWithImpl<$Res>
-    implements _$ProjectItemCopyWith<$Res> {
-  __$ProjectItemCopyWithImpl(this._self, this._then);
+class _$PersonalProjectCopyWithImpl<$Res>
+    implements $PersonalProjectCopyWith<$Res> {
+  _$PersonalProjectCopyWithImpl(this._self, this._then);
 
-  final _ProjectItem _self;
-  final $Res Function(_ProjectItem) _then;
+  final PersonalProject _self;
+  final $Res Function(PersonalProject) _then;
 
 /// Create a copy of ProjectItem
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? tagline = null,Object? description = null,Object? bannerUrl = null,Object? isPersonalProject = null,Object? companyName = freezed,Object? role = null,Object? techStack = null,Object? platforms = null,Object? appStoreLink = freezed,Object? googlePlayLink = freezed,Object? webLink = freezed,Object? githubLink = freezed,Object? startDate = freezed,Object? endDate = freezed,}) {
-  return _then(_ProjectItem(
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? tagline = null,Object? description = null,Object? bannerUrl = null,Object? techStack = null,Object? platforms = null,Object? githubLink = freezed,Object? webLink = freezed,Object? appStoreLink = freezed,Object? googlePlayLink = freezed,}) {
+  return _then(PersonalProject(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,tagline: null == tagline ? _self.tagline : tagline // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,bannerUrl: null == bannerUrl ? _self.bannerUrl : bannerUrl // ignore: cast_nullable_to_non_nullable
-as String,isPersonalProject: null == isPersonalProject ? _self.isPersonalProject : isPersonalProject // ignore: cast_nullable_to_non_nullable
-as bool,companyName: freezed == companyName ? _self.companyName : companyName // ignore: cast_nullable_to_non_nullable
-as String?,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
 as String,techStack: null == techStack ? _self._techStack : techStack // ignore: cast_nullable_to_non_nullable
 as List<String>,platforms: null == platforms ? _self._platforms : platforms // ignore: cast_nullable_to_non_nullable
-as List<String>,appStoreLink: freezed == appStoreLink ? _self.appStoreLink : appStoreLink // ignore: cast_nullable_to_non_nullable
-as String?,googlePlayLink: freezed == googlePlayLink ? _self.googlePlayLink : googlePlayLink // ignore: cast_nullable_to_non_nullable
+as List<String>,githubLink: freezed == githubLink ? _self.githubLink : githubLink // ignore: cast_nullable_to_non_nullable
 as String?,webLink: freezed == webLink ? _self.webLink : webLink // ignore: cast_nullable_to_non_nullable
-as String?,githubLink: freezed == githubLink ? _self.githubLink : githubLink // ignore: cast_nullable_to_non_nullable
-as String?,startDate: freezed == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
-as DateTime?,endDate: freezed == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as String?,appStoreLink: freezed == appStoreLink ? _self.appStoreLink : appStoreLink // ignore: cast_nullable_to_non_nullable
+as String?,googlePlayLink: freezed == googlePlayLink ? _self.googlePlayLink : googlePlayLink // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class WorkProject extends ProjectItem {
+  const WorkProject({required this.id, required this.title, required this.tagline, required this.description, required this.bannerUrl, required final  List<String> techStack, final  List<String> platforms = const [], required this.companyName, required this.role, this.appStoreLink, this.googlePlayLink, final  String? $type}): _techStack = techStack,_platforms = platforms,$type = $type ?? 'work',super._();
+  factory WorkProject.fromJson(Map<String, dynamic> json) => _$WorkProjectFromJson(json);
+
+@override final  String id;
+@override final  String title;
+@override final  String tagline;
+@override final  String description;
+@override final  String bannerUrl;
+ final  List<String> _techStack;
+@override List<String> get techStack {
+  if (_techStack is EqualUnmodifiableListView) return _techStack;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_techStack);
+}
+
+ final  List<String> _platforms;
+@override@JsonKey() List<String> get platforms {
+  if (_platforms is EqualUnmodifiableListView) return _platforms;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_platforms);
+}
+
+// Đặc thù Work
+ final  String companyName;
+ final  String role;
+// e.g., Senior Mobile Dev
+@override final  String? appStoreLink;
+@override final  String? googlePlayLink;
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+/// Create a copy of ProjectItem
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$WorkProjectCopyWith<WorkProject> get copyWith => _$WorkProjectCopyWithImpl<WorkProject>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$WorkProjectToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is WorkProject&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.tagline, tagline) || other.tagline == tagline)&&(identical(other.description, description) || other.description == description)&&(identical(other.bannerUrl, bannerUrl) || other.bannerUrl == bannerUrl)&&const DeepCollectionEquality().equals(other._techStack, _techStack)&&const DeepCollectionEquality().equals(other._platforms, _platforms)&&(identical(other.companyName, companyName) || other.companyName == companyName)&&(identical(other.role, role) || other.role == role)&&(identical(other.appStoreLink, appStoreLink) || other.appStoreLink == appStoreLink)&&(identical(other.googlePlayLink, googlePlayLink) || other.googlePlayLink == googlePlayLink));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,title,tagline,description,bannerUrl,const DeepCollectionEquality().hash(_techStack),const DeepCollectionEquality().hash(_platforms),companyName,role,appStoreLink,googlePlayLink);
+
+@override
+String toString() {
+  return 'ProjectItem.work(id: $id, title: $title, tagline: $tagline, description: $description, bannerUrl: $bannerUrl, techStack: $techStack, platforms: $platforms, companyName: $companyName, role: $role, appStoreLink: $appStoreLink, googlePlayLink: $googlePlayLink)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $WorkProjectCopyWith<$Res> implements $ProjectItemCopyWith<$Res> {
+  factory $WorkProjectCopyWith(WorkProject value, $Res Function(WorkProject) _then) = _$WorkProjectCopyWithImpl;
+@override @useResult
+$Res call({
+ String id, String title, String tagline, String description, String bannerUrl, List<String> techStack, List<String> platforms, String companyName, String role, String? appStoreLink, String? googlePlayLink
+});
+
+
+
+
+}
+/// @nodoc
+class _$WorkProjectCopyWithImpl<$Res>
+    implements $WorkProjectCopyWith<$Res> {
+  _$WorkProjectCopyWithImpl(this._self, this._then);
+
+  final WorkProject _self;
+  final $Res Function(WorkProject) _then;
+
+/// Create a copy of ProjectItem
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? tagline = null,Object? description = null,Object? bannerUrl = null,Object? techStack = null,Object? platforms = null,Object? companyName = null,Object? role = null,Object? appStoreLink = freezed,Object? googlePlayLink = freezed,}) {
+  return _then(WorkProject(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,tagline: null == tagline ? _self.tagline : tagline // ignore: cast_nullable_to_non_nullable
+as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String,bannerUrl: null == bannerUrl ? _self.bannerUrl : bannerUrl // ignore: cast_nullable_to_non_nullable
+as String,techStack: null == techStack ? _self._techStack : techStack // ignore: cast_nullable_to_non_nullable
+as List<String>,platforms: null == platforms ? _self._platforms : platforms // ignore: cast_nullable_to_non_nullable
+as List<String>,companyName: null == companyName ? _self.companyName : companyName // ignore: cast_nullable_to_non_nullable
+as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
+as String,appStoreLink: freezed == appStoreLink ? _self.appStoreLink : appStoreLink // ignore: cast_nullable_to_non_nullable
+as String?,googlePlayLink: freezed == googlePlayLink ? _self.googlePlayLink : googlePlayLink // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

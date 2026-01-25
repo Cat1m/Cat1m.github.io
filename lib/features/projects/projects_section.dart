@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:my_portfolio/features/projects/models/project_item.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../../core/ui/ui.dart';
+import 'package:my_portfolio/core/ui/extensions/context_extension.dart';
+import 'package:my_portfolio/core/ui/theme/app_dimens.dart';
+import 'package:my_portfolio/core/ui/widgets/app_button.dart'; // Đảm bảo import AppButton cũ của bạn
+import 'package:my_portfolio/features/projects/models/project_item.dart';
+import 'package:my_portfolio/features/projects/project_card.dart';
 
 class ProjectsSection extends StatelessWidget {
   final List<ProjectItem> projects;
@@ -10,6 +13,16 @@ class ProjectsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final workProjects = projects.whereType<WorkProject>().toList();
+    final personalProjects = projects.whereType<PersonalProject>().toList();
+
+    // LOGIC DISPLAY:
+    // 1. Work: Chỉ lấy 2 cái mới nhất để hiện
+    final displayWork = workProjects.take(2).toList();
+
+    // 2. Personal: Chỉ lấy 3 cái "tự tin nhất" để hiện
+    final displayPersonal = personalProjects.take(3).toList();
+
     return Container(
       color: context.colors.background,
       padding: const EdgeInsets.symmetric(
@@ -17,56 +30,117 @@ class ProjectsSection extends StatelessWidget {
         horizontal: AppDimens.s24,
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Open Source & Works",
-            style: context.text.h2.copyWith(color: context.colors.textPrimary),
-          ),
-          const SizedBox(height: AppDimens.s48),
+          // ========================================================
+          // PART 1: WORK EXPERIENCE
+          // ========================================================
+          if (workProjects.isNotEmpty) ...[
+            Text(
+              "Projects",
+              style: context.text.h2.copyWith(
+                color: context.colors.textPrimary,
+              ),
+            ),
+            const SizedBox(height: AppDimens.s8),
+            Text(
+              "Professional projects I've contributed to in companies.",
+              style: context.text.body1.copyWith(
+                color: context.colors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: AppDimens.s32),
 
-          LayoutBuilder(
-            builder: (context, constraints) {
-              int crossAxisCount = 1;
-              // VN: Tinh chỉnh lại tỷ lệ khung hình (Aspect Ratio)
-              // Số càng LỚN thì card càng LÙN (Bè ngang)
-              double ratio = 1.6;
+            // Render List (Giới hạn hiển thị 2 item)
+            ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: displayWork.length,
+              separatorBuilder: (context, index) =>
+                  const SizedBox(height: AppDimens.s16),
+              itemBuilder: (context, index) =>
+                  ProjectCard(project: displayWork[index]),
+            ),
 
-              if (constraints.maxWidth > 1100) {
-                crossAxisCount = 3;
-                ratio = 1.8; // Desktop: Card rất dẹt
-              } else if (constraints.maxWidth > 700) {
-                crossAxisCount = 2;
-                ratio = 1.7; // Tablet: Card vừa phải
-              } else {
-                // Mobile: 1 Cột
-                ratio = 1.8; // Mobile cũng cần gọn lại
-              }
-
-              return GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: projects.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: crossAxisCount,
-                  crossAxisSpacing: AppDimens.s24,
-                  mainAxisSpacing: AppDimens.s24,
-                  childAspectRatio: ratio, // Áp dụng tỷ lệ mới
+            // Nút More: Chỉ hiện khi thực tế có nhiều hơn 2 dự án
+            if (workProjects.length > 2) ...[
+              const SizedBox(height: AppDimens.s32),
+              Center(
+                child: AppButton(
+                  text: "VIEW FULL RESUME", // Hoặc Link đến LinkedIn
+                  isExpanded: false,
+                  onPressed: () =>
+                      _launchUrl("https://www.linkedin.com/in/cat1m/"),
                 ),
-                itemBuilder: (context, index) {
-                  return _GithubStyleProjectCard(project: projects[index]);
-                },
-              );
-            },
-          ),
+              ),
+            ],
 
-          const SizedBox(height: AppDimens.s48),
+            const SizedBox(height: AppDimens.s64),
+          ],
 
-          AppButton(
-            text: "MORE PROJECTS",
-            isExpanded: false,
-            onPressed: () => _launchUrl("https://github.com/Cat1m"),
-          ),
+          // ========================================================
+          // PART 2: OPEN SOURCE & PERSONAL
+          // ========================================================
+          if (personalProjects.isNotEmpty) ...[
+            Text(
+              "Open Source & Personal",
+              style: context.text.h2.copyWith(
+                color: context.colors.textPrimary,
+              ),
+            ),
+            const SizedBox(height: AppDimens.s8),
+            Text(
+              "Playground where I experiment with new technologies.",
+              style: context.text.body1.copyWith(
+                color: context.colors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: AppDimens.s32),
+
+            LayoutBuilder(
+              builder: (context, constraints) {
+                int crossAxisCount = 1;
+                // Ratio ép dẹt card (hình chữ nhật) cho Desktop
+                double ratio = 2.2;
+
+                if (constraints.maxWidth > 1100) {
+                  crossAxisCount = 3;
+                  ratio = 3.0; // Desktop: Card rất dẹt
+                } else if (constraints.maxWidth > 700) {
+                  crossAxisCount = 2;
+                  ratio = 2.4;
+                } else {
+                  crossAxisCount = 1;
+                  ratio = 2.2;
+                }
+
+                return GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: displayPersonal.length, // Chỉ render 3 items
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    crossAxisSpacing: AppDimens.s24,
+                    mainAxisSpacing: AppDimens.s24,
+                    childAspectRatio: ratio,
+                  ),
+                  itemBuilder: (context, index) {
+                    return ProjectCard(project: displayPersonal[index]);
+                  },
+                );
+              },
+            ),
+
+            // Nút More: LUÔN LUÔN HIỆN để điều hướng về GitHub
+            const SizedBox(height: AppDimens.s48),
+            Center(
+              child: AppButton(
+                text: "MORE PROJECTS",
+                isExpanded: false,
+                onPressed: () => _launchUrl("https://github.com/Cat1m"),
+              ),
+            ),
+          ],
         ],
       ),
     );
@@ -75,172 +149,5 @@ class ProjectsSection extends StatelessWidget {
   Future<void> _launchUrl(String url) async {
     final uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) await launchUrl(uri);
-  }
-}
-
-class _GithubStyleProjectCard extends StatelessWidget {
-  final ProjectItem project;
-
-  const _GithubStyleProjectCard({required this.project});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      // VN: Giảm padding từ s24 xuống s20 cho gọn
-      padding: const EdgeInsets.all(AppDimens.s20),
-      decoration: BoxDecoration(
-        color: context.colors.surface,
-        borderRadius: BorderRadius.circular(AppDimens.r8),
-        border: Border.all(color: context.colors.border),
-        boxShadow: [
-          BoxShadow(
-            color: context.colors.textPrimary.withOpacity(0.02),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // --- HEADER ---
-          Row(
-            children: [
-              Icon(
-                project.isPersonalProject
-                    ? Icons.book_outlined
-                    : Icons.business_center_outlined,
-                size: AppDimens.icM,
-                color: context.colors.textPrimary,
-              ),
-              const SizedBox(width: AppDimens.s12),
-              Expanded(
-                child: Text(
-                  project.title,
-                  style: context.text.h3.copyWith(
-                    fontSize: 16,
-                  ), // Giảm font title xíu
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: AppDimens.s12), // Giảm khoảng cách
-          // --- BODY ---
-          Expanded(
-            child: Text(
-              project.description,
-              style: context.text.body2.copyWith(
-                color: context.colors.textSecondary,
-                height: 1.4, // Giảm line-height
-                fontSize: 13, // Giảm font size body
-              ),
-              maxLines: 3, // VN: Giảm xuống 3 dòng tối đa thôi
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-
-          const SizedBox(height: AppDimens.s12), // Giảm khoảng cách
-          // --- FOOTER ---
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Tech Stack
-              if (project.techStack.isNotEmpty)
-                Row(
-                  children: [
-                    Container(
-                      width: 10,
-                      height: 10, // Dot nhỏ lại
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: _getTechColor(project.techStack.first),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      project.techStack.first,
-                      style: context.text.caption.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: context.colors.textSecondary,
-                        fontSize: 11, // Font nhỏ lại
-                      ),
-                    ),
-                    if (project.techStack.length > 1)
-                      Text(
-                        " +${project.techStack.length - 1}",
-                        style: context.text.caption.copyWith(fontSize: 11),
-                      ),
-                  ],
-                ),
-
-              // Links
-              Row(
-                children: [
-                  if (project.githubLink != null)
-                    _SmallIconLink(url: project.githubLink!, icon: Icons.code),
-
-                  if (project.webLink != null ||
-                      project.googlePlayLink != null ||
-                      project.appStoreLink != null)
-                    _SmallIconLink(
-                      url:
-                          project.webLink ??
-                          project.googlePlayLink ??
-                          project.appStoreLink ??
-                          "",
-                      icon: Icons.open_in_new,
-                    ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Color _getTechColor(String tech) {
-    switch (tech.toLowerCase()) {
-      case 'flutter':
-        return Colors.blue;
-      case 'dart':
-        return Colors.teal;
-      case 'firebase':
-        return Colors.orange;
-      case 'swift':
-        return Colors.red;
-      case 'kotlin':
-        return Colors.purple;
-      default:
-        return Colors.yellow[700]!;
-    }
-  }
-}
-
-class _SmallIconLink extends StatelessWidget {
-  final String url;
-  final IconData icon;
-
-  const _SmallIconLink({required this.url, required this.icon});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 10), // Giảm padding nút
-      child: InkWell(
-        onTap: () async {
-          final uri = Uri.parse(url);
-          if (await canLaunchUrl(uri)) await launchUrl(uri);
-        },
-        child: Icon(
-          icon,
-          size: 18, // Icon nhỏ lại
-          color: context.colors.textSecondary,
-        ),
-      ),
-    );
   }
 }
