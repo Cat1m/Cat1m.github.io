@@ -79,6 +79,7 @@ flutter:
   assets:
     - assets/images/ # folder chứa avatar
     - assets/animations/ # folder chứa lottie
+    - assets/svg/ # folder chứa svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

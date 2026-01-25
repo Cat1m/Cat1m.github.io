@@ -14,16 +14,7 @@ class PortfolioRepository implements IPortfolioRepository {
     await Future.delayed(const Duration(milliseconds: 500));
 
     return {
-      'projects': [
-        const ProjectItem(
-          title: "E-Commerce App",
-          description: "A full-featured shopping app.",
-          techStack: ["Flutter", "Bloc", "Firebase"],
-        ),
-        // ... thêm project mẫu
-      ],
       'experiences': [
-        // ... thêm experience mẫu
         const ExperienceItem(
           role: "Senior Flutter Dev",
           company: "Tech Corp",

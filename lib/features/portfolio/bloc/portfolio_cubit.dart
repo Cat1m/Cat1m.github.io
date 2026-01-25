@@ -4,6 +4,8 @@ import 'package:my_portfolio/features/about/models/profile_info.dart';
 import 'package:my_portfolio/features/about/profile_repository.dart';
 import 'package:my_portfolio/features/portfolio/portfolio_models/portfolio_models.dart';
 import 'package:my_portfolio/features/portfolio/repositories/portfolio_repository.dart';
+import 'package:my_portfolio/features/projects/models/project_item.dart';
+import 'package:my_portfolio/features/projects/repositories/project_repository.dart';
 import '../../../core/services/exception_handler_service.dart';
 
 import 'portfolio_state.dart';
@@ -13,10 +15,15 @@ class PortfolioCubit extends Cubit<PortfolioState> {
   // Inject cả 2 Repository vào
   final IPortfolioRepository _portfolioRepo;
   final IProfileRepository _profileRepo;
+  final IProjectRepository _projectRepo;
   final ExceptionHandlerService _exceptionHandler;
 
-  PortfolioCubit(this._portfolioRepo, this._profileRepo, this._exceptionHandler)
-    : super(PortfolioInitial());
+  PortfolioCubit(
+    this._portfolioRepo,
+    this._profileRepo,
+    this._projectRepo,
+    this._exceptionHandler,
+  ) : super(PortfolioInitial());
 
   Future<void> loadPortfolio() async {
     emit(PortfolioLoading());
@@ -24,16 +31,18 @@ class PortfolioCubit extends Cubit<PortfolioState> {
       // VN: Gọi song song 2 API để tiết kiệm thời gian
       final results = await Future.wait([
         _profileRepo.getProfile(),
+        _projectRepo.getProjects(),
         _portfolioRepo.getOtherData(),
       ]);
 
       final profile = results[0] as ProfileInfo;
-      final otherData = results[1] as Map<String, dynamic>;
+      final projects = results[1] as List<ProjectItem>;
+      final otherData = results[2] as Map<String, dynamic>;
 
       // Ghép data lại vào Model tổng
       final fullData = PortfolioData(
         profile: profile,
-        projects: otherData['projects'] as List<ProjectItem>,
+        projects: projects,
         experiences: otherData['experiences'] as List<ExperienceItem>,
         skills: otherData['skills'] as List<SkillItem>,
       );

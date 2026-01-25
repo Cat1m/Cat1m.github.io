@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:my_portfolio/features/about/models/profile_info.dart';
+import 'package:my_portfolio/features/projects/models/project_item.dart';
 
 part 'portfolio_models.freezed.dart';
 
@@ -26,16 +27,6 @@ abstract class PortfolioData with _$PortfolioData {
     required List<ExperienceItem> experiences,
     required List<SkillItem> skills,
   }) = _PortfolioData;
-}
-
-@freezed
-abstract class ProjectItem with _$ProjectItem {
-  const factory ProjectItem({
-    required String title,
-    required String description,
-    required List<String> techStack,
-    String? link,
-  }) = _ProjectItem;
 }
 
 // Bạn có thể thêm ExperienceItem, SkillItem tương tự...

@@ -1,6 +1,7 @@
 import 'dart:ui'; // Cần để dùng ImageFilter
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart'; // Import Lottie
 import 'package:my_portfolio/features/portfolio/portfolio_models/portfolio_models.dart';
 import '../../../../core/ui/ui.dart';
@@ -24,7 +25,7 @@ class PortfolioHeader extends StatelessWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
-          height: 70,
+          //height: 100,
           padding: const EdgeInsets.symmetric(
             horizontal: AppDimens.s24,
           ), // Dùng Dimens
@@ -75,10 +76,15 @@ class _DesktopHeaderContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
-          "MyPortfolio",
-          style: context.text.h2.copyWith(color: context.colors.primary),
+        // --- VN: THAY THẾ TEXT CŨ BẰNG SVG ---
+        SvgPicture.asset(
+          'assets/svg/logo.svg', // Đường dẫn file SVG của bạn
+          colorFilter: ColorFilter.mode(
+            context.colors.primary,
+            BlendMode.srcIn,
+          ),
         ),
+        // -------------------------------------
         const Spacer(),
 
         // Menu Items Loop
@@ -137,10 +143,15 @@ class _MobileHeaderContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Text(
-          "MyPortfolio",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        // --- VN: THAY THẾ TEXT CŨ BẰNG SVG ---
+        SvgPicture.asset(
+          'assets/svg/logo.svg',
+          colorFilter: ColorFilter.mode(
+            context.colors.primary, // Đồng bộ màu với Desktop
+            BlendMode.srcIn,
+          ),
         ),
+        // -------------------------------------
         const Spacer(),
 
         // 1. Theme Lottie Button (Mobile cũng dùng được luôn)
