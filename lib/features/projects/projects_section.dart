@@ -33,53 +33,7 @@ class ProjectsSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // ========================================================
-          // PART 1: WORK EXPERIENCE
-          // ========================================================
-          if (workProjects.isNotEmpty) ...[
-            Text(
-              "Projects",
-              style: context.text.h2.copyWith(
-                color: context.colors.textPrimary,
-              ),
-            ),
-            const SizedBox(height: AppDimens.s8),
-            Text(
-              "Professional projects I've contributed to in companies.",
-              style: context.text.body1.copyWith(
-                color: context.colors.textSecondary,
-              ),
-            ),
-            const SizedBox(height: AppDimens.s32),
-
-            // Render List (Giới hạn hiển thị 2 item)
-            ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: displayWork.length,
-              separatorBuilder: (context, index) =>
-                  const SizedBox(height: AppDimens.s16),
-              itemBuilder: (context, index) =>
-                  ProjectCard(project: displayWork[index]),
-            ),
-
-            // Nút More: Chỉ hiện khi thực tế có nhiều hơn 2 dự án
-            if (workProjects.length > 2) ...[
-              const SizedBox(height: AppDimens.s32),
-              Center(
-                child: AppButton(
-                  text: "VIEW FULL RESUME", // Hoặc Link đến LinkedIn
-                  isExpanded: false,
-                  onPressed: () =>
-                      _launchUrl("https://www.linkedin.com/in/cat1m/"),
-                ),
-              ),
-            ],
-
-            const SizedBox(height: AppDimens.s64),
-          ],
-
-          // ========================================================
-          // PART 2: OPEN SOURCE & PERSONAL
+          // PART 1: OPEN SOURCE & PERSONAL
           // ========================================================
           if (personalProjects.isNotEmpty) ...[
             Text(
@@ -140,6 +94,50 @@ class ProjectsSection extends StatelessWidget {
                 onPressed: () => _launchUrl("https://github.com/Cat1m"),
               ),
             ),
+
+            // ========================================================
+            // PART 2: WORK EXPERIENCE
+            // ========================================================
+            if (workProjects.isNotEmpty) ...[
+              Text(
+                "Projects",
+                style: context.text.h2.copyWith(
+                  color: context.colors.textPrimary,
+                ),
+              ),
+              const SizedBox(height: AppDimens.s8),
+              Text(
+                "Professional projects I've contributed to in companies.",
+                style: context.text.body1.copyWith(
+                  color: context.colors.textSecondary,
+                ),
+              ),
+              const SizedBox(height: AppDimens.s32),
+
+              // Render List (Giới hạn hiển thị 2 item)
+              ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: displayWork.length,
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: AppDimens.s16),
+                itemBuilder: (context, index) =>
+                    ProjectCard(project: displayWork[index]),
+              ),
+
+              // Nút More: Chỉ hiện khi thực tế có nhiều hơn 2 dự án
+              if (workProjects.length > 2) ...[
+                const SizedBox(height: AppDimens.s32),
+                Center(
+                  child: AppButton(
+                    text: "VIEW FULL RESUME", // Hoặc Link đến LinkedIn
+                    isExpanded: false,
+                    onPressed: () =>
+                        _launchUrl("https://www.linkedin.com/in/cat1m/"),
+                  ),
+                ),
+              ],
+            ],
           ],
         ],
       ),

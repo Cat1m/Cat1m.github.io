@@ -14,13 +14,6 @@ class PortfolioRepository implements IPortfolioRepository {
     await Future.delayed(const Duration(milliseconds: 500));
 
     return {
-      'experiences': [
-        const ExperienceItem(
-          role: "Senior Flutter Dev",
-          company: "Tech Corp",
-          duration: "2023 - Present",
-        ),
-      ],
       'skills': [
         const SkillItem(name: "Dart"),
         const SkillItem(name: "Flutter"),

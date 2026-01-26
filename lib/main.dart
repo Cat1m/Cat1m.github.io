@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           return switch (state) {
             AppCoreSettings settings => MaterialApp(
-              title: 'My Portfolio',
+              title: '<Minh Chien />',
               debugShowCheckedModeBanner: false,
               theme: AppTheme.light(),
               darkTheme: AppTheme.dark(),

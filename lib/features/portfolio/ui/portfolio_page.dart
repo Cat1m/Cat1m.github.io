@@ -10,8 +10,8 @@ import 'package:my_portfolio/features/projects/projects_section.dart';
 import 'package:my_portfolio/features/skills/skills_section.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../../../core/di/injection.dart';
-import '../bloc/portfolio_cubit.dart';
-import '../bloc/portfolio_state.dart';
+import '../cubit/portfolio_cubit.dart';
+import '../cubit/portfolio_state.dart';
 import 'widgets/portfolio_header.dart';
 
 class PortfolioPage extends StatelessWidget {
@@ -141,22 +141,34 @@ class _PortfolioViewState extends State<PortfolioView> {
               child: Text("Failed to load portfolio"),
             ),
             PortfolioLoaded(data: var data, activeSection: var activeSection) =>
-              Column(
+              // VN: Đổi từ Column sang Stack
+              Stack(
                 children: [
-                  PortfolioHeader(
-                    activeSection: activeSection,
-                    onMenuClick: (section) => _scrollToSection(section.index),
-                  ),
-                  Expanded(
+                  // 1. CONTENT (Nằm dưới)
+                  Positioned.fill(
                     child: ScrollablePositionedList.builder(
                       itemCount: PortfolioSection.values.length,
                       itemScrollController: _itemScrollController,
                       itemPositionsListener: _itemPositionsListener,
+                      // VN: Thêm padding bottom để nội dung cuối không bị che nếu cần
+                      padding: const EdgeInsets.only(bottom: 80),
                       itemBuilder: (context, index) {
-                        final section = PortfolioSection.values[index];
-                        // VN: Gọi hàm builder đã tách
-                        return _buildSection(section, data);
+                        return _buildSection(
+                          PortfolioSection.values[index],
+                          data,
+                        );
                       },
+                    ),
+                  ),
+
+                  // 2. HEADER (Nằm trên cùng - Floating)
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: PortfolioHeader(
+                      activeSection: activeSection,
+                      onMenuClick: (section) => _scrollToSection(section.index),
                     ),
                   ),
                 ],

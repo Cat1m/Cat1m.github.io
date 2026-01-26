@@ -67,7 +67,7 @@ class ProjectRepository implements IProjectRepository {
         appStoreLink:
             'https://apps.apple.com/us/app/cana-hospitality/id6752832098',
         googlePlayLink:
-            'https://play.google.com/store/apps/details?id=com.smart.bms',
+            'https://play.google.com/store/apps/details?id=hungduy.com.vn.hungduy_service',
       ),
 
       // =======================================================================
