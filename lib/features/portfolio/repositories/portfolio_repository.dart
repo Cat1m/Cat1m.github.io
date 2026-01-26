@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:my_portfolio/features/portfolio/portfolio_models/portfolio_models.dart';
+import 'package:my_portfolio/features/skills/models/skill_item.dart';
 
 abstract class IPortfolioRepository {
   // Hàm này trả về phần còn lại của PortfolioData (trừ Profile)
@@ -13,12 +13,6 @@ class PortfolioRepository implements IPortfolioRepository {
   Future<Map<String, dynamic>> getOtherData() async {
     await Future.delayed(const Duration(milliseconds: 500));
 
-    return {
-      'skills': [
-        const SkillItem(name: "Dart"),
-        const SkillItem(name: "Flutter"),
-        const SkillItem(name: "Clean Arch"),
-      ],
-    };
+    return {};
   }
 }

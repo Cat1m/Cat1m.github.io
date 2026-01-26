@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PortfolioData {
 
- ProfileInfo get profile; List<ProjectItem> get projects; List<ExperienceItem> get experiences; List<SkillItem> get skills;
+ ProfileInfo get profile; List<ProjectItem> get projects; List<ExperienceItem> get experiences; List<SkillItem> get skills; List<EducationItem> get educations; List<CertificateItem> get certificates;
 /// Create a copy of PortfolioData
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $PortfolioDataCopyWith<PortfolioData> get copyWith => _$PortfolioDataCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PortfolioData&&(identical(other.profile, profile) || other.profile == profile)&&const DeepCollectionEquality().equals(other.projects, projects)&&const DeepCollectionEquality().equals(other.experiences, experiences)&&const DeepCollectionEquality().equals(other.skills, skills));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PortfolioData&&(identical(other.profile, profile) || other.profile == profile)&&const DeepCollectionEquality().equals(other.projects, projects)&&const DeepCollectionEquality().equals(other.experiences, experiences)&&const DeepCollectionEquality().equals(other.skills, skills)&&const DeepCollectionEquality().equals(other.educations, educations)&&const DeepCollectionEquality().equals(other.certificates, certificates));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,profile,const DeepCollectionEquality().hash(projects),const DeepCollectionEquality().hash(experiences),const DeepCollectionEquality().hash(skills));
+int get hashCode => Object.hash(runtimeType,profile,const DeepCollectionEquality().hash(projects),const DeepCollectionEquality().hash(experiences),const DeepCollectionEquality().hash(skills),const DeepCollectionEquality().hash(educations),const DeepCollectionEquality().hash(certificates));
 
 @override
 String toString() {
-  return 'PortfolioData(profile: $profile, projects: $projects, experiences: $experiences, skills: $skills)';
+  return 'PortfolioData(profile: $profile, projects: $projects, experiences: $experiences, skills: $skills, educations: $educations, certificates: $certificates)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $PortfolioDataCopyWith<$Res>  {
   factory $PortfolioDataCopyWith(PortfolioData value, $Res Function(PortfolioData) _then) = _$PortfolioDataCopyWithImpl;
 @useResult
 $Res call({
- ProfileInfo profile, List<ProjectItem> projects, List<ExperienceItem> experiences, List<SkillItem> skills
+ ProfileInfo profile, List<ProjectItem> projects, List<ExperienceItem> experiences, List<SkillItem> skills, List<EducationItem> educations, List<CertificateItem> certificates
 });
 
 
@@ -62,13 +62,15 @@ class _$PortfolioDataCopyWithImpl<$Res>
 
 /// Create a copy of PortfolioData
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? profile = null,Object? projects = null,Object? experiences = null,Object? skills = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? profile = null,Object? projects = null,Object? experiences = null,Object? skills = null,Object? educations = null,Object? certificates = null,}) {
   return _then(_self.copyWith(
 profile: null == profile ? _self.profile : profile // ignore: cast_nullable_to_non_nullable
 as ProfileInfo,projects: null == projects ? _self.projects : projects // ignore: cast_nullable_to_non_nullable
 as List<ProjectItem>,experiences: null == experiences ? _self.experiences : experiences // ignore: cast_nullable_to_non_nullable
 as List<ExperienceItem>,skills: null == skills ? _self.skills : skills // ignore: cast_nullable_to_non_nullable
-as List<SkillItem>,
+as List<SkillItem>,educations: null == educations ? _self.educations : educations // ignore: cast_nullable_to_non_nullable
+as List<EducationItem>,certificates: null == certificates ? _self.certificates : certificates // ignore: cast_nullable_to_non_nullable
+as List<CertificateItem>,
   ));
 }
 /// Create a copy of PortfolioData
@@ -162,10 +164,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ProfileInfo profile,  List<ProjectItem> projects,  List<ExperienceItem> experiences,  List<SkillItem> skills)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ProfileInfo profile,  List<ProjectItem> projects,  List<ExperienceItem> experiences,  List<SkillItem> skills,  List<EducationItem> educations,  List<CertificateItem> certificates)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PortfolioData() when $default != null:
-return $default(_that.profile,_that.projects,_that.experiences,_that.skills);case _:
+return $default(_that.profile,_that.projects,_that.experiences,_that.skills,_that.educations,_that.certificates);case _:
   return orElse();
 
 }
@@ -183,10 +185,10 @@ return $default(_that.profile,_that.projects,_that.experiences,_that.skills);cas
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ProfileInfo profile,  List<ProjectItem> projects,  List<ExperienceItem> experiences,  List<SkillItem> skills)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ProfileInfo profile,  List<ProjectItem> projects,  List<ExperienceItem> experiences,  List<SkillItem> skills,  List<EducationItem> educations,  List<CertificateItem> certificates)  $default,) {final _that = this;
 switch (_that) {
 case _PortfolioData():
-return $default(_that.profile,_that.projects,_that.experiences,_that.skills);case _:
+return $default(_that.profile,_that.projects,_that.experiences,_that.skills,_that.educations,_that.certificates);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -203,10 +205,10 @@ return $default(_that.profile,_that.projects,_that.experiences,_that.skills);cas
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ProfileInfo profile,  List<ProjectItem> projects,  List<ExperienceItem> experiences,  List<SkillItem> skills)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ProfileInfo profile,  List<ProjectItem> projects,  List<ExperienceItem> experiences,  List<SkillItem> skills,  List<EducationItem> educations,  List<CertificateItem> certificates)?  $default,) {final _that = this;
 switch (_that) {
 case _PortfolioData() when $default != null:
-return $default(_that.profile,_that.projects,_that.experiences,_that.skills);case _:
+return $default(_that.profile,_that.projects,_that.experiences,_that.skills,_that.educations,_that.certificates);case _:
   return null;
 
 }
@@ -218,7 +220,7 @@ return $default(_that.profile,_that.projects,_that.experiences,_that.skills);cas
 
 
 class _PortfolioData implements PortfolioData {
-  const _PortfolioData({required this.profile, required final  List<ProjectItem> projects, required final  List<ExperienceItem> experiences, required final  List<SkillItem> skills}): _projects = projects,_experiences = experiences,_skills = skills;
+  const _PortfolioData({required this.profile, required final  List<ProjectItem> projects, required final  List<ExperienceItem> experiences, required final  List<SkillItem> skills, required final  List<EducationItem> educations, required final  List<CertificateItem> certificates}): _projects = projects,_experiences = experiences,_skills = skills,_educations = educations,_certificates = certificates;
   
 
 @override final  ProfileInfo profile;
@@ -243,6 +245,20 @@ class _PortfolioData implements PortfolioData {
   return EqualUnmodifiableListView(_skills);
 }
 
+ final  List<EducationItem> _educations;
+@override List<EducationItem> get educations {
+  if (_educations is EqualUnmodifiableListView) return _educations;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_educations);
+}
+
+ final  List<CertificateItem> _certificates;
+@override List<CertificateItem> get certificates {
+  if (_certificates is EqualUnmodifiableListView) return _certificates;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_certificates);
+}
+
 
 /// Create a copy of PortfolioData
 /// with the given fields replaced by the non-null parameter values.
@@ -254,16 +270,16 @@ _$PortfolioDataCopyWith<_PortfolioData> get copyWith => __$PortfolioDataCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PortfolioData&&(identical(other.profile, profile) || other.profile == profile)&&const DeepCollectionEquality().equals(other._projects, _projects)&&const DeepCollectionEquality().equals(other._experiences, _experiences)&&const DeepCollectionEquality().equals(other._skills, _skills));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PortfolioData&&(identical(other.profile, profile) || other.profile == profile)&&const DeepCollectionEquality().equals(other._projects, _projects)&&const DeepCollectionEquality().equals(other._experiences, _experiences)&&const DeepCollectionEquality().equals(other._skills, _skills)&&const DeepCollectionEquality().equals(other._educations, _educations)&&const DeepCollectionEquality().equals(other._certificates, _certificates));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,profile,const DeepCollectionEquality().hash(_projects),const DeepCollectionEquality().hash(_experiences),const DeepCollectionEquality().hash(_skills));
+int get hashCode => Object.hash(runtimeType,profile,const DeepCollectionEquality().hash(_projects),const DeepCollectionEquality().hash(_experiences),const DeepCollectionEquality().hash(_skills),const DeepCollectionEquality().hash(_educations),const DeepCollectionEquality().hash(_certificates));
 
 @override
 String toString() {
-  return 'PortfolioData(profile: $profile, projects: $projects, experiences: $experiences, skills: $skills)';
+  return 'PortfolioData(profile: $profile, projects: $projects, experiences: $experiences, skills: $skills, educations: $educations, certificates: $certificates)';
 }
 
 
@@ -274,7 +290,7 @@ abstract mixin class _$PortfolioDataCopyWith<$Res> implements $PortfolioDataCopy
   factory _$PortfolioDataCopyWith(_PortfolioData value, $Res Function(_PortfolioData) _then) = __$PortfolioDataCopyWithImpl;
 @override @useResult
 $Res call({
- ProfileInfo profile, List<ProjectItem> projects, List<ExperienceItem> experiences, List<SkillItem> skills
+ ProfileInfo profile, List<ProjectItem> projects, List<ExperienceItem> experiences, List<SkillItem> skills, List<EducationItem> educations, List<CertificateItem> certificates
 });
 
 
@@ -291,13 +307,15 @@ class __$PortfolioDataCopyWithImpl<$Res>
 
 /// Create a copy of PortfolioData
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? profile = null,Object? projects = null,Object? experiences = null,Object? skills = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? profile = null,Object? projects = null,Object? experiences = null,Object? skills = null,Object? educations = null,Object? certificates = null,}) {
   return _then(_PortfolioData(
 profile: null == profile ? _self.profile : profile // ignore: cast_nullable_to_non_nullable
 as ProfileInfo,projects: null == projects ? _self._projects : projects // ignore: cast_nullable_to_non_nullable
 as List<ProjectItem>,experiences: null == experiences ? _self._experiences : experiences // ignore: cast_nullable_to_non_nullable
 as List<ExperienceItem>,skills: null == skills ? _self._skills : skills // ignore: cast_nullable_to_non_nullable
-as List<SkillItem>,
+as List<SkillItem>,educations: null == educations ? _self._educations : educations // ignore: cast_nullable_to_non_nullable
+as List<EducationItem>,certificates: null == certificates ? _self._certificates : certificates // ignore: cast_nullable_to_non_nullable
+as List<CertificateItem>,
   ));
 }
 
@@ -311,263 +329,6 @@ $ProfileInfoCopyWith<$Res> get profile {
     return _then(_self.copyWith(profile: value));
   });
 }
-}
-
-/// @nodoc
-mixin _$SkillItem {
-
- String get name;
-/// Create a copy of SkillItem
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$SkillItemCopyWith<SkillItem> get copyWith => _$SkillItemCopyWithImpl<SkillItem>(this as SkillItem, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SkillItem&&(identical(other.name, name) || other.name == name));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,name);
-
-@override
-String toString() {
-  return 'SkillItem(name: $name)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $SkillItemCopyWith<$Res>  {
-  factory $SkillItemCopyWith(SkillItem value, $Res Function(SkillItem) _then) = _$SkillItemCopyWithImpl;
-@useResult
-$Res call({
- String name
-});
-
-
-
-
-}
-/// @nodoc
-class _$SkillItemCopyWithImpl<$Res>
-    implements $SkillItemCopyWith<$Res> {
-  _$SkillItemCopyWithImpl(this._self, this._then);
-
-  final SkillItem _self;
-  final $Res Function(SkillItem) _then;
-
-/// Create a copy of SkillItem
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = null,}) {
-  return _then(_self.copyWith(
-name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,
-  ));
-}
-
-}
-
-
-/// Adds pattern-matching-related methods to [SkillItem].
-extension SkillItemPatterns on SkillItem {
-/// A variant of `map` that fallback to returning `orElse`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _SkillItem value)?  $default,{required TResult orElse(),}){
-final _that = this;
-switch (_that) {
-case _SkillItem() when $default != null:
-return $default(_that);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// Callbacks receives the raw object, upcasted.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case final Subclass2 value:
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _SkillItem value)  $default,){
-final _that = this;
-switch (_that) {
-case _SkillItem():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `map` that fallback to returning `null`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _SkillItem value)?  $default,){
-final _that = this;
-switch (_that) {
-case _SkillItem() when $default != null:
-return $default(_that);case _:
-  return null;
-
-}
-}
-/// A variant of `when` that fallback to an `orElse` callback.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name)?  $default,{required TResult orElse(),}) {final _that = this;
-switch (_that) {
-case _SkillItem() when $default != null:
-return $default(_that.name);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// As opposed to `map`, this offers destructuring.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case Subclass2(:final field2):
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name)  $default,) {final _that = this;
-switch (_that) {
-case _SkillItem():
-return $default(_that.name);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `when` that fallback to returning `null`
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name)?  $default,) {final _that = this;
-switch (_that) {
-case _SkillItem() when $default != null:
-return $default(_that.name);case _:
-  return null;
-
-}
-}
-
-}
-
-/// @nodoc
-
-
-class _SkillItem implements SkillItem {
-  const _SkillItem({required this.name});
-  
-
-@override final  String name;
-
-/// Create a copy of SkillItem
-/// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$SkillItemCopyWith<_SkillItem> get copyWith => __$SkillItemCopyWithImpl<_SkillItem>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SkillItem&&(identical(other.name, name) || other.name == name));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,name);
-
-@override
-String toString() {
-  return 'SkillItem(name: $name)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class _$SkillItemCopyWith<$Res> implements $SkillItemCopyWith<$Res> {
-  factory _$SkillItemCopyWith(_SkillItem value, $Res Function(_SkillItem) _then) = __$SkillItemCopyWithImpl;
-@override @useResult
-$Res call({
- String name
-});
-
-
-
-
-}
-/// @nodoc
-class __$SkillItemCopyWithImpl<$Res>
-    implements _$SkillItemCopyWith<$Res> {
-  __$SkillItemCopyWithImpl(this._self, this._then);
-
-  final _SkillItem _self;
-  final $Res Function(_SkillItem) _then;
-
-/// Create a copy of SkillItem
-/// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = null,}) {
-  return _then(_SkillItem(
-name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,
-  ));
-}
-
-
 }
 
 // dart format on

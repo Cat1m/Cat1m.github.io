@@ -120,7 +120,11 @@ class _PortfolioViewState extends State<PortfolioView> {
       case PortfolioSection.skills:
         return SkillsSection(skills: data.skills);
       case PortfolioSection.certificates:
-        return const CertificatesSection(); // Chưa có data model, tạm thời để trống
+        // VN: Truyền cả 2 list vào section này
+        return CertificatesSection(
+          educations: data.educations,
+          certificates: data.certificates,
+        ); // Chưa có data model, tạm thời để trống
       case PortfolioSection.blogs:
         return const BlogsSection(); // Chưa có data model, tạm thời để trống
       case PortfolioSection.contact:

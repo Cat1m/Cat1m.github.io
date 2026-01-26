@@ -1,7 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:my_portfolio/features/about/models/profile_info.dart';
+import 'package:my_portfolio/features/certificates/models/certificate_item/certificate_item.dart';
+import 'package:my_portfolio/features/certificates/models/education_item/education_item.dart';
 import 'package:my_portfolio/features/experience/models/experience_item.dart';
 import 'package:my_portfolio/features/projects/models/project_item.dart';
+import 'package:my_portfolio/features/skills/models/skill_item.dart';
 
 part 'portfolio_models.freezed.dart';
 
@@ -27,10 +30,7 @@ abstract class PortfolioData with _$PortfolioData {
     required List<ProjectItem> projects,
     required List<ExperienceItem> experiences,
     required List<SkillItem> skills,
+    required List<EducationItem> educations,
+    required List<CertificateItem> certificates,
   }) = _PortfolioData;
-}
-
-@freezed
-abstract class SkillItem with _$SkillItem {
-  const factory SkillItem({required String name}) = _SkillItem;
 }
