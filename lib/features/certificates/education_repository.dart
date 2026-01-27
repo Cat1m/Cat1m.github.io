@@ -22,7 +22,7 @@ class EducationRepository implements IEducationRepository {
             'Engineer\'s Degree, Electronics and Communications Engineering',
         startTime: null, // Chiến thuật: Ẩn ngày bắt đầu
         endTime: DateTime(2023, 10), // Chỉ hiện ngày lấy bằng
-        logoUrl: 'assets/logos/vhu_logo.png',
+        logoUrl: 'assets/images/vhu_logo.png',
         achievements: [
           '3rd Prize - Robot Sumo Competition (Hardware & Logic Programming)',
           'English Proficiency: CEFR Level B1',

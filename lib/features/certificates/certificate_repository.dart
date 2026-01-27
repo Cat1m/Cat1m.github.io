@@ -16,7 +16,7 @@ class CertificateRepository implements ICertificateRepository {
         id: '1',
         name: 'Professional Cloud Architect',
         issuer: 'Google Cloud',
-        logoUrl: 'assets/logos/google_cloud.png', // Nhớ thêm ảnh
+        logoUrl: 'assets/svg/linkedin_log.svg',
         date: DateTime(2023, 8),
         credentialUrl: 'https://google.com/certification/...',
         credentialId: 'GCC-123456',
@@ -26,7 +26,7 @@ class CertificateRepository implements ICertificateRepository {
         id: '2',
         name: 'Flutter Development Bootcamp',
         issuer: 'Udemy',
-        logoUrl: 'assets/logos/udemy.png',
+        logoUrl: 'assets/svg/Udemy_logo.svg',
         date: DateTime(2022, 5),
         credentialUrl: 'https://udemy.com/certificate/...',
         skills: ['Flutter', 'Dart', 'State Management'],

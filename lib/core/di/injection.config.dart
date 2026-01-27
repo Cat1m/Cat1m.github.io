@@ -14,6 +14,7 @@ import 'package:injectable/injectable.dart' as _i526;
 
 import '../../features/about/profile_repository.dart' as _i874;
 import '../../features/app_core/bloc/app_core_cubit.dart' as _i283;
+import '../../features/blogs/blog_repository.dart' as _i620;
 import '../../features/certificates/certificate_repository.dart' as _i529;
 import '../../features/certificates/education_repository.dart' as _i953;
 import '../../features/experience/experience_repository.dart' as _i339;
@@ -34,6 +35,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i550.ExceptionHandlerService>(
       () => _i550.ExceptionHandlerService(),
     );
+    gh.lazySingleton<_i620.IBlogRepository>(() => _i620.BlogRepository());
     gh.lazySingleton<_i545.IProjectRepository>(() => _i545.ProjectRepository());
     gh.lazySingleton<_i953.IEducationRepository>(
       () => _i953.EducationRepository(),
@@ -49,11 +51,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i529.CertificateRepository(),
     );
     gh.lazySingleton<_i999.ISkillRepository>(() => _i999.SkillRepository());
-    gh.factory<_i283.AppCoreCubit>(
-      () => _i283.AppCoreCubit(
-        exceptionHandlerService: gh<_i550.ExceptionHandlerService>(),
-      ),
-    );
     gh.factory<_i117.PortfolioCubit>(
       () => _i117.PortfolioCubit(
         gh<_i244.IPortfolioRepository>(),
@@ -64,6 +61,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i953.IEducationRepository>(),
         gh<_i529.ICertificateRepository>(),
         gh<_i550.ExceptionHandlerService>(),
+        gh<_i620.IBlogRepository>(),
+      ),
+    );
+    gh.factory<_i283.AppCoreCubit>(
+      () => _i283.AppCoreCubit(
+        exceptionHandlerService: gh<_i550.ExceptionHandlerService>(),
       ),
     );
     return this;

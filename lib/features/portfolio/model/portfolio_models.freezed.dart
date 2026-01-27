@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PortfolioData {
 
- ProfileInfo get profile; List<ProjectItem> get projects; List<ExperienceItem> get experiences; List<SkillItem> get skills; List<EducationItem> get educations; List<CertificateItem> get certificates;
+ ProfileInfo get profile; List<ProjectItem> get projects; List<ExperienceItem> get experiences; List<SkillItem> get skills; List<EducationItem> get educations; List<CertificateItem> get certificates; List<BlogItem> get blogs;
 /// Create a copy of PortfolioData
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $PortfolioDataCopyWith<PortfolioData> get copyWith => _$PortfolioDataCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PortfolioData&&(identical(other.profile, profile) || other.profile == profile)&&const DeepCollectionEquality().equals(other.projects, projects)&&const DeepCollectionEquality().equals(other.experiences, experiences)&&const DeepCollectionEquality().equals(other.skills, skills)&&const DeepCollectionEquality().equals(other.educations, educations)&&const DeepCollectionEquality().equals(other.certificates, certificates));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PortfolioData&&(identical(other.profile, profile) || other.profile == profile)&&const DeepCollectionEquality().equals(other.projects, projects)&&const DeepCollectionEquality().equals(other.experiences, experiences)&&const DeepCollectionEquality().equals(other.skills, skills)&&const DeepCollectionEquality().equals(other.educations, educations)&&const DeepCollectionEquality().equals(other.certificates, certificates)&&const DeepCollectionEquality().equals(other.blogs, blogs));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,profile,const DeepCollectionEquality().hash(projects),const DeepCollectionEquality().hash(experiences),const DeepCollectionEquality().hash(skills),const DeepCollectionEquality().hash(educations),const DeepCollectionEquality().hash(certificates));
+int get hashCode => Object.hash(runtimeType,profile,const DeepCollectionEquality().hash(projects),const DeepCollectionEquality().hash(experiences),const DeepCollectionEquality().hash(skills),const DeepCollectionEquality().hash(educations),const DeepCollectionEquality().hash(certificates),const DeepCollectionEquality().hash(blogs));
 
 @override
 String toString() {
-  return 'PortfolioData(profile: $profile, projects: $projects, experiences: $experiences, skills: $skills, educations: $educations, certificates: $certificates)';
+  return 'PortfolioData(profile: $profile, projects: $projects, experiences: $experiences, skills: $skills, educations: $educations, certificates: $certificates, blogs: $blogs)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $PortfolioDataCopyWith<$Res>  {
   factory $PortfolioDataCopyWith(PortfolioData value, $Res Function(PortfolioData) _then) = _$PortfolioDataCopyWithImpl;
 @useResult
 $Res call({
- ProfileInfo profile, List<ProjectItem> projects, List<ExperienceItem> experiences, List<SkillItem> skills, List<EducationItem> educations, List<CertificateItem> certificates
+ ProfileInfo profile, List<ProjectItem> projects, List<ExperienceItem> experiences, List<SkillItem> skills, List<EducationItem> educations, List<CertificateItem> certificates, List<BlogItem> blogs
 });
 
 
@@ -62,7 +62,7 @@ class _$PortfolioDataCopyWithImpl<$Res>
 
 /// Create a copy of PortfolioData
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? profile = null,Object? projects = null,Object? experiences = null,Object? skills = null,Object? educations = null,Object? certificates = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? profile = null,Object? projects = null,Object? experiences = null,Object? skills = null,Object? educations = null,Object? certificates = null,Object? blogs = null,}) {
   return _then(_self.copyWith(
 profile: null == profile ? _self.profile : profile // ignore: cast_nullable_to_non_nullable
 as ProfileInfo,projects: null == projects ? _self.projects : projects // ignore: cast_nullable_to_non_nullable
@@ -70,7 +70,8 @@ as List<ProjectItem>,experiences: null == experiences ? _self.experiences : expe
 as List<ExperienceItem>,skills: null == skills ? _self.skills : skills // ignore: cast_nullable_to_non_nullable
 as List<SkillItem>,educations: null == educations ? _self.educations : educations // ignore: cast_nullable_to_non_nullable
 as List<EducationItem>,certificates: null == certificates ? _self.certificates : certificates // ignore: cast_nullable_to_non_nullable
-as List<CertificateItem>,
+as List<CertificateItem>,blogs: null == blogs ? _self.blogs : blogs // ignore: cast_nullable_to_non_nullable
+as List<BlogItem>,
   ));
 }
 /// Create a copy of PortfolioData
@@ -164,10 +165,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ProfileInfo profile,  List<ProjectItem> projects,  List<ExperienceItem> experiences,  List<SkillItem> skills,  List<EducationItem> educations,  List<CertificateItem> certificates)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ProfileInfo profile,  List<ProjectItem> projects,  List<ExperienceItem> experiences,  List<SkillItem> skills,  List<EducationItem> educations,  List<CertificateItem> certificates,  List<BlogItem> blogs)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PortfolioData() when $default != null:
-return $default(_that.profile,_that.projects,_that.experiences,_that.skills,_that.educations,_that.certificates);case _:
+return $default(_that.profile,_that.projects,_that.experiences,_that.skills,_that.educations,_that.certificates,_that.blogs);case _:
   return orElse();
 
 }
@@ -185,10 +186,10 @@ return $default(_that.profile,_that.projects,_that.experiences,_that.skills,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ProfileInfo profile,  List<ProjectItem> projects,  List<ExperienceItem> experiences,  List<SkillItem> skills,  List<EducationItem> educations,  List<CertificateItem> certificates)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ProfileInfo profile,  List<ProjectItem> projects,  List<ExperienceItem> experiences,  List<SkillItem> skills,  List<EducationItem> educations,  List<CertificateItem> certificates,  List<BlogItem> blogs)  $default,) {final _that = this;
 switch (_that) {
 case _PortfolioData():
-return $default(_that.profile,_that.projects,_that.experiences,_that.skills,_that.educations,_that.certificates);case _:
+return $default(_that.profile,_that.projects,_that.experiences,_that.skills,_that.educations,_that.certificates,_that.blogs);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -205,10 +206,10 @@ return $default(_that.profile,_that.projects,_that.experiences,_that.skills,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ProfileInfo profile,  List<ProjectItem> projects,  List<ExperienceItem> experiences,  List<SkillItem> skills,  List<EducationItem> educations,  List<CertificateItem> certificates)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ProfileInfo profile,  List<ProjectItem> projects,  List<ExperienceItem> experiences,  List<SkillItem> skills,  List<EducationItem> educations,  List<CertificateItem> certificates,  List<BlogItem> blogs)?  $default,) {final _that = this;
 switch (_that) {
 case _PortfolioData() when $default != null:
-return $default(_that.profile,_that.projects,_that.experiences,_that.skills,_that.educations,_that.certificates);case _:
+return $default(_that.profile,_that.projects,_that.experiences,_that.skills,_that.educations,_that.certificates,_that.blogs);case _:
   return null;
 
 }
@@ -220,7 +221,7 @@ return $default(_that.profile,_that.projects,_that.experiences,_that.skills,_tha
 
 
 class _PortfolioData implements PortfolioData {
-  const _PortfolioData({required this.profile, required final  List<ProjectItem> projects, required final  List<ExperienceItem> experiences, required final  List<SkillItem> skills, required final  List<EducationItem> educations, required final  List<CertificateItem> certificates}): _projects = projects,_experiences = experiences,_skills = skills,_educations = educations,_certificates = certificates;
+  const _PortfolioData({required this.profile, required final  List<ProjectItem> projects, required final  List<ExperienceItem> experiences, required final  List<SkillItem> skills, required final  List<EducationItem> educations, required final  List<CertificateItem> certificates, required final  List<BlogItem> blogs}): _projects = projects,_experiences = experiences,_skills = skills,_educations = educations,_certificates = certificates,_blogs = blogs;
   
 
 @override final  ProfileInfo profile;
@@ -259,6 +260,13 @@ class _PortfolioData implements PortfolioData {
   return EqualUnmodifiableListView(_certificates);
 }
 
+ final  List<BlogItem> _blogs;
+@override List<BlogItem> get blogs {
+  if (_blogs is EqualUnmodifiableListView) return _blogs;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_blogs);
+}
+
 
 /// Create a copy of PortfolioData
 /// with the given fields replaced by the non-null parameter values.
@@ -270,16 +278,16 @@ _$PortfolioDataCopyWith<_PortfolioData> get copyWith => __$PortfolioDataCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PortfolioData&&(identical(other.profile, profile) || other.profile == profile)&&const DeepCollectionEquality().equals(other._projects, _projects)&&const DeepCollectionEquality().equals(other._experiences, _experiences)&&const DeepCollectionEquality().equals(other._skills, _skills)&&const DeepCollectionEquality().equals(other._educations, _educations)&&const DeepCollectionEquality().equals(other._certificates, _certificates));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PortfolioData&&(identical(other.profile, profile) || other.profile == profile)&&const DeepCollectionEquality().equals(other._projects, _projects)&&const DeepCollectionEquality().equals(other._experiences, _experiences)&&const DeepCollectionEquality().equals(other._skills, _skills)&&const DeepCollectionEquality().equals(other._educations, _educations)&&const DeepCollectionEquality().equals(other._certificates, _certificates)&&const DeepCollectionEquality().equals(other._blogs, _blogs));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,profile,const DeepCollectionEquality().hash(_projects),const DeepCollectionEquality().hash(_experiences),const DeepCollectionEquality().hash(_skills),const DeepCollectionEquality().hash(_educations),const DeepCollectionEquality().hash(_certificates));
+int get hashCode => Object.hash(runtimeType,profile,const DeepCollectionEquality().hash(_projects),const DeepCollectionEquality().hash(_experiences),const DeepCollectionEquality().hash(_skills),const DeepCollectionEquality().hash(_educations),const DeepCollectionEquality().hash(_certificates),const DeepCollectionEquality().hash(_blogs));
 
 @override
 String toString() {
-  return 'PortfolioData(profile: $profile, projects: $projects, experiences: $experiences, skills: $skills, educations: $educations, certificates: $certificates)';
+  return 'PortfolioData(profile: $profile, projects: $projects, experiences: $experiences, skills: $skills, educations: $educations, certificates: $certificates, blogs: $blogs)';
 }
 
 
@@ -290,7 +298,7 @@ abstract mixin class _$PortfolioDataCopyWith<$Res> implements $PortfolioDataCopy
   factory _$PortfolioDataCopyWith(_PortfolioData value, $Res Function(_PortfolioData) _then) = __$PortfolioDataCopyWithImpl;
 @override @useResult
 $Res call({
- ProfileInfo profile, List<ProjectItem> projects, List<ExperienceItem> experiences, List<SkillItem> skills, List<EducationItem> educations, List<CertificateItem> certificates
+ ProfileInfo profile, List<ProjectItem> projects, List<ExperienceItem> experiences, List<SkillItem> skills, List<EducationItem> educations, List<CertificateItem> certificates, List<BlogItem> blogs
 });
 
 
@@ -307,7 +315,7 @@ class __$PortfolioDataCopyWithImpl<$Res>
 
 /// Create a copy of PortfolioData
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? profile = null,Object? projects = null,Object? experiences = null,Object? skills = null,Object? educations = null,Object? certificates = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? profile = null,Object? projects = null,Object? experiences = null,Object? skills = null,Object? educations = null,Object? certificates = null,Object? blogs = null,}) {
   return _then(_PortfolioData(
 profile: null == profile ? _self.profile : profile // ignore: cast_nullable_to_non_nullable
 as ProfileInfo,projects: null == projects ? _self._projects : projects // ignore: cast_nullable_to_non_nullable
@@ -315,7 +323,8 @@ as List<ProjectItem>,experiences: null == experiences ? _self._experiences : exp
 as List<ExperienceItem>,skills: null == skills ? _self._skills : skills // ignore: cast_nullable_to_non_nullable
 as List<SkillItem>,educations: null == educations ? _self._educations : educations // ignore: cast_nullable_to_non_nullable
 as List<EducationItem>,certificates: null == certificates ? _self._certificates : certificates // ignore: cast_nullable_to_non_nullable
-as List<CertificateItem>,
+as List<CertificateItem>,blogs: null == blogs ? _self._blogs : blogs // ignore: cast_nullable_to_non_nullable
+as List<BlogItem>,
   ));
 }
 

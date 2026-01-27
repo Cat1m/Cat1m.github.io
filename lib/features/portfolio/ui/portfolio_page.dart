@@ -5,7 +5,7 @@ import 'package:my_portfolio/features/blogs/blogs_section.dart';
 import 'package:my_portfolio/features/certificates/certificates_section.dart';
 import 'package:my_portfolio/features/contact/contact_section.dart';
 import 'package:my_portfolio/features/experience/experience_section.dart';
-import 'package:my_portfolio/features/portfolio/portfolio_models/portfolio_models.dart';
+import 'package:my_portfolio/features/portfolio/model/portfolio_models.dart';
 import 'package:my_portfolio/features/projects/projects_section.dart';
 import 'package:my_portfolio/features/skills/skills_section.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -124,9 +124,11 @@ class _PortfolioViewState extends State<PortfolioView> {
         return CertificatesSection(
           educations: data.educations,
           certificates: data.certificates,
-        ); // Chưa có data model, tạm thời để trống
+        );
       case PortfolioSection.blogs:
-        return const BlogsSection(); // Chưa có data model, tạm thời để trống
+        return BlogsSection(
+          blogs: data.blogs,
+        ); // Sẽ lỗi đỏ cho đến khi ta update UI BlogsSection
       case PortfolioSection.contact:
         return ContactSection(profile: data.profile);
     }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart'; // Import Lottie
-import 'package:my_portfolio/features/portfolio/portfolio_models/portfolio_models.dart';
+import 'package:my_portfolio/features/portfolio/model/portfolio_models.dart';
 import '../../../../core/ui/ui.dart';
 import '../../../../features/app_core/bloc/app_core_cubit.dart';
 import '../../../../features/app_core/bloc/app_core_state.dart';

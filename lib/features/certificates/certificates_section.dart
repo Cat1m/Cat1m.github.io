@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:my_portfolio/features/certificates/models/certificate_item/certificate_item.dart';
 import 'package:my_portfolio/features/certificates/models/education_item/education_item.dart';
@@ -353,14 +354,32 @@ class _LogoBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: context.colors.border),
       ),
-      child: imgUrl != null
-          ? Image.asset(imgUrl!, fit: BoxFit.contain)
-          : Center(
-              child: Text(
-                fallbackChar,
-                style: context.text.h2.copyWith(color: context.colors.primary),
-              ),
-            ),
+      // VN: Tách logic build ảnh ra hàm riêng hoặc xử lý trực tiếp
+      child: _buildImage(context),
+    );
+  }
+
+  Widget _buildImage(BuildContext context) {
+    if (imgUrl != null) {
+      // Check đuôi file để chọn widget hiển thị phù hợp
+      if (imgUrl!.toLowerCase().endsWith('.svg')) {
+        return SvgPicture.asset(
+          imgUrl!,
+          fit: BoxFit.contain,
+          // Nếu icon SVG của bạn đơn sắc và cần đổi màu theo theme,
+          // bạn có thể uncomment dòng dưới:
+          // colorFilter: ColorFilter.mode(context.colors.primary, BlendMode.srcIn),
+        );
+      }
+      return Image.asset(imgUrl!, fit: BoxFit.contain);
+    }
+
+    // Fallback khi không có ảnh
+    return Center(
+      child: Text(
+        fallbackChar,
+        style: context.text.h2.copyWith(color: context.colors.primary),
+      ),
     );
   }
 }

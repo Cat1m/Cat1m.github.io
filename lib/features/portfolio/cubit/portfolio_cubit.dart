@@ -4,13 +4,15 @@ import 'package:injectable/injectable.dart';
 // ... Các imports cũ giữ nguyên
 import 'package:my_portfolio/features/about/models/profile_info.dart';
 import 'package:my_portfolio/features/about/profile_repository.dart';
+import 'package:my_portfolio/features/blogs/blog_repository.dart';
+import 'package:my_portfolio/features/blogs/model/blog_item.dart';
 import 'package:my_portfolio/features/certificates/certificate_repository.dart';
 import 'package:my_portfolio/features/certificates/education_repository.dart';
 import 'package:my_portfolio/features/certificates/models/certificate_item/certificate_item.dart';
 import 'package:my_portfolio/features/certificates/models/education_item/education_item.dart';
 import 'package:my_portfolio/features/experience/experience_repository.dart';
 import 'package:my_portfolio/features/experience/models/experience_item.dart';
-import 'package:my_portfolio/features/portfolio/portfolio_models/portfolio_models.dart';
+import 'package:my_portfolio/features/portfolio/model/portfolio_models.dart';
 import 'package:my_portfolio/features/portfolio/repositories/portfolio_repository.dart';
 import 'package:my_portfolio/features/projects/models/project_item.dart';
 import 'package:my_portfolio/features/projects/repositories/project_repository.dart';
@@ -30,6 +32,7 @@ class PortfolioCubit extends Cubit<PortfolioState> {
   // VN: Inject thêm 2 Repo
   final IEducationRepository _educationRepo;
   final ICertificateRepository _certificateRepo;
+  final IBlogRepository _blogRepo;
 
   final ExceptionHandlerService _exceptionHandler;
 
@@ -39,9 +42,10 @@ class PortfolioCubit extends Cubit<PortfolioState> {
     this._projectRepo,
     this._experienceRepo,
     this._skillRepo,
-    this._educationRepo, // Inject
-    this._certificateRepo, // Inject
+    this._educationRepo,
+    this._certificateRepo,
     this._exceptionHandler,
+    this._blogRepo,
   ) : super(PortfolioInitial());
 
   Future<void> loadPortfolio() async {
@@ -55,6 +59,7 @@ class PortfolioCubit extends Cubit<PortfolioState> {
         _skillRepo.getSkills(), // 3
         _educationRepo.getEducations(), // 4: Education
         _certificateRepo.getCertificates(), // 5: Certificates
+        _blogRepo.getBlogs(),
         _portfolioRepo.getOtherData(), // 6: Legacy
       ]);
 
@@ -64,6 +69,7 @@ class PortfolioCubit extends Cubit<PortfolioState> {
       final skills = results[3] as List<SkillItem>;
       final educations = results[4] as List<EducationItem>; // Cast
       final certificates = results[5] as List<CertificateItem>; // Cast
+      final blogs = results[6] as List<BlogItem>;
       // final otherData = results[6] as Map<String, dynamic>;
 
       final fullData = PortfolioData(
@@ -71,8 +77,9 @@ class PortfolioCubit extends Cubit<PortfolioState> {
         projects: projects,
         experiences: experiences,
         skills: skills,
-        educations: educations, // Gán
-        certificates: certificates, // Gán
+        educations: educations,
+        certificates: certificates,
+        blogs: blogs,
       );
 
       emit(PortfolioLoaded(data: fullData));

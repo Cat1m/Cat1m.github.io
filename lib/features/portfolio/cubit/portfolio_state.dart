@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:my_portfolio/features/portfolio/portfolio_models/portfolio_models.dart';
+import 'package:my_portfolio/features/portfolio/model/portfolio_models.dart';
 
 sealed class PortfolioState extends Equatable {
   const PortfolioState();
