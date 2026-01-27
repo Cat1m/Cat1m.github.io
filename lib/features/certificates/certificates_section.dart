@@ -125,8 +125,13 @@ class _EducationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Format Date: 2017 - 2021
-    final start = DateFormat('yyyy').format(item.startTime);
-    final end = DateFormat('yyyy').format(item.endTime);
+    // 1. Format End Time an toàn
+    final endStr = DateFormat('yyyy').format(item.endTime);
+
+    // 2. Logic hiển thị: Nếu start null thì ghi "Graduated: ..."
+    final timeDisplay = item.startTime != null
+        ? "${DateFormat('yyyy').format(item.startTime!)} - $endStr"
+        : "Graduated: $endStr";
 
     return Container(
       padding: const EdgeInsets.all(AppDimens.s24),
@@ -171,7 +176,7 @@ class _EducationCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "$start - $end",
+                  timeDisplay,
                   style: context.text.caption.copyWith(fontSize: 14),
                 ),
 

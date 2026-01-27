@@ -11,7 +11,9 @@ _EducationItem _$EducationItemFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       school: json['school'] as String,
       degree: json['degree'] as String,
-      startTime: DateTime.parse(json['startTime'] as String),
+      startTime: json['startTime'] == null
+          ? null
+          : DateTime.parse(json['startTime'] as String),
       endTime: DateTime.parse(json['endTime'] as String),
       logoUrl: json['logoUrl'] as String?,
       achievements:
@@ -26,7 +28,7 @@ Map<String, dynamic> _$EducationItemToJson(_EducationItem instance) =>
       'id': instance.id,
       'school': instance.school,
       'degree': instance.degree,
-      'startTime': instance.startTime.toIso8601String(),
+      'startTime': instance.startTime?.toIso8601String(),
       'endTime': instance.endTime.toIso8601String(),
       'logoUrl': instance.logoUrl,
       'achievements': instance.achievements,

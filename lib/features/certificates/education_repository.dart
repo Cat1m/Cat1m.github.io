@@ -1,3 +1,5 @@
+// features/certificates/data/education_repository.dart
+
 import 'package:injectable/injectable.dart';
 import 'package:my_portfolio/features/certificates/models/education_item/education_item.dart';
 
@@ -7,18 +9,25 @@ abstract class IEducationRepository {
 
 @LazySingleton(as: IEducationRepository)
 class EducationRepository implements IEducationRepository {
+  // Trả về danh sách học vấn, ẩn điểm GPA thấp và ẩn năm bắt đầu để tránh lộ việc học 8 năm
   @override
   Future<List<EducationItem>> getEducations() async {
-    await Future.delayed(const Duration(milliseconds: 500));
+    // Simulate network delay
+    await Future.delayed(const Duration(milliseconds: 300));
     return [
       EducationItem(
         id: '1',
-        school: 'Ho Chi Minh City University of Technology (HUTECH)',
-        degree: 'Bachelor of Software Engineering',
-        startTime: DateTime(2017, 9),
-        endTime: DateTime(2021, 6),
-        logoUrl: 'assets/logos/hutech.png', // Nhớ thêm ảnh
-        achievements: ['GPA: 3.5/4.0', 'Best Capstone Project Award 2021'],
+        school: 'Van Hien University', // Tên tiếng Anh chuẩn của trường
+        degree:
+            'Engineer\'s Degree, Electronics and Communications Engineering',
+        startTime: null, // Chiến thuật: Ẩn ngày bắt đầu
+        endTime: DateTime(2023, 10), // Chỉ hiện ngày lấy bằng
+        logoUrl: 'assets/logos/vhu_logo.png',
+        achievements: [
+          '3rd Prize - Robot Sumo Competition (Hardware & Logic Programming)',
+          'English Proficiency: CEFR Level B1',
+          'Soft Skills Certificate',
+        ],
       ),
     ];
   }

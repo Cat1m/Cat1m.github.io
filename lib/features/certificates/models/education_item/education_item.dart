@@ -9,7 +9,7 @@ abstract class EducationItem with _$EducationItem {
     required String id,
     required String school, // Tên trường (e.g. HCM University of Technology)
     required String degree, // Bằng cấp (e.g. Bachelor of Software Engineering)
-    required DateTime startTime,
+    required DateTime? startTime,
     required DateTime endTime,
     String? logoUrl, // Logo trường
     @Default([]) List<String> achievements, // Thành tích (GPA, Scholarship...)

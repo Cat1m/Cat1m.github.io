@@ -1,3 +1,5 @@
+// features/experience/data/experience_repository.dart
+
 import 'package:injectable/injectable.dart';
 import 'package:my_portfolio/features/experience/models/experience_item.dart';
 
@@ -7,58 +9,64 @@ abstract class IExperienceRepository {
 
 @LazySingleton(as: IExperienceRepository)
 class ExperienceRepository implements IExperienceRepository {
+  // Trả về kinh nghiệm làm việc: Tập trung vào Hùng Duy, rebrand lại Tanos và loại bỏ Palazzo
   @override
   Future<List<ExperienceItem>> getExperiences() async {
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 300));
 
     return [
+      // 1. Hùng Duy Group - Quan trọng nhất, đưa lên đầu
       ExperienceItem(
         id: '1',
-        role: 'Senior Mobile Developer',
-        company: 'Global Fintech Corp',
-        companyUrl: 'https://fintech-corp.example.com',
-        // companyLogo: 'assets/logos/fintech.png', // Nhớ thêm ảnh
-        startTime: DateTime(2023, 1), // Jan 2023
+        role: 'Senior Mobile Developer (Flutter Lead)',
+        company: 'Hung Duy Group',
+        companyUrl: 'https://hungduy.vn', // Ví dụ
+        // companyLogo: 'assets/logos/hungduy.png',
+        startTime: DateTime(2023, 9),
         endTime: null, // Present
-        location: 'Ho Chi Minh City, Vietnam',
-        type: 'Hybrid',
+        location: 'Tay Ninh, Vietnam',
+        type: 'On-site',
         responsibilities: [
-          'Lead a team of 5 developers to build a Super App serving 1M+ users.',
-          'Architected the app using Clean Architecture + Bloc pattern, improving maintainability by 40%.',
-          'Optimized app performance, reducing startup time from 3s to 1.5s.',
-          'Mentored junior developers and conducted code reviews.',
+          'Spearheaded the mobile ecosystem development for a multi-industry corporation (Manufacturing, Medical, Trading).',
+          'Solely architected and delivered 5+ critical Flutter applications: Hospital Patient App, BMS (Building Management), HRM, and Distribution Sales.',
+          'Developed backend services using .NET Core Web API & SQL Server, ensuring seamless synchronization with mobile clients.',
+          'Optimized app performance and implemented strict architecture guidelines (Clean Arch, Bloc/Cubit) for maintainability.',
+          'Digitized manual workflows for the Distribution & Warehouse departments, increasing operational efficiency.',
         ],
-        techStack: ['Flutter', 'Dart', 'GraphQL', 'CI/CD', 'Unit Test'],
+        techStack: [
+          'Flutter',
+          'Dart',
+          '.NET Core',
+          'SQL Server',
+          'Bloc',
+          'FCM',
+          'CI/CD',
+        ],
       ),
+
+      // 2. Tanos - Rebrand từ "NV Kho/Cam" thành "Operations Specialist" để tận dụng kỹ năng Tech
       ExperienceItem(
         id: '2',
-        role: 'Mobile Developer',
-        company: 'Smart Solutions Inc.',
-        startTime: DateTime(2021, 5),
-        endTime: DateTime(2022, 12),
-        location: 'Da Nang, Vietnam',
-        type: 'Remote',
+        role: 'IT Operations & Systems Specialist',
+        company: 'Tanos',
+        // companyUrl: '...',
+        // companyLogo: 'assets/logos/tanos.png',
+        startTime: DateTime(2019, 10), // Lấy mốc cuối 2019
+        endTime: DateTime(2023, 4),
+        location: 'Ho Chi Minh City, Vietnam',
+        type: 'On-site',
         responsibilities: [
-          'Developed and maintained 3 Flutter applications for healthcare clients.',
-          'Integrated native SDKs (WebRTC, Maps) into Flutter via Platform Channels.',
-          'Collaborated with UI/UX team to implement pixel-perfect designs.',
+          'Managed and operated IT infrastructure, including surveillance systems and office hardware for the head office.',
+          'Administrated the KiotViet ERP system for warehouse and logistics operations, ensuring data accuracy.',
+          'Provided technical support (Helpdesk) and optimized internal workflows for the supply chain department.',
+          'Gained deep insights into Inventory Management and Retail logic (applied later in software development).',
         ],
-        techStack: ['Flutter', 'Firebase', 'Google Maps API', 'Provider'],
-      ),
-      ExperienceItem(
-        id: '3',
-        role: 'Mobile Developer',
-        company: 'Smart Solutions Inc.',
-        startTime: DateTime(2020, 5),
-        endTime: DateTime(2021, 12),
-        location: 'Da Nang, Vietnam',
-        type: 'Remote',
-        responsibilities: [
-          'Developed and maintained 3 Flutter applications for healthcare clients.',
-          'Integrated native SDKs (WebRTC, Maps) into Flutter via Platform Channels.',
-          'Collaborated with UI/UX team to implement pixel-perfect designs.',
+        techStack: [
+          'System Administration',
+          'KiotViet ERP',
+          'Logistics Operations',
+          'IT Helpdesk',
         ],
-        techStack: ['Flutter', 'Firebase', 'Google Maps API', 'Provider'],
       ),
     ];
   }

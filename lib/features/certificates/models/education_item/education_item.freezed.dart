@@ -17,7 +17,7 @@ mixin _$EducationItem {
 
  String get id; String get school;// Tên trường (e.g. HCM University of Technology)
  String get degree;// Bằng cấp (e.g. Bachelor of Software Engineering)
- DateTime get startTime; DateTime get endTime; String? get logoUrl;// Logo trường
+ DateTime? get startTime; DateTime get endTime; String? get logoUrl;// Logo trường
  List<String> get achievements;
 /// Create a copy of EducationItem
 /// with the given fields replaced by the non-null parameter values.
@@ -51,7 +51,7 @@ abstract mixin class $EducationItemCopyWith<$Res>  {
   factory $EducationItemCopyWith(EducationItem value, $Res Function(EducationItem) _then) = _$EducationItemCopyWithImpl;
 @useResult
 $Res call({
- String id, String school, String degree, DateTime startTime, DateTime endTime, String? logoUrl, List<String> achievements
+ String id, String school, String degree, DateTime? startTime, DateTime endTime, String? logoUrl, List<String> achievements
 });
 
 
@@ -68,13 +68,13 @@ class _$EducationItemCopyWithImpl<$Res>
 
 /// Create a copy of EducationItem
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? school = null,Object? degree = null,Object? startTime = null,Object? endTime = null,Object? logoUrl = freezed,Object? achievements = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? school = null,Object? degree = null,Object? startTime = freezed,Object? endTime = null,Object? logoUrl = freezed,Object? achievements = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,school: null == school ? _self.school : school // ignore: cast_nullable_to_non_nullable
 as String,degree: null == degree ? _self.degree : degree // ignore: cast_nullable_to_non_nullable
-as String,startTime: null == startTime ? _self.startTime : startTime // ignore: cast_nullable_to_non_nullable
-as DateTime,endTime: null == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
+as String,startTime: freezed == startTime ? _self.startTime : startTime // ignore: cast_nullable_to_non_nullable
+as DateTime?,endTime: null == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
 as DateTime,logoUrl: freezed == logoUrl ? _self.logoUrl : logoUrl // ignore: cast_nullable_to_non_nullable
 as String?,achievements: null == achievements ? _self.achievements : achievements // ignore: cast_nullable_to_non_nullable
 as List<String>,
@@ -162,7 +162,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String school,  String degree,  DateTime startTime,  DateTime endTime,  String? logoUrl,  List<String> achievements)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String school,  String degree,  DateTime? startTime,  DateTime endTime,  String? logoUrl,  List<String> achievements)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _EducationItem() when $default != null:
 return $default(_that.id,_that.school,_that.degree,_that.startTime,_that.endTime,_that.logoUrl,_that.achievements);case _:
@@ -183,7 +183,7 @@ return $default(_that.id,_that.school,_that.degree,_that.startTime,_that.endTime
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String school,  String degree,  DateTime startTime,  DateTime endTime,  String? logoUrl,  List<String> achievements)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String school,  String degree,  DateTime? startTime,  DateTime endTime,  String? logoUrl,  List<String> achievements)  $default,) {final _that = this;
 switch (_that) {
 case _EducationItem():
 return $default(_that.id,_that.school,_that.degree,_that.startTime,_that.endTime,_that.logoUrl,_that.achievements);case _:
@@ -203,7 +203,7 @@ return $default(_that.id,_that.school,_that.degree,_that.startTime,_that.endTime
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String school,  String degree,  DateTime startTime,  DateTime endTime,  String? logoUrl,  List<String> achievements)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String school,  String degree,  DateTime? startTime,  DateTime endTime,  String? logoUrl,  List<String> achievements)?  $default,) {final _that = this;
 switch (_that) {
 case _EducationItem() when $default != null:
 return $default(_that.id,_that.school,_that.degree,_that.startTime,_that.endTime,_that.logoUrl,_that.achievements);case _:
@@ -226,7 +226,7 @@ class _EducationItem implements EducationItem {
 // Tên trường (e.g. HCM University of Technology)
 @override final  String degree;
 // Bằng cấp (e.g. Bachelor of Software Engineering)
-@override final  DateTime startTime;
+@override final  DateTime? startTime;
 @override final  DateTime endTime;
 @override final  String? logoUrl;
 // Logo trường
@@ -272,7 +272,7 @@ abstract mixin class _$EducationItemCopyWith<$Res> implements $EducationItemCopy
   factory _$EducationItemCopyWith(_EducationItem value, $Res Function(_EducationItem) _then) = __$EducationItemCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String school, String degree, DateTime startTime, DateTime endTime, String? logoUrl, List<String> achievements
+ String id, String school, String degree, DateTime? startTime, DateTime endTime, String? logoUrl, List<String> achievements
 });
 
 
@@ -289,13 +289,13 @@ class __$EducationItemCopyWithImpl<$Res>
 
 /// Create a copy of EducationItem
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? school = null,Object? degree = null,Object? startTime = null,Object? endTime = null,Object? logoUrl = freezed,Object? achievements = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? school = null,Object? degree = null,Object? startTime = freezed,Object? endTime = null,Object? logoUrl = freezed,Object? achievements = null,}) {
   return _then(_EducationItem(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,school: null == school ? _self.school : school // ignore: cast_nullable_to_non_nullable
 as String,degree: null == degree ? _self.degree : degree // ignore: cast_nullable_to_non_nullable
-as String,startTime: null == startTime ? _self.startTime : startTime // ignore: cast_nullable_to_non_nullable
-as DateTime,endTime: null == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
+as String,startTime: freezed == startTime ? _self.startTime : startTime // ignore: cast_nullable_to_non_nullable
+as DateTime?,endTime: null == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
 as DateTime,logoUrl: freezed == logoUrl ? _self.logoUrl : logoUrl // ignore: cast_nullable_to_non_nullable
 as String?,achievements: null == achievements ? _self._achievements : achievements // ignore: cast_nullable_to_non_nullable
 as List<String>,
