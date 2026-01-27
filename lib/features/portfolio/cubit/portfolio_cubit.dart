@@ -10,6 +10,8 @@ import 'package:my_portfolio/features/certificates/certificate_repository.dart';
 import 'package:my_portfolio/features/certificates/education_repository.dart';
 import 'package:my_portfolio/features/certificates/models/certificate_item/certificate_item.dart';
 import 'package:my_portfolio/features/certificates/models/education_item/education_item.dart';
+import 'package:my_portfolio/features/contact/contact_repository.dart';
+import 'package:my_portfolio/features/contact/model/contact_info.dart';
 import 'package:my_portfolio/features/experience/experience_repository.dart';
 import 'package:my_portfolio/features/experience/models/experience_item.dart';
 import 'package:my_portfolio/features/portfolio/model/portfolio_models.dart';
@@ -33,6 +35,7 @@ class PortfolioCubit extends Cubit<PortfolioState> {
   final IEducationRepository _educationRepo;
   final ICertificateRepository _certificateRepo;
   final IBlogRepository _blogRepo;
+  final IContactRepository _contactRepo;
 
   final ExceptionHandlerService _exceptionHandler;
 
@@ -44,6 +47,7 @@ class PortfolioCubit extends Cubit<PortfolioState> {
     this._skillRepo,
     this._educationRepo,
     this._certificateRepo,
+    this._contactRepo,
     this._exceptionHandler,
     this._blogRepo,
   ) : super(PortfolioInitial());
@@ -60,6 +64,7 @@ class PortfolioCubit extends Cubit<PortfolioState> {
         _educationRepo.getEducations(), // 4: Education
         _certificateRepo.getCertificates(), // 5: Certificates
         _blogRepo.getBlogs(),
+        _contactRepo.getContactInfo(),
         _portfolioRepo.getOtherData(), // 6: Legacy
       ]);
 
@@ -70,6 +75,7 @@ class PortfolioCubit extends Cubit<PortfolioState> {
       final educations = results[4] as List<EducationItem>; // Cast
       final certificates = results[5] as List<CertificateItem>; // Cast
       final blogs = results[6] as List<BlogItem>;
+      final contact = results[7] as ContactInfo;
       // final otherData = results[6] as Map<String, dynamic>;
 
       final fullData = PortfolioData(
@@ -80,6 +86,7 @@ class PortfolioCubit extends Cubit<PortfolioState> {
         educations: educations,
         certificates: certificates,
         blogs: blogs,
+        contact: contact,
       );
 
       emit(PortfolioLoaded(data: fullData));

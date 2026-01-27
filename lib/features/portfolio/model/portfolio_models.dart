@@ -3,6 +3,7 @@ import 'package:my_portfolio/features/about/models/profile_info.dart';
 import 'package:my_portfolio/features/blogs/model/blog_item.dart';
 import 'package:my_portfolio/features/certificates/models/certificate_item/certificate_item.dart';
 import 'package:my_portfolio/features/certificates/models/education_item/education_item.dart';
+import 'package:my_portfolio/features/contact/model/contact_info.dart';
 import 'package:my_portfolio/features/experience/models/experience_item.dart';
 import 'package:my_portfolio/features/projects/models/project_item.dart';
 import 'package:my_portfolio/features/skills/models/skill_item.dart';
@@ -34,5 +35,6 @@ abstract class PortfolioData with _$PortfolioData {
     required List<EducationItem> educations,
     required List<CertificateItem> certificates,
     required List<BlogItem> blogs,
+    required ContactInfo contact,
   }) = _PortfolioData;
 }

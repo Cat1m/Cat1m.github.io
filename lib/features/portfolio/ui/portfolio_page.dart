@@ -130,7 +130,9 @@ class _PortfolioViewState extends State<PortfolioView> {
           blogs: data.blogs,
         ); // Sẽ lỗi đỏ cho đến khi ta update UI BlogsSection
       case PortfolioSection.contact:
-        return ContactSection(profile: data.profile);
+        return ContactSection(
+          contact: data.contact, // Sửa tham số truyền vào
+        );
     }
   }
 

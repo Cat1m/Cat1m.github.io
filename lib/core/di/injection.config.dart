@@ -17,6 +17,7 @@ import '../../features/app_core/bloc/app_core_cubit.dart' as _i283;
 import '../../features/blogs/blog_repository.dart' as _i620;
 import '../../features/certificates/certificate_repository.dart' as _i529;
 import '../../features/certificates/education_repository.dart' as _i953;
+import '../../features/contact/contact_repository.dart' as _i453;
 import '../../features/experience/experience_repository.dart' as _i339;
 import '../../features/portfolio/cubit/portfolio_cubit.dart' as _i117;
 import '../../features/portfolio/repositories/portfolio_repository.dart'
@@ -47,6 +48,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i339.IExperienceRepository>(
       () => _i339.ExperienceRepository(),
     );
+    gh.lazySingleton<_i453.IContactRepository>(() => _i453.ContactRepository());
     gh.lazySingleton<_i529.ICertificateRepository>(
       () => _i529.CertificateRepository(),
     );
@@ -60,6 +62,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i999.ISkillRepository>(),
         gh<_i953.IEducationRepository>(),
         gh<_i529.ICertificateRepository>(),
+        gh<_i453.IContactRepository>(),
         gh<_i550.ExceptionHandlerService>(),
         gh<_i620.IBlogRepository>(),
       ),
