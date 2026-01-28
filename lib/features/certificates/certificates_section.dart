@@ -354,24 +354,20 @@ class _LogoBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: context.colors.border),
       ),
-      // VN: Tách logic build ảnh ra hàm riêng hoặc xử lý trực tiếp
+      // VN: Gọi hàm build ảnh đã được tối ưu cho PNG
       child: _buildImage(context),
     );
   }
 
   Widget _buildImage(BuildContext context) {
     if (imgUrl != null) {
-      // Check đuôi file để chọn widget hiển thị phù hợp
-      if (imgUrl!.toLowerCase().endsWith('.svg')) {
-        return SvgPicture.asset(
-          imgUrl!,
-          fit: BoxFit.contain,
-          // Nếu icon SVG của bạn đơn sắc và cần đổi màu theo theme,
-          // bạn có thể uncomment dòng dưới:
-          // colorFilter: ColorFilter.mode(context.colors.primary, BlendMode.srcIn),
-        );
-      }
-      return Image.asset(imgUrl!, fit: BoxFit.contain);
+      // VN: Sử dụng Image.asset với FilterQuality.high để ảnh mượt hơn khi bị thu nhỏ (down scale)
+      return Image.asset(
+        imgUrl!,
+        fit: BoxFit.contain,
+        filterQuality: FilterQuality.high,
+        // high = Bicubic (mượt nhất nhưng tốn hiệu năng hơn xíu, phù hợp cho Web/Desktop)
+      );
     }
 
     // Fallback khi không có ảnh
