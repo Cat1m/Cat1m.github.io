@@ -48,9 +48,14 @@ class SkillRepository implements ISkillRepository {
         type: SkillType.mobile,
         isHighlight: true,
       ),
+      const SkillItem(
+        id: '19',
+        name: 'Rust (Flutter Bridge)',
+        type: SkillType.mobile,
+        isHighlight: true,
+      ),
 
       // 2. Backend
-      const SkillItem(id: '7', name: 'Node.js', type: SkillType.backend),
       const SkillItem(
         id: '8',
         name: 'Firebase Functions',
@@ -60,6 +65,14 @@ class SkillRepository implements ISkillRepository {
         id: '9',
         name: '.NET Core (Basic)',
         type: SkillType.backend,
+      ),
+
+      const SkillItem(id: '20', name: 'Go (Basic)', type: SkillType.backend),
+      const SkillItem(
+        id: '21',
+        name: 'Supabase',
+        type: SkillType.backend,
+        isHighlight: true, // Supabase đang là xu hướng thay thế Firebase
       ),
 
       // 3. Database
@@ -73,12 +86,12 @@ class SkillRepository implements ISkillRepository {
 
       // 4. DevOps & Tools
       const SkillItem(id: '13', name: 'Git / GitHub', type: SkillType.devops),
+      const SkillItem(id: '22', name: 'Linux / Bash', type: SkillType.devops),
       const SkillItem(
         id: '14',
         name: 'CI/CD (Codemagic)',
         type: SkillType.devops,
       ),
-      const SkillItem(id: '15', name: 'Jira / Trello', type: SkillType.devops),
       const SkillItem(id: '16', name: 'Postman', type: SkillType.devops),
 
       // 5. UI/UX
