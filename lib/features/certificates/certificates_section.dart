@@ -5,7 +5,7 @@ import 'package:my_portfolio/features/certificates/models/education_item/educati
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/ui/ui.dart';
 
-class CertificatesSection extends StatelessWidget {
+class CertificatesSection extends StatefulWidget {
   final List<EducationItem> educations;
   final List<CertificateItem> certificates;
 
@@ -14,6 +14,17 @@ class CertificatesSection extends StatelessWidget {
     required this.educations,
     required this.certificates,
   });
+
+  @override
+  State<CertificatesSection> createState() => _CertificatesSectionState();
+}
+
+class _CertificatesSectionState extends State<CertificatesSection> {
+  // VN: Trạng thái mở rộng danh sách chứng chỉ
+  bool _isExpanded = false;
+
+  // VN: Số lượng items mặc định hiển thị ban đầu (4 items = 2 hàng trên Desktop)
+  static const int _initialCount = 4;
 
   @override
   Widget build(BuildContext context) {
@@ -39,24 +50,24 @@ class CertificatesSection extends StatelessWidget {
           ),
           const SizedBox(height: AppDimens.s48),
 
-          // 1. EDUCATION SECTION
-          if (educations.isNotEmpty) ...[
-            _SectionTitle(icon: Icons.school, title: "Education"),
+          // 1. EDUCATION SECTION (Giữ nguyên)
+          if (widget.educations.isNotEmpty) ...[
+            const _SectionTitle(icon: Icons.school, title: "Education"),
             const SizedBox(height: AppDimens.s24),
             ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: educations.length,
+              itemCount: widget.educations.length,
               separatorBuilder: (_, _) => const SizedBox(height: AppDimens.s24),
               itemBuilder: (context, index) =>
-                  _EducationCard(item: educations[index]),
+                  _EducationCard(item: widget.educations[index]),
             ),
-            const SizedBox(height: AppDimens.s48), // Khoảng cách giữa 2 phần
+            const SizedBox(height: AppDimens.s48),
           ],
 
-          // 2. CERTIFICATES SECTION
-          if (certificates.isNotEmpty) ...[
-            _SectionTitle(
+          // 2. CERTIFICATES SECTION (Cập nhật Logic Show More)
+          if (widget.certificates.isNotEmpty) ...[
+            const _SectionTitle(
               icon: Icons.workspace_premium,
               title: "Licenses & Certifications",
             ),
@@ -64,26 +75,58 @@ class CertificatesSection extends StatelessWidget {
 
             LayoutBuilder(
               builder: (context, constraints) {
-                // Desktop: 2 Cột, Mobile: 1 Cột
                 final isDesktop = constraints.maxWidth > 900;
                 final crossAxisCount = isDesktop ? 2 : 1;
-                // Desktop card dẹt hơn, Mobile card cao hơn
                 final ratio = isDesktop ? 2.5 : 2.0;
 
-                return GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: certificates.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: crossAxisCount,
-                    crossAxisSpacing: AppDimens.s24,
-                    mainAxisSpacing: AppDimens.s24,
-                    childAspectRatio: ratio,
-                    mainAxisExtent: 160, // Chiều cao cố định cho đẹp đều
-                  ),
-                  itemBuilder: (context, index) {
-                    return _CertificateCard(item: certificates[index]);
-                  },
+                // VN: Tính toán số lượng hiển thị dựa trên trạng thái _isExpanded
+                final totalItems = widget.certificates.length;
+                final displayCount = _isExpanded
+                    ? totalItems
+                    : (totalItems > _initialCount ? _initialCount : totalItems);
+
+                return Column(
+                  children: [
+                    // Grid Item
+                    // VN: Dùng AnimatedSize để hiệu ứng mở rộng mượt mà hơn
+                    AnimatedSize(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeOut,
+                      alignment: Alignment.topCenter,
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: displayCount,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: crossAxisCount,
+                          crossAxisSpacing: AppDimens.s24,
+                          mainAxisSpacing: AppDimens.s24,
+                          childAspectRatio: ratio,
+                          mainAxisExtent: 160,
+                        ),
+                        itemBuilder: (context, index) {
+                          return _CertificateCard(
+                            item: widget.certificates[index],
+                          );
+                        },
+                      ),
+                    ),
+
+                    // Show More / Less Button
+                    if (totalItems > _initialCount) ...[
+                      const SizedBox(height: AppDimens.s32),
+                      _ShowMoreButton(
+                        isExpanded: _isExpanded,
+                        remainingCount: totalItems - _initialCount,
+                        onTap: () {
+                          // VN: Toggle trạng thái và setState để render lại UI
+                          setState(() {
+                            _isExpanded = !_isExpanded;
+                          });
+                        },
+                      ),
+                    ],
+                  ],
                 );
               },
             ),
@@ -95,6 +138,56 @@ class CertificatesSection extends StatelessWidget {
 }
 
 // ================== HELPER WIDGETS ==================
+
+// VN: Widget nút bấm Show More được tách riêng để tái sử dụng hoặc style tùy ý
+class _ShowMoreButton extends StatelessWidget {
+  final bool isExpanded;
+  final int remainingCount;
+  final VoidCallback onTap;
+
+  const _ShowMoreButton({
+    required this.isExpanded,
+    required this.remainingCount,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(30),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          decoration: BoxDecoration(
+            border: Border.all(color: context.colors.primary.withOpacity(0.5)),
+            borderRadius: BorderRadius.circular(30),
+            color: context.colors.surface,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                isExpanded ? "Show Less" : "Show More (+$remainingCount)",
+                style: context.text.button.copyWith(
+                  color: context.colors.primary,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Icon(
+                isExpanded
+                    ? Icons.keyboard_arrow_up
+                    : Icons.keyboard_arrow_down,
+                color: context.colors.primary,
+                size: 20,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class _SectionTitle extends StatelessWidget {
   final IconData icon;
@@ -116,7 +209,7 @@ class _SectionTitle extends StatelessWidget {
   }
 }
 
-// --- CARD: EDUCATION ---
+// --- CARD: EDUCATION (Giữ nguyên logic của bạn) ---
 class _EducationCard extends StatelessWidget {
   final EducationItem item;
 
@@ -124,11 +217,7 @@ class _EducationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Format Date: 2017 - 2021
-    // 1. Format End Time an toàn
     final endStr = DateFormat('yyyy').format(item.endTime);
-
-    // 2. Logic hiển thị: Nếu start null thì ghi "Graduated: ..."
     final timeDisplay = item.startTime != null
         ? "${DateFormat('yyyy').format(item.startTime!)} - $endStr"
         : "Graduated: $endStr";
@@ -150,15 +239,12 @@ class _EducationCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Logo School
           _LogoBox(
             imgUrl: item.logoUrl,
             fallbackChar: item.school[0],
             size: 72,
           ),
           const SizedBox(width: AppDimens.s24),
-
-          // Content
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,8 +265,6 @@ class _EducationCard extends StatelessWidget {
                   timeDisplay,
                   style: context.text.caption.copyWith(fontSize: 14),
                 ),
-
-                // Achievements (Bullet Points)
                 if (item.achievements.isNotEmpty) ...[
                   const SizedBox(height: AppDimens.s12),
                   ...item.achievements.map(
@@ -216,7 +300,7 @@ class _EducationCard extends StatelessWidget {
   }
 }
 
-// --- CARD: CERTIFICATE ---
+// --- CARD: CERTIFICATE (Giữ nguyên style gọn gàng của bạn) ---
 class _CertificateCard extends StatelessWidget {
   final CertificateItem item;
 
@@ -230,7 +314,6 @@ class _CertificateCard extends StatelessWidget {
         color: context.colors.surface,
         borderRadius: BorderRadius.circular(AppDimens.r12),
         border: Border.all(color: context.colors.border),
-        // Hover effect visual trick (static shadow)
         boxShadow: [
           BoxShadow(
             color: context.colors.textPrimary.withOpacity(0.02),
@@ -242,15 +325,12 @@ class _CertificateCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Logo Issuer
           _LogoBox(
             imgUrl: item.logoUrl,
             fallbackChar: item.issuer[0],
             size: 56,
           ),
           const SizedBox(width: AppDimens.s16),
-
-          // Info
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -277,10 +357,7 @@ class _CertificateCard extends StatelessWidget {
                     color: context.colors.textSecondary,
                   ),
                 ),
-
                 const Spacer(),
-
-                // Show Credential Button
                 if (item.credentialUrl != null)
                   InkWell(
                     onTap: () => _launchUrl(item.credentialUrl!),
@@ -353,23 +430,18 @@ class _LogoBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: context.colors.border),
       ),
-      // VN: Gọi hàm build ảnh đã được tối ưu cho PNG
       child: _buildImage(context),
     );
   }
 
   Widget _buildImage(BuildContext context) {
     if (imgUrl != null) {
-      // VN: Sử dụng Image.asset với FilterQuality.high để ảnh mượt hơn khi bị thu nhỏ (down scale)
       return Image.asset(
         imgUrl!,
         fit: BoxFit.contain,
         filterQuality: FilterQuality.high,
-        // high = Bicubic (mượt nhất nhưng tốn hiệu năng hơn xíu, phù hợp cho Web/Desktop)
       );
     }
-
-    // Fallback khi không có ảnh
     return Center(
       child: Text(
         fallbackChar,
