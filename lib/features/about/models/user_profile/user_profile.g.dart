@@ -1,21 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'contact_info.dart';
+part of 'user_profile.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_ContactInfo _$ContactInfoFromJson(Map<String, dynamic> json) => _ContactInfo(
-  title: json['title'] as String,
-  description: json['description'] as String,
+_UserProfile _$UserProfileFromJson(Map<String, dynamic> json) => _UserProfile(
+  name: json['name'] as String,
+  jobTitle: json['jobTitle'] as String,
+  tagline: json['tagline'] as String,
+  bio: json['bio'] as String,
+  avatarUrl: json['avatarUrl'] as String,
+  location: json['location'] as String,
   email: json['email'] as String,
   phone: json['phone'] as String,
-  location: json['location'] as String,
   cvUrl: json['cvUrl'] as String,
   isOpenToWork: json['isOpenToWork'] as bool? ?? true,
   responseTime:
       json['responseTime'] as String? ?? "I usually reply within 24 hours",
+  contactHeading:
+      json['contactHeading'] as String? ??
+      "Let's build something amazing together!",
+  contactDescription: json['contactDescription'] as String,
   services:
       (json['services'] as List<dynamic>?)?.map((e) => e as String).toList() ??
       const [],
@@ -25,16 +32,21 @@ _ContactInfo _$ContactInfoFromJson(Map<String, dynamic> json) => _ContactInfo(
   facebookUrl: json['facebookUrl'] as String?,
 );
 
-Map<String, dynamic> _$ContactInfoToJson(_ContactInfo instance) =>
+Map<String, dynamic> _$UserProfileToJson(_UserProfile instance) =>
     <String, dynamic>{
-      'title': instance.title,
-      'description': instance.description,
+      'name': instance.name,
+      'jobTitle': instance.jobTitle,
+      'tagline': instance.tagline,
+      'bio': instance.bio,
+      'avatarUrl': instance.avatarUrl,
+      'location': instance.location,
       'email': instance.email,
       'phone': instance.phone,
-      'location': instance.location,
       'cvUrl': instance.cvUrl,
       'isOpenToWork': instance.isOpenToWork,
       'responseTime': instance.responseTime,
+      'contactHeading': instance.contactHeading,
+      'contactDescription': instance.contactDescription,
       'services': instance.services,
       'linkedinUrl': instance.linkedinUrl,
       'githubUrl': instance.githubUrl,

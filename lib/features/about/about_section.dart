@@ -1,14 +1,14 @@
 import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:my_portfolio/features/about/models/profile_info.dart';
+import 'package:my_portfolio/core/ui/ui.dart';
+
+import 'package:my_portfolio/features/about/models/user_profile/user_profile.dart';
 import 'package:url_launcher/url_launcher.dart';
-// VN: Import Core UI
-import '../../../../core/ui/ui.dart';
 
 class AboutSection extends StatelessWidget {
-  final ProfileInfo profile;
+  final UserProfile
+  profile; // Đổi tên biến thành 'user' cũng được, nhưng 'profile' vẫn ok
 
   const AboutSection({super.key, required this.profile});
 
@@ -17,31 +17,26 @@ class AboutSection extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
 
     return Container(
-      // VN: Dùng màu nền từ Theme
       color: context.colors.background,
       child: Stack(
         children: [
-          // ================== LAYER 1: DECORATIONS ==================
+          // ... (Giữ nguyên Layer 1 Decorations)
           Positioned(
             top: -100,
             left: -100,
-            // VN: Blob dùng màu Primary mờ
             child: _BlurryBlob(
               color: context.colors.primary.withOpacity(0.15),
               size: 400,
             ),
           ),
-
           Positioned(
             bottom: 50,
             right: -50,
-            // VN: Blob thứ 2 dùng màu Secondary mờ
             child: _BlurryBlob(
               color: context.colors.secondary.withOpacity(0.1),
               size: 300,
             ),
           ),
-
           if (size.width > 1000) ...[
             const Positioned(
               top: 100,
@@ -64,11 +59,10 @@ class AboutSection extends StatelessWidget {
             ),
           ],
 
-          // ================== LAYER 2: MAIN CONTENT ==================
+          // LAYER 2: MAIN CONTENT
           Align(
             alignment: Alignment.center,
             child: Padding(
-              // VN: Dùng AppDimens cho padding lớn (s64 + s16 = 80)
               padding: const EdgeInsets.symmetric(
                 vertical: AppDimens.s64 + AppDimens.s16,
                 horizontal: AppDimens.s24,
@@ -90,10 +84,10 @@ class AboutSection extends StatelessWidget {
   }
 }
 
-// ================== DESKTOP LAYOUT ==================
-class _DesktopLayout extends StatelessWidget {
-  final ProfileInfo profile;
+// ... (Các class _DesktopLayout, _MobileLayout cần cập nhật field name)
 
+class _DesktopLayout extends StatelessWidget {
+  final UserProfile profile;
   const _DesktopLayout({required this.profile});
 
   @override
@@ -104,7 +98,6 @@ class _DesktopLayout extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // 1. Avatar (Left)
             Expanded(
               flex: 1,
               child: Align(
@@ -112,9 +105,7 @@ class _DesktopLayout extends StatelessWidget {
                 child: _ProfileAvatar(imgUrl: profile.avatarUrl, size: 220),
               ),
             ),
-
-            const SizedBox(width: AppDimens.s48), // ~40px
-            // 2. Text Content (Center)
+            const SizedBox(width: AppDimens.s48),
             Expanded(
               flex: 3,
               child: _AboutTextContent(
@@ -122,10 +113,7 @@ class _DesktopLayout extends StatelessWidget {
                 align: CrossAxisAlignment.start,
               ),
             ),
-
             const SizedBox(width: AppDimens.s48),
-
-            // 3. Welcome Animation (Right)
             const Expanded(flex: 3, child: _WelcomeAnimationPlaceholder()),
           ],
         ),
@@ -134,23 +122,8 @@ class _DesktopLayout extends StatelessWidget {
   }
 }
 
-class _WelcomeAnimationPlaceholder extends StatelessWidget {
-  const _WelcomeAnimationPlaceholder();
-
-  @override
-  Widget build(BuildContext context) {
-    return Lottie.asset(
-      'assets/animations/cat_peek.json', // Check lại path assets của bạn nhé
-      height: 300,
-      fit: BoxFit.contain,
-    );
-  }
-}
-
-// ================== MOBILE LAYOUT ==================
 class _MobileLayout extends StatelessWidget {
-  final ProfileInfo profile;
-
+  final UserProfile profile;
   const _MobileLayout({required this.profile});
 
   @override
@@ -165,8 +138,7 @@ class _MobileLayout extends StatelessWidget {
   }
 }
 
-// ================== SHARED WIDGETS ==================
-
+// ... (Giữ nguyên _ProfileAvatar và _WelcomeAnimationPlaceholder)
 class _ProfileAvatar extends StatelessWidget {
   final String imgUrl;
   final double size;
@@ -182,13 +154,11 @@ class _ProfileAvatar extends StatelessWidget {
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            // VN: Shadow màu Primary mờ
             color: context.colors.primary.withOpacity(0.2),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
         ],
-        // VN: Viền màu Primary nhạt
         border: Border.all(
           color: context.colors.primary.withOpacity(0.3),
           width: 4,
@@ -199,8 +169,22 @@ class _ProfileAvatar extends StatelessWidget {
   }
 }
 
+class _WelcomeAnimationPlaceholder extends StatelessWidget {
+  const _WelcomeAnimationPlaceholder();
+
+  @override
+  Widget build(BuildContext context) {
+    return Lottie.asset(
+      'assets/animations/cat_peek.json',
+      height: 300,
+      fit: BoxFit.contain,
+    );
+  }
+}
+
+// ========== QUAN TRỌNG: CẬP NHẬT FIELD NAME TẠI ĐÂY ==========
 class _AboutTextContent extends StatelessWidget {
-  final ProfileInfo profile;
+  final UserProfile profile;
   final CrossAxisAlignment align;
 
   const _AboutTextContent({required this.profile, required this.align});
@@ -212,7 +196,6 @@ class _AboutTextContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: align,
       children: [
-        // Badge Open to Work
         if (profile.isOpenToWork)
           Container(
             padding: const EdgeInsets.symmetric(
@@ -221,9 +204,8 @@ class _AboutTextContent extends StatelessWidget {
             ),
             margin: const EdgeInsets.only(bottom: AppDimens.s16),
             decoration: BoxDecoration(
-              // VN: Dùng màu Success từ Theme
               color: context.colors.success.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(AppDimens.r16), // ~20
+              borderRadius: BorderRadius.circular(AppDimens.r16),
               border: Border.all(color: context.colors.success),
             ),
             child: Text(
@@ -235,22 +217,18 @@ class _AboutTextContent extends StatelessWidget {
             ),
           ),
 
-        // Greeting
         Text(
           "Hi there, I'm",
-          // VN: Dùng TextSecondary (màu xám)
           style: context.text.h3.copyWith(color: context.colors.textSecondary),
         ),
 
         const SizedBox(height: AppDimens.s8),
 
-        // Name
         Text(
           profile.name,
-          // VN: Dùng H1 + Màu Primary
           style: context.text.h1.copyWith(
             color: context.colors.primary,
-            fontSize: 40, // Override size to hơn chuẩn H1 chút cho tên
+            fontSize: 40,
             fontWeight: FontWeight.w900,
           ),
           textAlign: isCenter ? TextAlign.center : TextAlign.start,
@@ -258,19 +236,17 @@ class _AboutTextContent extends StatelessWidget {
 
         const SizedBox(height: AppDimens.s8),
 
-        // Title
         Text(
-          profile.title,
+          // VN: FIX - Dùng jobTitle thay vì title
+          profile.jobTitle,
           style: context.text.h2.copyWith(color: context.colors.textPrimary),
           textAlign: isCenter ? TextAlign.center : TextAlign.start,
         ),
 
         const SizedBox(height: AppDimens.s8),
 
-        // Tagline
         Text(
           profile.tagline,
-          // VN: Dùng Body1 + Italic
           style: context.text.body1.copyWith(
             fontStyle: FontStyle.italic,
             color: context.colors.textSecondary,
@@ -280,16 +256,15 @@ class _AboutTextContent extends StatelessWidget {
 
         const SizedBox(height: AppDimens.s24),
 
-        // Summary
         Text(
-          profile.summary,
+          // VN: FIX - Dùng bio thay vì summary
+          profile.bio,
           style: context.text.body1.copyWith(height: 1.6),
           textAlign: isCenter ? TextAlign.center : TextAlign.start,
         ),
 
         const SizedBox(height: AppDimens.s32),
 
-        // Location & Socials
         Wrap(
           spacing: AppDimens.s16,
           runSpacing: AppDimens.s16,
@@ -328,6 +303,7 @@ class _AboutTextContent extends StatelessWidget {
   }
 }
 
+// ... (Giữ nguyên _SocialButton, _BlurryBlob, _FloatingIcon)
 class _SocialButton extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -356,7 +332,6 @@ class _SocialButton extends StatelessWidget {
             horizontal: AppDimens.s20,
             vertical: AppDimens.s16,
           ),
-          // VN: Border màu text phụ
           side: BorderSide(color: context.colors.textSecondary),
           foregroundColor: context.colors.primary,
         ),
@@ -374,7 +349,6 @@ class _SocialButton extends StatelessWidget {
           horizontal: AppDimens.s24,
           vertical: AppDimens.s16,
         ),
-        // VN: Màu nút theo Primary
         backgroundColor: context.colors.primary,
         foregroundColor: context.colors.surface,
       ),
@@ -420,7 +394,6 @@ class _FloatingIcon extends StatelessWidget {
       child: Icon(
         icon,
         size: size,
-        // VN: Dùng TextPrimary mờ làm icon nền
         color: context.colors.textPrimary.withOpacity(0.05),
       ),
     );

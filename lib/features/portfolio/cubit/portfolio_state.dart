@@ -13,8 +13,9 @@ final class PortfolioLoading extends PortfolioState {}
 
 final class PortfolioLoaded extends PortfolioState {
   final PortfolioData data;
-  final PortfolioSection
-  activeSection; // Section đang được highlight trên Header
+
+  // VN: Section đang được highlight trên Header
+  final PortfolioSection activeSection;
 
   const PortfolioLoaded({
     required this.data,

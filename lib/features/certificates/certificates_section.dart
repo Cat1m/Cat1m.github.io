@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:my_portfolio/features/certificates/models/certificate_item/certificate_item.dart';
 import 'package:my_portfolio/features/certificates/models/education_item/education_item.dart';

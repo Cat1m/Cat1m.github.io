@@ -49,6 +49,7 @@ dependencies:
   lottie: ^3.3.2
   intl: ^0.20.2
   font_awesome_flutter: ^10.12.0
+  rive: ^0.14.1
 
 dev_dependencies:
   flutter_test:
@@ -82,6 +83,7 @@ flutter:
     - assets/images/ # folder chứa avatar
     - assets/animations/ # folder chứa lottie
     - assets/svg/ # folder chứa svg
+    - assets/rive/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

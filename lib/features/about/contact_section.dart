@@ -1,28 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:my_portfolio/features/contact/model/contact_info.dart';
+import 'package:my_portfolio/core/ui/ui.dart';
+import 'package:my_portfolio/features/about/models/user_profile/user_profile.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../../core/ui/ui.dart';
 
 class ContactSection extends StatelessWidget {
-  final ContactInfo contact;
+  final UserProfile user;
 
-  const ContactSection({super.key, required this.contact});
+  const ContactSection({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: context
-          .colors
-          .surface, // Dùng màu Surface để tạo sự phân cách với Blog
-      padding: const EdgeInsets.only(
-        top: AppDimens.s64,
-        bottom: AppDimens.s32, // Padding bottom ít hơn vì có footer
-      ),
+      color: context.colors.background,
+      padding: const EdgeInsets.only(top: AppDimens.s64, bottom: AppDimens.s32),
       child: Column(
         children: [
           // 1. Availability Status
-          if (contact.isOpenToWork)
+          if (user.isOpenToWork)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               margin: const EdgeInsets.only(bottom: AppDimens.s24),
@@ -63,7 +58,8 @@ class ContactSection extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    contact.title,
+                    // VN: FIX - Dùng contactHeading thay vì title
+                    user.contactHeading,
                     style: context.text.h1.copyWith(
                       color: context.colors.primary,
                       height: 1.2,
@@ -72,16 +68,15 @@ class ContactSection extends StatelessWidget {
                   ),
                   const SizedBox(height: AppDimens.s16),
 
-                  // VN: Thay Text thường bằng RichText xử lý bold
                   _HighlightedDescription(
-                    text: contact.description,
+                    // VN: FIX - Dùng contactDescription thay vì description
+                    text: user.contactDescription,
                     baseStyle: context.text.body1.copyWith(
                       color: context.colors.textSecondary,
                       fontSize: 18,
                       height: 1.6,
                     ),
-                    highlightColor:
-                        context.colors.textPrimary, // Màu cho phần in đậm
+                    highlightColor: context.colors.textPrimary,
                   ),
                 ],
               ),
@@ -90,15 +85,15 @@ class ContactSection extends StatelessWidget {
 
           const SizedBox(height: AppDimens.s32),
 
-          // 3. Services Tags (Remote, Freelance...)
-          if (contact.services.isNotEmpty)
+          // 3. Services Tags
+          if (user.services.isNotEmpty)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppDimens.s24),
               child: Wrap(
                 spacing: 12,
                 runSpacing: 12,
                 alignment: WrapAlignment.center,
-                children: contact.services.map((service) {
+                children: user.services.map((service) {
                   return _ServiceTag(text: service);
                 }).toList(),
               ),
@@ -106,30 +101,28 @@ class ContactSection extends StatelessWidget {
 
           const SizedBox(height: AppDimens.s48),
 
-          // 4. Call To Actions (Buttons)
+          // 4. Call To Actions
           Wrap(
             spacing: AppDimens.s24,
             runSpacing: AppDimens.s16,
             alignment: WrapAlignment.center,
             children: [
-              // Primary: Email Me
               AppButton(
                 text: "Send me an email",
                 icon: Icons.email_outlined,
-                isExpanded: false, // Button co gọn theo nội dung
-                onPressed: () => _launchUrl("mailto:${contact.email}"),
+                isExpanded: false,
+                onPressed: () => _launchUrl("mailto:${user.email}"),
               ),
 
-              // Secondary: Download CV
               OutlinedButton.icon(
-                onPressed: () => _launchUrl(contact.cvUrl),
-                icon: Icon(Icons.download, size: 20),
-                label: Text("Download CV"),
+                onPressed: () => _launchUrl(user.cvUrl),
+                icon: const Icon(Icons.download, size: 20),
+                label: const Text("Download CV"),
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 32,
                     vertical: 20,
-                  ), // Height khớp với AppButton
+                  ),
                   side: BorderSide(color: context.colors.primary, width: 2),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppDimens.r8),
@@ -145,56 +138,52 @@ class ContactSection extends StatelessWidget {
           Divider(color: context.colors.border),
           const SizedBox(height: AppDimens.s32),
 
-          // 5. Footer Info (Socials & Copyright)
+          // 5. Footer Info
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.s24),
             child: Column(
               children: [
-                // Social Icons
                 Wrap(
                   spacing: 24,
                   alignment: WrapAlignment.center,
                   children: [
-                    if (contact.githubUrl != null)
+                    if (user.githubUrl != null)
                       _SocialIcon(
-                        icon: FontAwesomeIcons
-                            .github, // Dùng package font_awesome_flutter
-                        url: contact.githubUrl!,
+                        icon: FontAwesomeIcons.github,
+                        url: user.githubUrl!,
                       ),
-                    if (contact.linkedinUrl != null)
+                    if (user.linkedinUrl != null)
                       _SocialIcon(
                         icon: FontAwesomeIcons.linkedin,
-                        url: contact.linkedinUrl!,
+                        url: user.linkedinUrl!,
                       ),
-                    if (contact.mediumUrl != null)
+                    if (user.mediumUrl != null)
                       _SocialIcon(
                         icon: FontAwesomeIcons.medium,
-                        url: contact.mediumUrl!,
+                        url: user.mediumUrl!,
                       ),
-                    if (contact.facebookUrl != null)
+                    if (user.facebookUrl != null)
                       _SocialIcon(
                         icon: FontAwesomeIcons.facebook,
-                        url: contact.facebookUrl!,
+                        url: user.facebookUrl!,
                       ),
                   ],
                 ),
 
                 const SizedBox(height: AppDimens.s24),
 
-                // Info Text
                 Text(
-                  contact.email,
+                  user.email,
                   style: context.text.body1.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(contact.location, style: context.text.caption),
+                Text(user.location, style: context.text.caption),
                 const SizedBox(height: AppDimens.s24),
 
-                // Copyright
                 Text(
-                  "© ${DateTime.now().year} Crafted with 💙 by Minh Chien using Flutter Web",
+                  "© ${DateTime.now().year} Crafted with 💙 by ${user.name} using Flutter Web",
                   style: context.text.caption.copyWith(
                     color: context.colors.textSecondary.withOpacity(0.6),
                   ),
@@ -214,7 +203,8 @@ class ContactSection extends StatelessWidget {
   }
 }
 
-// ================== HELPER WIDGETS ==================
+// ... (Giữ nguyên phần Helper Widgets: _HighlightedDescription, _ServiceTag, _SocialIcon)
+// Bạn copy lại phần Helper Widgets ở file cũ vào dưới đây nhé
 class _HighlightedDescription extends StatelessWidget {
   final String text;
   final TextStyle baseStyle;
@@ -228,27 +218,21 @@ class _HighlightedDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 1. Tách chuỗi dựa trên dấu **
-    // Ví dụ: "I am available for **Remote work** now"
-    // -> ["I am available for ", "Remote work", " now"]
     final parts = text.split('**');
-
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
         style: baseStyle,
         children: List.generate(parts.length, (index) {
-          // Phần tử ở vị trí lẻ (1, 3, 5...) là phần nằm giữa ** và ** -> In đậm
           if (index % 2 == 1) {
             return TextSpan(
               text: parts[index],
               style: baseStyle.copyWith(
-                fontWeight: FontWeight.w900, // Đậm hơn bình thường
-                color: highlightColor, // Màu sáng hơn
+                fontWeight: FontWeight.w900,
+                color: highlightColor,
               ),
             );
           }
-          // Phần tử chẵn là text thường
           return TextSpan(text: parts[index]);
         }),
       ),
@@ -301,12 +285,7 @@ class _SocialIcon extends StatelessWidget {
         final uri = Uri.parse(url);
         if (await canLaunchUrl(uri)) await launchUrl(uri);
       },
-      icon: FaIcon(
-        // Dùng FaIcon của FontAwesome
-        icon,
-        size: 24,
-        color: context.colors.textSecondary,
-      ),
+      icon: FaIcon(icon, size: 24, color: context.colors.textSecondary),
       hoverColor: context.colors.primary.withOpacity(0.1),
       splashRadius: 24,
     );

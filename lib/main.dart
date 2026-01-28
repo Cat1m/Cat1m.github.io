@@ -6,8 +6,11 @@ import 'package:my_portfolio/features/portfolio/ui/portfolio_page.dart';
 import 'core/di/injection.dart';
 import 'features/app_core/bloc/app_core_cubit.dart';
 import 'features/app_core/bloc/app_core_state.dart';
+import 'package:rive/rive.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await RiveNative.init();
   configureDependencies();
   runApp(const MyApp());
 }

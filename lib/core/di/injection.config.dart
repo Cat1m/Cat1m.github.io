@@ -12,12 +12,11 @@
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
-import '../../features/about/profile_repository.dart' as _i874;
+import '../../features/about/user_profile_repository.dart' as _i545;
 import '../../features/app_core/bloc/app_core_cubit.dart' as _i283;
 import '../../features/blogs/blog_repository.dart' as _i620;
 import '../../features/certificates/certificate_repository.dart' as _i529;
 import '../../features/certificates/education_repository.dart' as _i953;
-import '../../features/contact/contact_repository.dart' as _i453;
 import '../../features/experience/experience_repository.dart' as _i339;
 import '../../features/portfolio/cubit/portfolio_cubit.dart' as _i117;
 import '../../features/portfolio/repositories/portfolio_repository.dart'
@@ -41,35 +40,36 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i953.IEducationRepository>(
       () => _i953.EducationRepository(),
     );
-    gh.lazySingleton<_i244.IPortfolioRepository>(
-      () => _i244.PortfolioRepository(),
-    );
-    gh.lazySingleton<_i874.IProfileRepository>(() => _i874.ProfileRepository());
     gh.lazySingleton<_i339.IExperienceRepository>(
       () => _i339.ExperienceRepository(),
     );
-    gh.lazySingleton<_i453.IContactRepository>(() => _i453.ContactRepository());
     gh.lazySingleton<_i529.ICertificateRepository>(
       () => _i529.CertificateRepository(),
     );
     gh.lazySingleton<_i999.ISkillRepository>(() => _i999.SkillRepository());
-    gh.factory<_i117.PortfolioCubit>(
-      () => _i117.PortfolioCubit(
-        gh<_i244.IPortfolioRepository>(),
-        gh<_i874.IProfileRepository>(),
+    gh.lazySingleton<_i545.IUserProfileRepository>(
+      () => _i545.UserProfileRepository(),
+    );
+    gh.factory<_i283.AppCoreCubit>(
+      () => _i283.AppCoreCubit(
+        exceptionHandlerService: gh<_i550.ExceptionHandlerService>(),
+      ),
+    );
+    gh.lazySingleton<_i244.IPortfolioRepository>(
+      () => _i244.PortfolioRepository(
+        gh<_i545.IUserProfileRepository>(),
         gh<_i545.IProjectRepository>(),
         gh<_i339.IExperienceRepository>(),
         gh<_i999.ISkillRepository>(),
         gh<_i953.IEducationRepository>(),
         gh<_i529.ICertificateRepository>(),
-        gh<_i453.IContactRepository>(),
-        gh<_i550.ExceptionHandlerService>(),
         gh<_i620.IBlogRepository>(),
       ),
     );
-    gh.factory<_i283.AppCoreCubit>(
-      () => _i283.AppCoreCubit(
-        exceptionHandlerService: gh<_i550.ExceptionHandlerService>(),
+    gh.factory<_i117.PortfolioCubit>(
+      () => _i117.PortfolioCubit(
+        gh<_i244.IPortfolioRepository>(),
+        gh<_i550.ExceptionHandlerService>(),
       ),
     );
     return this;
