@@ -192,17 +192,16 @@ class _AboutTextContent extends StatelessWidget {
 
         const SizedBox(height: AppDimens.s8),
 
-        Text(
-          profile.tagline,
-          style: context.text.body1.copyWith(
-            fontStyle: FontStyle.italic,
-            color: context.colors.textSecondary,
-          ),
-          textAlign: isCenter ? TextAlign.center : TextAlign.start,
-        ),
+        // Text(
+        //   profile.tagline,
+        //   style: context.text.body1.copyWith(
+        //     fontStyle: FontStyle.italic,
+        //     color: context.colors.textSecondary,
+        //   ),
+        //   textAlign: isCenter ? TextAlign.center : TextAlign.start,
+        // ),
 
-        const SizedBox(height: AppDimens.s24),
-
+        // const SizedBox(height: AppDimens.s24),
         Text(
           profile.bio,
           style: context.text.body1.copyWith(height: 1.6),

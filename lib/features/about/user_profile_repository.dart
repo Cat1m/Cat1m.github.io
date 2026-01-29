@@ -15,10 +15,11 @@ class UserProfileRepository implements IUserProfileRepository {
     return const UserProfile(
       // --- Identity ---
       name: "Lê Minh Chiến",
-      jobTitle: "Senior Mobile Developer",
+      jobTitle: "Mobile Developer",
       tagline:
-          "Crafting scalable mobile solutions with Flutter & Clean Architecture",
-      bio: "Over 5 years of experience in mobile development...",
+          "Flutter Expert | Turning Complex Business Logic into Elegant Mobile Apps",
+      bio:
+          "With a unique background in IT Operations & ERP management, I don't just write code—I build solutions that solve real business problems.",
       avatarUrl: "assets/images/avatar.jpg",
 
       // --- Contact ---
