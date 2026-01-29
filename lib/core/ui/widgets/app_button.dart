@@ -27,15 +27,13 @@ class AppButton extends StatelessWidget {
     final content = ElevatedButton(
       onPressed: isEnabled ? onPressed : null, // Tự động disable style
       style: ElevatedButton.styleFrom(
-        // Quy định chiều cao chuẩn (ví dụ 48px)
+        // VN: Thiết lập foregroundColor để hiệu ứng ripple cũng theo màu Primary
+        foregroundColor: context.colors.primary,
         minimumSize: Size(isExpanded ? double.infinity : 0, AppDimens.s48),
         padding: const EdgeInsets.symmetric(horizontal: AppDimens.s24),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppDimens.r8),
         ),
-        // Màu sắc sẽ tự ăn theo Theme, nhưng nếu muốn hardcode theo design system:
-        // backgroundColor: context.colors.primary,
-        // foregroundColor: context.colors.surface,
       ),
       child: isLoading
           ? SizedBox(
@@ -59,12 +57,21 @@ class AppButton extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: AppDimens.icS),
+          // VN: Cập nhật màu Icon thành Primary
+          Icon(icon, size: AppDimens.icS, color: context.colors.primary),
           const SizedBox(width: AppDimens.s8),
-          Text(text, style: context.text.button),
+          // VN: Cập nhật màu Text thành Primary
+          Text(
+            text,
+            style: context.text.button.copyWith(color: context.colors.primary),
+          ),
         ],
       );
     }
-    return Text(text, style: context.text.button);
+    // VN: Cập nhật màu Text thành Primary
+    return Text(
+      text,
+      style: context.text.button.copyWith(color: context.colors.primary),
+    );
   }
 }

@@ -28,7 +28,7 @@ class SkillsSection extends StatelessWidget {
     ];
 
     return Container(
-      color: context.colors.background,
+      color: context.colors.transparent,
       padding: const EdgeInsets.symmetric(
         vertical: AppDimens.s32,
         horizontal: AppDimens.s24,

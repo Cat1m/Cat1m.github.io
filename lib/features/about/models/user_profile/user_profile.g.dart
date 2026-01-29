@@ -26,6 +26,9 @@ _UserProfile _$UserProfileFromJson(Map<String, dynamic> json) => _UserProfile(
   services:
       (json['services'] as List<dynamic>?)?.map((e) => e as String).toList() ??
       const [],
+  hobbies:
+      (json['hobbies'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+      const [],
   linkedinUrl: json['linkedinUrl'] as String?,
   githubUrl: json['githubUrl'] as String?,
   mediumUrl: json['mediumUrl'] as String?,
@@ -48,6 +51,7 @@ Map<String, dynamic> _$UserProfileToJson(_UserProfile instance) =>
       'contactHeading': instance.contactHeading,
       'contactDescription': instance.contactDescription,
       'services': instance.services,
+      'hobbies': instance.hobbies,
       'linkedinUrl': instance.linkedinUrl,
       'githubUrl': instance.githubUrl,
       'mediumUrl': instance.mediumUrl,

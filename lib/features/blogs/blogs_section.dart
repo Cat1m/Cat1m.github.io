@@ -43,7 +43,7 @@ class _BlogsSectionState extends State<BlogsSection> {
     final isDesktop = MediaQuery.sizeOf(context).width > 800;
 
     return Container(
-      color: context.colors.background,
+      color: context.colors.transparent,
       padding: const EdgeInsets.symmetric(vertical: AppDimens.s64),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

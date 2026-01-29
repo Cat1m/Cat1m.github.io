@@ -3,7 +3,6 @@ import 'package:injectable/injectable.dart';
 import 'package:my_portfolio/features/about/models/user_profile/user_profile.dart';
 
 abstract interface class IUserProfileRepository {
-  // VN: Lấy toàn bộ thông tin định danh và liên hệ của User
   Future<UserProfile> getUserProfile();
 }
 
@@ -11,7 +10,6 @@ abstract interface class IUserProfileRepository {
 class UserProfileRepository implements IUserProfileRepository {
   @override
   Future<UserProfile> getUserProfile() async {
-    // VN: Giả lập network delay tổng hợp
     await Future.delayed(const Duration(milliseconds: 400));
 
     return const UserProfile(
@@ -42,6 +40,15 @@ class UserProfileRepository implements IUserProfileRepository {
         "Freelance Project",
         "Mobile App Consultation",
         "Mentoring",
+      ],
+
+      // --- NEW: HOBBIES ADDED HERE ---
+      hobbies: [
+        "Detective Novels", // Trinh thám
+        "Board Games", // Boardgame
+        "Coffee Lover", // Thích cafe
+        "Walking", // Đi bộ
+        "Music", // Nghe nhạc
       ],
 
       // --- Social ---

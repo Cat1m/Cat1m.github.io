@@ -24,7 +24,7 @@ class ProjectsSection extends StatelessWidget {
     final displayPersonal = personalProjects.take(3).toList();
 
     return Container(
-      color: context.colors.background,
+      color: context.colors.transparent,
       padding: const EdgeInsets.symmetric(
         vertical: AppDimens.s64,
         horizontal: AppDimens.s24,

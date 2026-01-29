@@ -1,7 +1,10 @@
+// file: features/about/contact_section.dart
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lottie/lottie.dart'; // VN: Import Lottie
 import 'package:my_portfolio/core/ui/ui.dart';
 import 'package:my_portfolio/features/about/models/user_profile/user_profile.dart';
+import 'package:my_portfolio/features/portfolio/ui/widgets/portfolio_footer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ContactSection extends StatelessWidget {
@@ -11,65 +14,72 @@ class ContactSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: context.colors.background,
-      padding: const EdgeInsets.only(top: AppDimens.s64, bottom: AppDimens.s32),
-      child: Column(
-        children: [
-          // 1. Availability Status
-          if (user.isOpenToWork)
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              margin: const EdgeInsets.only(bottom: AppDimens.s24),
-              decoration: BoxDecoration(
-                color: context.colors.success.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(30),
-                border: Border.all(color: context.colors.success),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      color: context.colors.success,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    "Available for work",
-                    style: context.text.caption.copyWith(
-                      color: context.colors.success,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isDesktop = constraints.maxWidth > 900;
 
-          // 2. Title & Description
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.s24),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 700),
+        // VN: Padding ngang
+        final horizontalPadding = isDesktop ? AppDimens.s48 : AppDimens.s24;
+
+        // VN: Gom nhóm nội dung chính (Text, Buttons, Hobbies) vào 1 biến
+        // để dễ dàng tái sử dụng cho cả Mobile (Column) và Desktop (Row)
+        final mainContent = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 1. Availability Status
+            if (user.isOpenToWork)
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                margin: const EdgeInsets.only(bottom: AppDimens.s24),
+                decoration: BoxDecoration(
+                  color: context.colors.success.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(color: context.colors.success),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color: context.colors.success,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      "Available for work",
+                      style: context.text.caption.copyWith(
+                        color: context.colors.success,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+            // 2. Title & Description
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 800),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    // VN: FIX - Dùng contactHeading thay vì title
                     user.contactHeading,
                     style: context.text.h1.copyWith(
                       color: context.colors.primary,
                       height: 1.2,
                     ),
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.start,
                   ),
                   const SizedBox(height: AppDimens.s16),
 
                   _HighlightedDescription(
-                    // VN: FIX - Dùng contactDescription thay vì description
                     text: user.contactDescription,
                     baseStyle: context.text.body1.copyWith(
                       color: context.colors.textSecondary,
@@ -77,123 +87,124 @@ class ContactSection extends StatelessWidget {
                       height: 1.6,
                     ),
                     highlightColor: context.colors.textPrimary,
+                    textAlign: TextAlign.start,
                   ),
                 ],
               ),
             ),
-          ),
 
-          const SizedBox(height: AppDimens.s32),
+            const SizedBox(height: AppDimens.s32),
 
-          // 3. Services Tags
-          if (user.services.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.s24),
-              child: Wrap(
+            // 3. Services Tags
+            if (user.services.isNotEmpty)
+              Wrap(
                 spacing: 12,
                 runSpacing: 12,
-                alignment: WrapAlignment.center,
                 children: user.services.map((service) {
                   return _ServiceTag(text: service);
                 }).toList(),
               ),
-            ),
 
-          const SizedBox(height: AppDimens.s48),
+            const SizedBox(height: AppDimens.s48),
 
-          // 4. Call To Actions
-          Wrap(
-            spacing: AppDimens.s24,
-            runSpacing: AppDimens.s16,
-            alignment: WrapAlignment.center,
-            children: [
-              AppButton(
-                text: "Send me an email",
-                icon: Icons.email_outlined,
-                isExpanded: false,
-                onPressed: () => _launchUrl("mailto:${user.email}"),
-              ),
-
-              OutlinedButton.icon(
-                onPressed: () => _launchUrl(user.cvUrl),
-                icon: const Icon(Icons.download, size: 20),
-                label: const Text("Download CV"),
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 32,
-                    vertical: 20,
-                  ),
-                  side: BorderSide(color: context.colors.primary, width: 2),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppDimens.r8),
-                  ),
-                  foregroundColor: context.colors.primary,
-                  textStyle: context.text.button,
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: AppDimens.s64),
-          Divider(color: context.colors.border),
-          const SizedBox(height: AppDimens.s32),
-
-          // 5. Footer Info
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.s24),
-            child: Column(
+            // 4. Call To Actions
+            Wrap(
+              spacing: AppDimens.s24,
+              runSpacing: AppDimens.s16,
               children: [
-                Wrap(
-                  spacing: 24,
-                  alignment: WrapAlignment.center,
-                  children: [
-                    if (user.githubUrl != null)
-                      _SocialIcon(
-                        icon: FontAwesomeIcons.github,
-                        url: user.githubUrl!,
-                      ),
-                    if (user.linkedinUrl != null)
-                      _SocialIcon(
-                        icon: FontAwesomeIcons.linkedin,
-                        url: user.linkedinUrl!,
-                      ),
-                    if (user.mediumUrl != null)
-                      _SocialIcon(
-                        icon: FontAwesomeIcons.medium,
-                        url: user.mediumUrl!,
-                      ),
-                    if (user.facebookUrl != null)
-                      _SocialIcon(
-                        icon: FontAwesomeIcons.facebook,
-                        url: user.facebookUrl!,
-                      ),
-                  ],
+                AppButton(
+                  text: "Send me an email",
+                  icon: Icons.email_outlined,
+                  isExpanded: false,
+                  onPressed: () => _launchUrl("mailto:${user.email}"),
                 ),
 
-                const SizedBox(height: AppDimens.s24),
-
-                Text(
-                  user.email,
-                  style: context.text.body1.copyWith(
-                    fontWeight: FontWeight.bold,
+                OutlinedButton.icon(
+                  onPressed: () => _launchUrl(user.cvUrl),
+                  icon: const Icon(Icons.download, size: 20),
+                  label: const Text("Download CV"),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 32,
+                      vertical: 20,
+                    ),
+                    side: BorderSide(color: context.colors.primary, width: 2),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppDimens.r8),
+                    ),
+                    foregroundColor: context.colors.primary,
+                    textStyle: context.text.button,
                   ),
-                ),
-                const SizedBox(height: 4),
-                Text(user.location, style: context.text.caption),
-                const SizedBox(height: AppDimens.s24),
-
-                Text(
-                  "© ${DateTime.now().year} Crafted with 💙 by ${user.name} using Flutter Web",
-                  style: context.text.caption.copyWith(
-                    color: context.colors.textSecondary.withOpacity(0.6),
-                  ),
-                  textAlign: TextAlign.center,
                 ),
               ],
             ),
+
+            // 5. Hobbies Section
+            if (user.hobbies.isNotEmpty) ...[
+              const SizedBox(height: AppDimens.s48),
+              Text(
+                "Personal Interests",
+                style: context.text.h3.copyWith(
+                  fontSize: 20,
+                  color: context.colors.textPrimary,
+                ),
+              ),
+              const SizedBox(height: AppDimens.s16),
+              Wrap(
+                spacing: 24,
+                runSpacing: 16,
+                children: user.hobbies.map((hobby) {
+                  return _HobbyItem(hobby: hobby);
+                }).toList(),
+              ),
+            ],
+
+            // Khoảng cách bottom trước khi gặp Footer
+            const SizedBox(height: AppDimens.s64),
+          ],
+        );
+
+        return Container(
+          color: context.colors.transparent,
+          width: double.infinity,
+          padding: const EdgeInsets.only(top: AppDimens.s64),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                // VN: Logic hiển thị Desktop vs Mobile
+                child: isDesktop
+                    ? Row(
+                        crossAxisAlignment: CrossAxisAlignment
+                            .center, // Căn giữa theo chiều dọc
+                        children: [
+                          // Cột nội dung (chiếm 60%)
+                          Expanded(flex: 6, child: mainContent),
+
+                          const SizedBox(width: AppDimens.s48),
+
+                          // Cột Lottie Animation (chiếm 40%) - Chỉ hiện trên Desktop
+                          Expanded(
+                            flex: 4,
+                            child: Lottie.asset(
+                              'assets/animations/contact.json', // Đường dẫn file lottie
+                              fit: BoxFit.contain,
+                              // Thêm key để tránh reload không cần thiết
+                              key: const ValueKey('contact_animation'),
+                            ),
+                          ),
+                        ],
+                      )
+                    : mainContent, // Mobile chỉ hiện nội dung dọc
+              ),
+
+              // 6. Footer (Full Width)
+              PortfolioFooter(user: user),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -203,24 +214,26 @@ class ContactSection extends StatelessWidget {
   }
 }
 
-// ... (Giữ nguyên phần Helper Widgets: _HighlightedDescription, _ServiceTag, _SocialIcon)
-// Bạn copy lại phần Helper Widgets ở file cũ vào dưới đây nhé
+// --- HELPER WIDGETS (Giữ nguyên) ---
+
 class _HighlightedDescription extends StatelessWidget {
   final String text;
   final TextStyle baseStyle;
   final Color highlightColor;
+  final TextAlign textAlign;
 
   const _HighlightedDescription({
     required this.text,
     required this.baseStyle,
     required this.highlightColor,
+    this.textAlign = TextAlign.start,
   });
 
   @override
   Widget build(BuildContext context) {
     final parts = text.split('**');
     return RichText(
-      textAlign: TextAlign.center,
+      textAlign: textAlign,
       text: TextSpan(
         style: baseStyle,
         children: List.generate(parts.length, (index) {
@@ -253,13 +266,6 @@ class _ServiceTag extends StatelessWidget {
         color: context.colors.background,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: context.colors.border),
-        boxShadow: [
-          BoxShadow(
-            color: context.colors.textPrimary.withOpacity(0.02),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
       ),
       child: Text(
         text,
@@ -272,22 +278,46 @@ class _ServiceTag extends StatelessWidget {
   }
 }
 
-class _SocialIcon extends StatelessWidget {
-  final IconData icon;
-  final String url;
+class _HobbyItem extends StatelessWidget {
+  final String hobby;
 
-  const _SocialIcon({required this.icon, required this.url});
+  const _HobbyItem({required this.hobby});
+
+  IconData _getIcon(String hobby) {
+    final lower = hobby.toLowerCase();
+    if (lower.contains('detective') || lower.contains('trinh thám')) {
+      return FontAwesomeIcons.userSecret;
+    }
+    if (lower.contains('board') || lower.contains('game')) {
+      return FontAwesomeIcons.chess;
+    }
+    if (lower.contains('coffee') || lower.contains('cafe')) {
+      return FontAwesomeIcons.mugHot;
+    }
+    if (lower.contains('walk') || lower.contains('đi bộ')) {
+      return FontAwesomeIcons.personWalking;
+    }
+    if (lower.contains('music') || lower.contains('nhạc')) {
+      return FontAwesomeIcons.music;
+    }
+    return FontAwesomeIcons.heart;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () async {
-        final uri = Uri.parse(url);
-        if (await canLaunchUrl(uri)) await launchUrl(uri);
-      },
-      icon: FaIcon(icon, size: 24, color: context.colors.textSecondary),
-      hoverColor: context.colors.primary.withOpacity(0.1),
-      splashRadius: 24,
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        FaIcon(_getIcon(hobby), size: 18, color: context.colors.primary),
+        const SizedBox(width: 8),
+        Text(
+          hobby,
+          style: context.text.body2.copyWith(
+            color: context.colors.textSecondary,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
     );
   }
 }

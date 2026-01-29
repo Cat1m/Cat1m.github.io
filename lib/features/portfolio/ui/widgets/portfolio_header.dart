@@ -43,7 +43,8 @@ class PortfolioHeader extends StatelessWidget {
           ),
           child: LayoutBuilder(
             builder: (context, constraints) {
-              if (constraints.maxWidth > 1100) {
+              // VN: Tăng breakpoint lên 1250 vì nội dung Desktop cần ~1220px để không bị overflow (1139px hiện tại đang thiếu 74px)
+              if (constraints.maxWidth > 1250) {
                 return _DesktopHeaderContent(
                   activeSection: activeSection,
                   onMenuClick: onMenuClick,

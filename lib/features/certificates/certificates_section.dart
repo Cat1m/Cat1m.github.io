@@ -29,7 +29,7 @@ class _CertificatesSectionState extends State<CertificatesSection> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: context.colors.background,
+      color: context.colors.transparent,
       padding: const EdgeInsets.symmetric(
         vertical: AppDimens.s64,
         horizontal: AppDimens.s24,
@@ -76,6 +76,7 @@ class _CertificatesSectionState extends State<CertificatesSection> {
             LayoutBuilder(
               builder: (context, constraints) {
                 final isDesktop = constraints.maxWidth > 900;
+
                 final crossAxisCount = isDesktop ? 2 : 1;
                 final ratio = isDesktop ? 2.5 : 2.0;
 
@@ -102,7 +103,7 @@ class _CertificatesSectionState extends State<CertificatesSection> {
                           crossAxisSpacing: AppDimens.s24,
                           mainAxisSpacing: AppDimens.s24,
                           childAspectRatio: ratio,
-                          mainAxisExtent: 160,
+                          mainAxisExtent: 170,
                         ),
                         itemBuilder: (context, index) {
                           return _CertificateCard(

@@ -19,6 +19,7 @@ class _Palette {
   // Neutral Colors
   static const white = Color(0xFFFFFFFF);
   static const black = Color(0xFF000000);
+  static const transparent = Color(0x00000000);
   static const gray100 = Color(0xFFF5F5F5);
   static const gray300 = Color(0xFFE0E0E0);
   static const gray800 = Color(0xFF424242);
@@ -37,6 +38,7 @@ class AppColors extends ThemeExtension<AppColors> {
   final Color error;
   final Color success;
   final Color border; // Dùng cho viền ô input, card
+  final Color transparent;
 
   const AppColors({
     required this.primary,
@@ -48,6 +50,7 @@ class AppColors extends ThemeExtension<AppColors> {
     required this.error,
     required this.success,
     required this.border,
+    required this.transparent,
   });
 
   // Theme Light Mặc Định
@@ -62,6 +65,7 @@ class AppColors extends ThemeExtension<AppColors> {
       error: _Palette.error,
       success: _Palette.success,
       border: _Palette.gray300,
+      transparent: _Palette.transparent,
     );
   }
 
@@ -77,6 +81,7 @@ class AppColors extends ThemeExtension<AppColors> {
       error: Color(0xFFCF6679), // Error màu nhạt hơn cho dễ đọc trên nền đen
       success: Color(0xFF81C784),
       border: _Palette.gray800,
+      transparent: _Palette.transparent,
     );
   }
 
@@ -92,6 +97,7 @@ class AppColors extends ThemeExtension<AppColors> {
     Color? error,
     Color? success,
     Color? border,
+    Color? transparent,
   }) {
     return AppColors(
       primary: primary ?? this.primary,
@@ -103,6 +109,7 @@ class AppColors extends ThemeExtension<AppColors> {
       error: error ?? this.error,
       success: success ?? this.success,
       border: border ?? this.border,
+      transparent: transparent ?? this.transparent,
     );
   }
 
@@ -119,6 +126,7 @@ class AppColors extends ThemeExtension<AppColors> {
       error: Color.lerp(error, other.error, t)!,
       success: Color.lerp(success, other.success, t)!,
       border: Color.lerp(border, other.border, t)!,
+      transparent: Color.lerp(transparent, other.transparent, t)!,
     );
   }
 }

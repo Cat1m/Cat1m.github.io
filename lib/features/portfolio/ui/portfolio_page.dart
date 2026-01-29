@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:my_portfolio/core/di/injection.dart';
+import 'package:my_portfolio/core/ui/extensions/context_extension.dart';
 import 'package:my_portfolio/features/about/about_section.dart';
 import 'package:my_portfolio/features/blogs/blogs_section.dart';
 import 'package:my_portfolio/features/certificates/certificates_section.dart';
@@ -9,6 +11,7 @@ import 'package:my_portfolio/features/experience/experience_section.dart';
 import 'package:my_portfolio/features/portfolio/cubit/portfolio_cubit.dart';
 import 'package:my_portfolio/features/portfolio/cubit/portfolio_state.dart';
 import 'package:my_portfolio/features/portfolio/model/portfolio_models.dart';
+import 'package:my_portfolio/features/portfolio/ui/widgets/portfolio_background.dart';
 import 'package:my_portfolio/features/portfolio/ui/widgets/portfolio_header.dart';
 import 'package:my_portfolio/features/projects/projects_section.dart';
 import 'package:my_portfolio/features/skills/skills_section.dart';
@@ -127,18 +130,55 @@ class _PortfolioViewState extends State<PortfolioView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // VN: Quan trọng! Scaffold phải trong suốt để thấy background nếu cần
+      backgroundColor: Colors.transparent,
       body: BlocBuilder<PortfolioCubit, PortfolioState>(
         builder: (context, state) {
           return switch (state) {
-            PortfolioLoading() => const Center(
-              child: CircularProgressIndicator(),
+            PortfolioLoading() => Center(
+              child: Lottie.asset(
+                'assets/animations/Loading.json', // Nhớ dùng dấu gạch chéo '/' chuẩn Flutter
+                width: 200, // Giới hạn kích thước để không quá to
+                height: 200,
+                fit: BoxFit.contain,
+              ),
             ),
-            PortfolioError() => const Center(
-              child: Text("Failed to load portfolio"),
+            PortfolioError() => Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset(
+                    'assets/animations/error_404.json', // File .lottie
+                    width: 300, // Kích thước to rõ
+                    height: 300,
+                    fit: BoxFit.contain,
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    "Oops! Something went wrong.",
+                    style: context.text.h3.copyWith(
+                      color: context.colors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    "Please try again later.",
+                    style: context.text.body1.copyWith(
+                      color: context.colors.textSecondary.withOpacity(0.6),
+                    ),
+                  ),
+                  // Optional: Thêm nút Retry nếu muốn
+                ],
+              ),
             ),
             PortfolioLoaded(data: var data, activeSection: var activeSection) =>
               Stack(
                 children: [
+                  // --- LỚP 1: BACKGROUND DÙNG CHUNG ---
+                  // Nó nằm cố định (Fixed), nội dung sẽ trôi qua nó
+                  const Positioned.fill(child: PortfolioBackground()),
+
+                  // --- LỚP 2: SCROLLABLE CONTENT ---
                   Positioned.fill(
                     child: ScrollablePositionedList.builder(
                       itemCount: PortfolioSection.values.length,
@@ -152,6 +192,8 @@ class _PortfolioViewState extends State<PortfolioView> {
                       },
                     ),
                   ),
+
+                  // --- LỚP 3: HEADER ---
                   Positioned(
                     top: 0,
                     left: 0,

@@ -1,4 +1,4 @@
-import 'dart:math' as math; // Import math để xoay icon
+// file: features/experience/experience_section.dart
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_portfolio/features/experience/models/experience_item.dart';
@@ -22,221 +22,119 @@ class ExperienceSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
-
+    // VN: Không cần Stack hay Decorations nữa
     return Container(
-      color: context.colors.background,
-      // VN: Chuyển sang Stack để lồng background
-      child: Stack(
-        children: [
-          // ================== LAYER 1: DECORATIONS (Background) ==================
-          // 1. Blob to bên trái (Lấp khoảng trống bạn nói)
-          Positioned(
-            top: 200,
-            left: -150,
-            child: _BlurryBlob(
-              color: context.colors.secondary.withOpacity(0.1),
-              size: 500, // Size to để lan tỏa
-            ),
-          ),
-
-          // 2. Blob nhỏ bên phải dưới
-          Positioned(
-            bottom: -50,
-            right: -100,
-            child: _BlurryBlob(
-              color: context.colors.primary.withOpacity(0.1),
-              size: 400,
-            ),
-          ),
-
-          // 3. Floating Icons (Theme: Work & Office)
-          if (size.width > 1000) ...[
-            const Positioned(
-              top: 150,
-              left: 100, // Nằm ở vùng trống bên trái
-              child: _FloatingIcon(
-                icon: Icons.laptop_mac,
-                angle: -0.15,
-                size: 80,
+      // VN: Màu trong suốt để nhìn thấy PortfolioBackground bên dưới
+      color: context.colors.transparent,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: AppDimens.s32,
+          horizontal: AppDimens.s24,
+        ),
+        child: Column(
+          children: [
+            // Header
+            Text(
+              "Career Path",
+              style: context.text.h3.copyWith(
+                color: context.colors.textSecondary,
               ),
             ),
-            const Positioned(
-              top: 400,
-              right: 80,
-              child: _FloatingIcon(icon: Icons.coffee, angle: 0.2, size: 50),
+            const SizedBox(height: AppDimens.s8),
+            Text(
+              "Work Experience",
+              style: context.text.h1.copyWith(color: context.colors.primary),
             ),
-            const Positioned(
-              bottom: 100,
-              left: 200,
-              child: _FloatingIcon(
-                icon: Icons.work_outline,
-                angle: 0.1,
-                size: 60,
-              ),
-            ),
-          ],
+            const SizedBox(height: AppDimens.s48),
 
-          // ================== LAYER 2: MAIN CONTENT ==================
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: AppDimens.s32,
-              horizontal: AppDimens.s24,
-            ),
-            child: Column(
-              children: [
-                // Header
-                Text(
-                  "Career Path",
-                  style: context.text.h3.copyWith(
-                    color: context.colors.textSecondary,
-                  ),
-                ),
-                const SizedBox(height: AppDimens.s8),
-                Text(
-                  "Work Experience",
-                  style: context.text.h1.copyWith(
-                    color: context.colors.primary,
-                  ),
-                ),
-                const SizedBox(height: AppDimens.s48),
+            // Timeline List
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final isDesktop = constraints.maxWidth > 900;
 
-                // Timeline List
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    final isDesktop = constraints.maxWidth > 900;
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: experiences.length,
+                  itemBuilder: (context, index) {
+                    final item = experiences[index];
+                    final isLast = index == experiences.length - 1;
 
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: experiences.length,
-                      itemBuilder: (context, index) {
-                        final item = experiences[index];
-                        final isLast = index == experiences.length - 1;
-
-                        return IntrinsicHeight(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // CỘT 1: Thời gian & Logo (Desktop)
-                              if (isDesktop)
-                                Expanded(
-                                  flex: 1,
-                                  child: _DateAndLocation(
-                                    item: item,
-                                    alignRight: true,
-                                    durationString: _getDuration(
-                                      item.startTime,
-                                      item.endTime,
-                                    ),
-                                  ),
-                                ),
-
-                              // CỘT 2: Trục Timeline
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: AppDimens.s16,
-                                ),
-                                child: _TimelineAxis(isLast: isLast),
-                              ),
-
-                              // CỘT 3: Nội dung chi tiết
-                              Expanded(
-                                flex: 3,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    bottom: AppDimens.s48,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      if (!isDesktop) ...[
-                                        _DateAndLocation(
-                                          item: item,
-                                          alignRight: false,
-                                          durationString: _getDuration(
-                                            item.startTime,
-                                            item.endTime,
-                                          ),
-                                        ),
-                                        const SizedBox(height: AppDimens.s12),
-                                      ],
-                                      _ExperienceCard(
-                                        item: item,
-                                        showLogoInside: !isDesktop,
-                                      ),
-                                    ],
-                                  ),
+                    return IntrinsicHeight(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // CỘT 1: Thời gian & Logo (Desktop)
+                          if (isDesktop)
+                            Expanded(
+                              flex: 1,
+                              child: _DateAndLocation(
+                                item: item,
+                                alignRight: true,
+                                durationString: _getDuration(
+                                  item.startTime,
+                                  item.endTime,
                                 ),
                               ),
-                            ],
+                            ),
+
+                          // CỘT 2: Trục Timeline
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppDimens.s16,
+                            ),
+                            child: _TimelineAxis(isLast: isLast),
                           ),
-                        );
-                      },
+
+                          // CỘT 3: Nội dung chi tiết
+                          Expanded(
+                            flex: 3,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: AppDimens.s48,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  if (!isDesktop) ...[
+                                    _DateAndLocation(
+                                      item: item,
+                                      alignRight: false,
+                                      durationString: _getDuration(
+                                        item.startTime,
+                                        item.endTime,
+                                      ),
+                                    ),
+                                    const SizedBox(height: AppDimens.s12),
+                                  ],
+                                  _ExperienceCard(
+                                    item: item,
+                                    showLogoInside: !isDesktop,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   },
-                ),
-              ],
+                );
+              },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
 
-class _BlurryBlob extends StatelessWidget {
-  final Color color;
-  final double size;
-
-  const _BlurryBlob({required this.color, required this.size});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color,
-        boxShadow: [BoxShadow(color: color, blurRadius: 100, spreadRadius: 50)],
-      ),
-    );
-  }
-}
-
-class _FloatingIcon extends StatelessWidget {
-  final IconData icon;
-  final double angle;
-  final double size;
-
-  const _FloatingIcon({
-    required this.icon,
-    required this.angle,
-    this.size = 60,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Transform.rotate(
-      angle: angle * math.pi,
-      child: Icon(
-        icon,
-        size: size,
-        color: context.colors.textPrimary.withValues(
-          alpha: 0.04,
-        ), // Mờ hơn chút cho đỡ rối
-      ),
-    );
-  }
-}
 // ================== HELPER WIDGETS ==================
 
 class _DateAndLocation extends StatelessWidget {
   final ExperienceItem item;
   final bool alignRight;
-  final String durationString; // Field mới
+  final String durationString;
 
   const _DateAndLocation({
     required this.item,
@@ -264,8 +162,7 @@ class _DateAndLocation extends StatelessWidget {
       child: Column(
         crossAxisAlignment: crossAlign,
         children: [
-          // 1. Logo Công Ty (Điểm nhấn lấp đầy khoảng trống)
-          // Chỉ hiện to ở Desktop (alignRight = true)
+          // 1. Logo Công Ty
           if (alignRight) ...[
             Container(
               width: 60,
@@ -304,7 +201,7 @@ class _DateAndLocation extends StatelessWidget {
             textAlign: textAlign,
           ),
 
-          // 3. Duration (Thâm niên) - Highlight nhẹ
+          // 3. Duration
           const SizedBox(height: 4),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
@@ -361,7 +258,7 @@ class _DateAndLocation extends StatelessWidget {
 
           // 5. Type Badge
           Text(
-            item.type, // Remote/Hybrid
+            item.type,
             style: context.text.caption.copyWith(
               color: context.colors.primary,
               fontWeight: FontWeight.bold,
@@ -414,7 +311,7 @@ class _TimelineAxis extends StatelessWidget {
 
 class _ExperienceCard extends StatelessWidget {
   final ExperienceItem item;
-  final bool showLogoInside; // Field mới
+  final bool showLogoInside;
 
   const _ExperienceCard({required this.item, required this.showLogoInside});
 
@@ -442,7 +339,6 @@ class _ExperienceCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Chỉ hiện Logo ở đây nếu là Mobile (showLogoInside = true)
               if (showLogoInside) ...[
                 Container(
                   width: 48,
@@ -504,7 +400,6 @@ class _ExperienceCard extends StatelessWidget {
             ],
           ),
 
-          // ... Phần dưới giữ nguyên (Bullet points & Chips)
           const SizedBox(height: AppDimens.s20),
           ...item.responsibilities.map(
             (res) => Padding(

@@ -30,6 +30,7 @@ abstract class UserProfile with _$UserProfile {
 
     // VN: Các dịch vụ cung cấp (Remote, Freelance...)
     @Default([]) List<String> services,
+    @Default([]) List<String> hobbies,
 
     // --- Social Links ---
     String? linkedinUrl,
