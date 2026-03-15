@@ -4,9 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart'; // Import Lottie
 import 'package:my_portfolio/features/portfolio/model/portfolio_models.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/ui/ui.dart';
 import '../../../../features/app_core/bloc/app_core_cubit.dart';
 import '../../../../features/app_core/bloc/app_core_state.dart';
+
+const _cvDownloadUrl =
+    'https://drive.google.com/uc?export=download&id=1F7PYDIGeVe2rNuiE1BNMgiRA2n09X4J3';
 
 class PortfolioHeader extends StatelessWidget {
   final PortfolioSection activeSection;
@@ -124,7 +128,11 @@ class _DesktopHeaderContent extends StatelessWidget {
         const SizedBox(width: 16),
 
         // Resume Button
-        AppButton(text: "CV", onPressed: () {}, isExpanded: false),
+        AppButton(
+          text: "CV",
+          onPressed: () => launchUrl(Uri.parse(_cvDownloadUrl)),
+          isExpanded: false,
+        ),
       ],
     );
   }
@@ -187,7 +195,7 @@ class _MobileHeaderContent extends StatelessWidget {
               }),
               const PopupMenuDivider(),
               PopupMenuItem(
-                onTap: () {},
+                onTap: () => launchUrl(Uri.parse(_cvDownloadUrl)),
                 child: const Row(
                   children: [
                     Icon(Icons.download, size: 20),

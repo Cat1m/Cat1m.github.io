@@ -27,7 +27,7 @@ class UserProfileRepository implements IUserProfileRepository {
       email: "chien120697@gmail.com",
       phone: "(+84) 35 950 9251",
       cvUrl:
-          "https://drive.google.com/file/d/1bi40CXM_NlQjB8IbkHJ5lx4oG6317zb3/view?usp=drive_link",
+          "https://drive.google.com/uc?export=download&id=1F7PYDIGeVe2rNuiE1BNMgiRA2n09X4J3",
 
       isOpenToWork: true,
       contactHeading: "Let's build something amazing together!",
